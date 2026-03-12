@@ -1,3 +1,4 @@
 *.zip
 __MACOSX/
 .DS_Store
+*.import

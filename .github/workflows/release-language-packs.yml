@@ -53,10 +53,10 @@ jobs:
           tag_name: ${{ steps.tag.outputs.tag }}
           name: "Language Packs — ${{ steps.tag.outputs.tag }}"
           body: |
-            Packs de langue mis à jour suite au merge de la PR #${{ github.event.pull_request.number }}.
+            Language packs updated from PR #${{ github.event.pull_request.number }}.
 
-            **Packs inclus :**${{ steps.zip.outputs.packs }}
+            **Included packs:**${{ steps.zip.outputs.packs }}
 
-            Téléchargez directement le pack souhaité ci-dessous.
+            Download the desired pack below.
           files: dist/*.zip
           generate_release_notes: false

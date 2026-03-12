@@ -1,5 +1,24 @@
 *.zip
-__MACOSX/
-.DS_Store
 *.import
 CLAUDE.md
+
+# macOS
+__MACOSX/
+.DS_Store
+._*
+
+# Windows
+Thumbs.db
+ehthumbs.db
+desktop.ini
+
+# Linux
+.directory
+
+# Editors / IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+*.tmp

@@ -1,0 +1,105 @@
+name: Check OS Artifacts
+
+on:
+  pull_request:
+    branches: [main]
+    types: [opened, reopened, synchronize]
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Scan for OS-generated artifacts
+        id: scan
+        run: |
+          found=""
+
+          # macOS artifacts
+          macosx=$(find . -type d -name "__MACOSX" | head -20)
+          dsstore=$(find . -type f -name ".DS_Store" | head -20)
+
+          # Windows artifacts
+          thumbsdb=$(find . -type f -name "Thumbs.db" | head -20)
+          desktopini=$(find . -type f -name "desktop.ini" | head -20)
+          ehthumbs=$(find . -type f -name "ehthumbs.db" | head -20)
+
+          # Linux artifacts
+          directory=$(find . -type f -name ".directory" | head -20)
+
+          # Editor / IDE artifacts
+          vscode=$(find . -type d -name ".vscode" | head -20)
+          idea=$(find . -type d -name ".idea" | head -20)
+
+          # General temp artifacts
+          tmp_files=$(find . -type f -name "*.tmp" -o -name "*.swp" -o -name "*.swo" -o -name "*~" | head -20)
+
+          all="$macosx$dsstore$thumbsdb$desktopini$ehthumbs$directory$vscode$idea$tmp_files"
+
+          if [ -n "$all" ]; then
+            echo "found=true" >> "$GITHUB_OUTPUT"
+
+            # Build the list for the PR comment
+            {
+              echo 'files<<EOF'
+              [ -n "$macosx" ]     && echo "$macosx"
+              [ -n "$dsstore" ]    && echo "$dsstore"
+              [ -n "$thumbsdb" ]   && echo "$thumbsdb"
+              [ -n "$desktopini" ] && echo "$desktopini"
+              [ -n "$ehthumbs" ]   && echo "$ehthumbs"
+              [ -n "$directory" ]  && echo "$directory"
+              [ -n "$vscode" ]     && echo "$vscode"
+              [ -n "$idea" ]       && echo "$idea"
+              [ -n "$tmp_files" ]  && echo "$tmp_files"
+              echo 'EOF'
+            } >> "$GITHUB_OUTPUT"
+          else
+            echo "found=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Post comment on PR
+        if: steps.scan.outputs.found == 'true'
+        uses: marocchino/sticky-pull-request-comment@v2
+        with:
+          header: os-artifacts
+          message: |
+            ## ⛔ OS-generated artifacts detected
+
+            This PR contains files that should not be committed. Please remove them before merging.
+
+            **Files found:**
+            ```
+            ${{ steps.scan.outputs.files }}
+            ```
+
+            **Common culprits and how to fix them:**
+            | File | Source | Fix |
+            |------|--------|-----|
+            | `__MACOSX/` | macOS ZIP compression | Re-zip without macOS metadata, or delete the folder |
+            | `.DS_Store` | macOS Finder | `find . -name ".DS_Store" -delete` |
+            | `Thumbs.db` / `ehthumbs.db` | Windows Explorer | Delete the files |
+            | `desktop.ini` | Windows Explorer | Delete the files |
+            | `.directory` | Linux file managers (Dolphin, Nautilus) | Delete the files |
+            | `.vscode/` / `.idea/` | VS Code / JetBrains IDEs | Delete the folders |
+            | `*.tmp`, `*.swp`, `*~` | Editors (Vim, etc.) | Delete the files |
+
+            💡 **Tip:** Add these patterns to your global `.gitignore` to prevent this in the future:
+            ```
+            git config --global core.excludesFile '~/.gitignore_global'
+            ```
+
+      - name: Remove outdated comment
+        if: steps.scan.outputs.found == 'false'
+        uses: marocchino/sticky-pull-request-comment@v2
+        with:
+          header: os-artifacts
+          delete: true
+
+      - name: Fail if artifacts found
+        if: steps.scan.outputs.found == 'true'
+        run: |
+          echo "::error::OS-generated artifacts found in the repository. See the PR comment for details."
+          exit 1

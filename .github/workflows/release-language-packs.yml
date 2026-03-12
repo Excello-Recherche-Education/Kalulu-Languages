@@ -1,0 +1,60 @@
+name: Release Language Packs
+
+on:
+  pull_request:
+    branches: [main]
+    types: [closed]
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    # Only run when the PR was actually merged (not just closed)
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Detect language folders and create zips
+        id: zip
+        run: |
+          mkdir -p dist
+
+          # Find all locale directories (pattern: xx_XX)
+          packs=""
+          for dir in */; do
+            dirname="${dir%/}"
+            if [[ "$dirname" =~ ^[a-z]{2}_[A-Z]{2}$ ]]; then
+              echo "Zipping $dirname..."
+              zip -r "dist/${dirname}.zip" "$dirname"
+              packs="${packs} ${dirname}"
+            fi
+          done
+
+          echo "packs=$packs" >> "$GITHUB_OUTPUT"
+          echo "Language packs found:$packs"
+
+      - name: Generate release tag
+        id: tag
+        run: |
+          # Tag based on date + short SHA for uniqueness
+          tag="v$(date +'%Y%m%d')-${GITHUB_SHA::7}"
+          echo "tag=$tag" >> "$GITHUB_OUTPUT"
+          echo "Generated tag: $tag"
+
+      - name: Create GitHub Release with language packs
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.tag.outputs.tag }}
+          name: "Language Packs — ${{ steps.tag.outputs.tag }}"
+          body: |
+            Packs de langue mis à jour suite au merge de la PR #${{ github.event.pull_request.number }}.
+
+            **Packs inclus :**${{ steps.zip.outputs.packs }}
+
+            Téléchargez directement le pack souhaité ci-dessous.
+          files: dist/*.zip
+          generate_release_notes: false

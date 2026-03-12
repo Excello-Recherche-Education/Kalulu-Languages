@@ -83,6 +83,22 @@ Language packs are consumed in two ways:
 
 2. **By the Language Lambda** — when an updated pack is uploaded to S3, the `Kalulu-Language-Lambda` extracts `language.db`, distributes the lessons across 20 gardens, and updates the backend's MySQL tables (DEV + PROD).
 
+## Releases
+
+When a pull request is merged into `main`, a GitHub Actions workflow automatically:
+
+1. Detects all locale folders (matching the `xx_XX` pattern)
+2. Compresses each one into a ZIP archive (e.g. `fr_FR.zip`, `pt_BR.zip`)
+3. Creates a new GitHub Release with all ZIP files attached as downloadable assets
+
+Each language pack can be downloaded directly from the [Releases page](../../releases). The latest packs are always available at:
+
+```
+https://github.com/Excello-Recherche-Education/Kalulu-Languages/releases/latest/download/<locale>.zip
+```
+
+For example: `.../releases/latest/download/fr_FR.zip`
+
 ## Adding or modifying a language
 
 To add or modify a language pack, use the **Prof_Tool** included in the [Kalulu frontend repository](https://github.com/Excello-Recherche-Education/Kalulu). Prof_Tool provides a graphical interface to edit linguistic data (grapheme-phoneme correspondences, words, syllables, sentences) and export a complete, ready-to-deploy language pack.

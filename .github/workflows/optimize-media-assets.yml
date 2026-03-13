@@ -1,0 +1,303 @@
+name: Optimize Media Assets
+
+on:
+  workflow_dispatch:
+    inputs:
+      png_max_dimension:
+        description: "Max pixel dimension for PNG images (larger images are resized)"
+        required: false
+        default: "2048"
+      png_lossy_quality:
+        description: "pngquant quality range (e.g. 65-80). Lower = smaller files"
+        required: false
+        default: "65-80"
+      mp3_bitrate:
+        description: "Target MP3 bitrate for speech audio (e.g. 64k, 96k)"
+        required: false
+        default: "64k"
+      ogv_crf:
+        description: "OGV quality (libtheora: 0-10, higher = better). 6 is good for tablets"
+        required: false
+        default: "6"
+      ogv_max_height:
+        description: "Max video height in pixels (e.g. 720)"
+        required: false
+        default: "720"
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  optimize:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          lfs: true
+
+      - name: Install optimization tools
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq oxipng pngquant ffmpeg imagemagick
+
+      - name: Optimize media assets
+        id: optimize
+        env:
+          PNG_MAX_DIM: ${{ inputs.png_max_dimension || '2048' }}
+          PNG_QUALITY: ${{ inputs.png_lossy_quality || '65-80' }}
+          MP3_BITRATE: ${{ inputs.mp3_bitrate || '64k' }}
+          OGV_CRF: ${{ inputs.ogv_crf || '6' }}
+          OGV_MAX_HEIGHT: ${{ inputs.ogv_max_height || '720' }}
+        run: |
+          set -euo pipefail
+
+          total_before=0
+          total_after=0
+          files_changed=0
+
+          file_size() { stat --format='%s' "$1" 2>/dev/null || echo 0; }
+
+          human_size() {
+            local bytes=$1
+            if [ "$bytes" -ge 1048576 ]; then
+              echo "$(( bytes / 1048576 )) MB"
+            elif [ "$bytes" -ge 1024 ]; then
+              echo "$(( bytes / 1024 )) KB"
+            else
+              echo "${bytes} B"
+            fi
+          }
+
+          # ------------------------------------------------------------------
+          # PNG optimization: resize if >max dimension, then lossless + lossy
+          # ------------------------------------------------------------------
+          optimize_png() {
+            local file="$1"
+            local before
+            before=$(file_size "$file")
+            total_before=$(( total_before + before ))
+
+            # Resize if any dimension exceeds the max
+            local dims
+            dims=$(identify -format '%w %h' "$file" 2>/dev/null || echo "0 0")
+            local width height
+            width=$(echo "$dims" | awk '{print $1}')
+            height=$(echo "$dims" | awk '{print $2}')
+
+            if [ "$width" -gt "$PNG_MAX_DIM" ] || [ "$height" -gt "$PNG_MAX_DIM" ]; then
+              echo "  Resizing ${width}x${height} -> max ${PNG_MAX_DIM}px (preserving aspect ratio)"
+              # The ">" flag only shrinks, never enlarges. Aspect ratio is always preserved.
+              convert "$file" -resize "${PNG_MAX_DIM}x${PNG_MAX_DIM}>" -strip "$file"
+            fi
+
+            # Lossless optimization with oxipng (level 4 is a good speed/compression tradeoff)
+            oxipng -o 4 --strip safe -q "$file" 2>/dev/null || true
+
+            # Lossy compression with pngquant (skip if already small enough or pngquant fails)
+            pngquant --quality="$PNG_QUALITY" --speed 3 --force --ext .png --skip-if-larger "$file" 2>/dev/null || true
+
+            local after
+            after=$(file_size "$file")
+            total_after=$(( total_after + after ))
+
+            if [ "$after" -lt "$before" ]; then
+              local saved=$(( before - after ))
+              local pct=$(( saved * 100 / before ))
+              echo "  $(basename "$file"): $(human_size "$before") -> $(human_size "$after") (-${pct}%)"
+              files_changed=$(( files_changed + 1 ))
+            else
+              total_after=$(( total_after - after + before ))  # no change, keep original count
+            fi
+          }
+
+          # ------------------------------------------------------------------
+          # MP3 optimization: re-encode to target bitrate (mono, speech audio)
+          # ------------------------------------------------------------------
+          optimize_mp3() {
+            local file="$1"
+            local before
+            before=$(file_size "$file")
+            total_before=$(( total_before + before ))
+
+            # Get current bitrate
+            local current_bitrate
+            current_bitrate=$(ffprobe -v quiet -select_streams a:0 \
+              -show_entries stream=bit_rate -of csv=p=0 "$file" 2>/dev/null || echo "0")
+
+            # Parse target bitrate to numeric (e.g. "64k" -> 64000)
+            local target_numeric
+            target_numeric=$(echo "$MP3_BITRATE" | sed 's/k/000/')
+
+            # Skip if already at or below target bitrate (with 10% margin)
+            local threshold=$(( target_numeric + target_numeric / 10 ))
+            if [ "$current_bitrate" != "N/A" ] && [ "$current_bitrate" -gt 0 ] 2>/dev/null && \
+               [ "$current_bitrate" -le "$threshold" ] 2>/dev/null; then
+              total_after=$(( total_after + before ))
+              return
+            fi
+
+            local tmpfile="${file}.tmp.mp3"
+            if ffmpeg -y -i "$file" -ac 1 -b:a "$MP3_BITRATE" -ar 22050 \
+               -loglevel error "$tmpfile" 2>/dev/null; then
+              local after
+              after=$(file_size "$tmpfile")
+
+              if [ "$after" -lt "$before" ]; then
+                mv "$tmpfile" "$file"
+                total_after=$(( total_after + after ))
+                local saved=$(( before - after ))
+                local pct=$(( saved * 100 / before ))
+                echo "  $(basename "$file"): $(human_size "$before") -> $(human_size "$after") (-${pct}%)"
+                files_changed=$(( files_changed + 1 ))
+              else
+                rm -f "$tmpfile"
+                total_after=$(( total_after + before ))
+              fi
+            else
+              rm -f "$tmpfile"
+              total_after=$(( total_after + before ))
+            fi
+          }
+
+          # ------------------------------------------------------------------
+          # OGV optimization: re-encode with libtheora, cap resolution
+          # ------------------------------------------------------------------
+          optimize_ogv() {
+            local file="$1"
+            local before
+            before=$(file_size "$file")
+            total_before=$(( total_before + before ))
+
+            # Get current video height
+            local current_height
+            current_height=$(ffprobe -v quiet -select_streams v:0 \
+              -show_entries stream=height -of csv=p=0 "$file" 2>/dev/null || echo "0")
+
+            # Build scale filter if needed.
+            # scale=-2:H means "compute width from height, preserving aspect ratio,
+            # and round to the nearest even number" (required by most codecs).
+            local vf_scale=""
+            if [ "$current_height" -gt "$OGV_MAX_HEIGHT" ] 2>/dev/null; then
+              vf_scale="-vf scale=-2:${OGV_MAX_HEIGHT}"
+              echo "  Scaling down from ${current_height}p to ${OGV_MAX_HEIGHT}p (preserving aspect ratio)"
+            fi
+
+            local tmpfile="${file}.tmp.ogv"
+            if ffmpeg -y -i "$file" \
+               -c:v libtheora -q:v "$OGV_CRF" \
+               $vf_scale \
+               -c:a libvorbis -q:a 3 \
+               -loglevel error "$tmpfile" 2>/dev/null; then
+              local after
+              after=$(file_size "$tmpfile")
+
+              if [ "$after" -lt "$before" ]; then
+                mv "$tmpfile" "$file"
+                total_after=$(( total_after + after ))
+                local saved=$(( before - after ))
+                local pct=$(( saved * 100 / before ))
+                echo "  $(basename "$file"): $(human_size "$before") -> $(human_size "$after") (-${pct}%)"
+                files_changed=$(( files_changed + 1 ))
+              else
+                rm -f "$tmpfile"
+                total_after=$(( total_after + before ))
+              fi
+            else
+              rm -f "$tmpfile"
+              total_after=$(( total_after + before ))
+            fi
+          }
+
+          # ------------------------------------------------------------------
+          # Main: iterate over all language packs
+          # ------------------------------------------------------------------
+          echo "=========================================="
+          echo "Media optimization settings:"
+          echo "  PNG max dimension: ${PNG_MAX_DIM}px"
+          echo "  PNG lossy quality: ${PNG_QUALITY}"
+          echo "  MP3 target bitrate: ${MP3_BITRATE} (mono, 22050 Hz)"
+          echo "  OGV quality (CRF): ${OGV_CRF}"
+          echo "  OGV max height: ${OGV_MAX_HEIGHT}px"
+          echo "=========================================="
+
+          for dir in */; do
+            dirname="${dir%/}"
+            if [[ ! "$dirname" =~ ^[a-z]{2}_[A-Z]{2}$ ]]; then
+              continue
+            fi
+
+            echo ""
+            echo "=== Processing $dirname ==="
+
+            # Optimize PNGs
+            png_count=$(find "$dirname" -iname "*.png" | wc -l)
+            if [ "$png_count" -gt 0 ]; then
+              echo ""
+              echo "--- PNG images ($png_count files) ---"
+              while IFS= read -r f; do
+                optimize_png "$f"
+              done < <(find "$dirname" -iname "*.png" -type f | sort)
+            fi
+
+            # Optimize MP3s
+            mp3_count=$(find "$dirname" -iname "*.mp3" | wc -l)
+            if [ "$mp3_count" -gt 0 ]; then
+              echo ""
+              echo "--- MP3 audio ($mp3_count files) ---"
+              while IFS= read -r f; do
+                optimize_mp3 "$f"
+              done < <(find "$dirname" -iname "*.mp3" -type f | sort)
+            fi
+
+            # Optimize OGVs
+            ogv_count=$(find "$dirname" -iname "*.ogv" | wc -l)
+            if [ "$ogv_count" -gt 0 ]; then
+              echo ""
+              echo "--- OGV video ($ogv_count files) ---"
+              while IFS= read -r f; do
+                optimize_ogv "$f"
+              done < <(find "$dirname" -iname "*.ogv" -type f | sort)
+            fi
+          done
+
+          # ------------------------------------------------------------------
+          # Summary
+          # ------------------------------------------------------------------
+          echo ""
+          echo "=========================================="
+          echo "OPTIMIZATION SUMMARY"
+          echo "=========================================="
+          echo "Files optimized: $files_changed"
+
+          if [ "$total_before" -gt 0 ]; then
+            saved=$(( total_before - total_after ))
+            pct=$(( saved * 100 / total_before ))
+            echo "Total before:    $(human_size "$total_before")"
+            echo "Total after:     $(human_size "$total_after")"
+            echo "Total saved:     $(human_size "$saved") (-${pct}%)"
+          fi
+          echo "=========================================="
+
+          echo "files_changed=$files_changed" >> "$GITHUB_OUTPUT"
+
+      - name: Create pull request
+        if: steps.optimize.outputs.files_changed != '0'
+        uses: peter-evans/create-pull-request@v7
+        with:
+          commit-message: "Optimize media assets (PNG, MP3, OGV)"
+          title: "Optimize media assets"
+          body: |
+            Automated media optimization run via `workflow_dispatch`.
+
+            **Settings used:**
+            - PNG: resized if > ${{ inputs.png_max_dimension || '2048' }}px, oxipng lossless + pngquant lossy (${{ inputs.png_lossy_quality || '65-80' }})
+            - MP3: re-encoded to ${{ inputs.mp3_bitrate || '64k' }} mono 22050 Hz (speech audio)
+            - OGV: libtheora quality ${{ inputs.ogv_crf || '6' }}, max ${{ inputs.ogv_max_height || '720' }}p
+
+            Check the workflow run logs for a detailed per-file breakdown.
+          branch: chore/optimize-media-assets
+          base: main
+          delete-branch: true

@@ -99,6 +99,32 @@ https://github.com/Excello-Recherche-Education/Kalulu-Languages/releases/latest/
 
 For example: `.../releases/latest/download/fr_FR.zip`
 
+## Media optimization
+
+A GitHub Actions workflow is available to optimize all media assets (PNG images, MP3 audio, OGV videos) across every language pack. It is designed for tablet/phone targets where ultra-high quality is unnecessary.
+
+**How to run it:** go to **Actions → Optimize Media Assets → Run workflow**. All parameters have sensible defaults but can be tuned per run.
+
+| Parameter | Default | Description |
+|-----------|---------|-------------|
+| `png_max_dimension` | `2048` | Images wider or taller than this are resized down (aspect ratio preserved) |
+| `png_lossy_quality` | `65-80` | pngquant quality range — lower values produce smaller files |
+| `mp3_bitrate` | `64k` | Target bitrate for speech audio (mono, 22050 Hz) |
+| `ogv_crf` | `6` | libtheora quality factor (0–10, higher = better) |
+| `ogv_max_height` | `720` | Videos taller than this are scaled down (aspect ratio preserved) |
+
+**Tools used:**
+
+| Asset | Tool | Strategy |
+|-------|------|----------|
+| PNG | [oxipng](https://github.com/shssoichiro/oxipng) | Lossless metadata stripping and recompression |
+| PNG | [pngquant](https://pngquant.org/) | Lossy palette reduction (skipped if result is larger) |
+| PNG | ImageMagick | Resize oversized images while preserving aspect ratio |
+| MP3 | ffmpeg | Re-encode to target bitrate (skipped if already at/below target) |
+| OGV | ffmpeg | Re-encode with libtheora + libvorbis, optional downscale |
+
+An optimized file is only kept if it is **strictly smaller** than the original — the workflow never makes things worse. If any files are improved, the workflow automatically creates a pull request to `main` on the branch `chore/optimize-media-assets`.
+
 ## Adding or modifying a language
 
 To add or modify a language pack, use the **Prof_Tool** included in the [Kalulu frontend repository](https://github.com/Excello-Recherche-Education/Kalulu). Prof_Tool provides a graphical interface to edit linguistic data (grapheme-phoneme correspondences, words, syllables, sentences) and export a complete, ready-to-deploy language pack.

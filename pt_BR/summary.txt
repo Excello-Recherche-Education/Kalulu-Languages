@@ -4,7 +4,7 @@ Lesson 1 --------------------
 
 
 	 	 Syllables ---
-a, à, á
+a, á
 
 
 	 	 Sentences ---
@@ -17,7 +17,7 @@ Lesson 2 --------------------
 
 
 	 	 Syllables ---
-e
+e, é
 
 
 	 	 Sentences ---
@@ -26,38 +26,40 @@ e
 
 Lesson 3 --------------------
 	 	 Words ---
-ia
+me, ema
 
 
 	 	 Syllables ---
-i, ia, iá
+ma, me, má
 
 
 	 	 Sentences ---
+A ema.
 
 
 
 Lesson 4 --------------------
 	 	 Words ---
-me, ema, mia, ama
+mia
 
 
 	 	 Syllables ---
-ma, me, mi, má
+i, í, mi, I
 
 
 	 	 Sentences ---
-A ema
+A Ema e Mimi.
+A Mia e Mimi.
 
 
 
 Lesson 5 --------------------
 	 	 Words ---
-amo
+ao
 
 
 	 	 Syllables ---
-
+ó
 
 
 	 	 Sentences ---
@@ -66,158 +68,163 @@ amo
 
 Lesson 6 --------------------
 	 	 Words ---
-eu, uma
+fé, fofa
 
 
 	 	 Syllables ---
-mu, u
+fa, fá, fi, if, ef
 
 
 	 	 Sentences ---
-Eu amo a ema.
-Uma ema.
-Uma ema
+A ema é fofa.
+Mimi é fofa.
 
 
 
 Lesson 7 --------------------
 	 	 Words ---
-do, de, da, dá, dado, dama, dedo, muda
+eu, uma, fui, múmia
 
 
 	 	 Syllables ---
-da, de, di, du
+u, fu, mu, eu
 
 
 	 	 Sentences ---
-O dedo
-Uma dama
+Eu fui.
+Uma ema.
 
 
 
 Lesson 8 --------------------
 	 	 Words ---
-fui, fada, fama, fuma
+da, de, fada, muda
 
 
 	 	 Syllables ---
-fa, fe, fi, fu
+da, ed, dá, dé, ad, du, di
 
 
 	 	 Sentences ---
-Eu amo a fada.
-A fada
-A fama
-Uma fada
-Dedo da fada.
+A fada da Mia.
+Uma fada é fofa.
 
 
 
 Lesson 9 --------------------
 	 	 Words ---
-li, lo, lá, la, lua, ela, ele, mel, leo, fala, mala, fila, lama, dela, dele, lado, lima, mula, lula, filme
+li, lua, ela, mola, filé, mula, mala, lula, lima, fila, dela, fala, família, almofada
 
 
 	 	 Syllables ---
-fla, fle, fli, flu, la, le, li, lu, lá
+la, li, lu, al, el, ul, il
 
 
 	 	 Sentences ---
-A lua.
-Uma mala.
-Ele ama a lua.
-Ela fala e ele fala.
-Uma mala
-Uma lama
-A fada do filme.
-A dama ama o filme.
+Uma lima.
+A almofada é fofa.
+A almofada é dela.
+É uma lua.
+A lima é dela.
 
 
 
 Lesson 10 --------------------
 	 	 Words ---
-fé, filé
+café, cola, foca, cuca, fica, cueca, cuida, comida, cocada
 
 
 	 	 Syllables ---
-fé, lé, é
+ca, co, cu, cá, cla
 
 
 	 	 Sentences ---
-É uma fada.
-Ele é o Didi.
-O mel é de ela.
-O filme é de ela.
-Ele é o Leo.
-Ela é uma fada.
-A mala é dela.
+Ela cuida da comida.
 
 
 
 Lesson 11 --------------------
 	 	 Words ---
-fico, fica, cama, faca, café, cuca, caca, mico, cada, cueca, calma, cuida, cuido, calmo, macaco, cadela, macaca, cuidado
+do, coco, dedo, dado, lado, fofo, como, mico, calmo
 
 
 	 	 Syllables ---
-ca, cla, cle, cli, clu, cu
+O, mo, io, fo, do, od, lo, ol, flo
 
 
 	 	 Sentences ---
-A cueca é do macaco.
-Uma cama.
-Uma faca.
-Uma cama
-A cama é da fada.
+O medo da ema.
+A cocada é do Luca.
+A Cuca dá medo.
+O dedo da fada é fofo.
+A fada e o mico.
 
 
 
 Lesson 12 --------------------
 	 	 Words ---
-na, no, nu, ano, nada, cana, mané, numa, cano, mana, mano, duna, fino, nula, aluna, aluno, final, unido, menino, caneca, menina, canudo, cafuné, milena, animal, fulano, felino, animada
+ele, fome, dele, come, filme
 
 
 	 	 Syllables ---
-na, ne, ni, nu, né
+fe, le
 
 
 	 	 Sentences ---
-A caneca é do menino.
-A menina é uma aluna.
-A Manuela é uma dama.
-A cana do Mané.
-O cafuné na Manuela.
-O menino e a menina.
+A mula é dele.
+O coco é dele.
+A foca come comida.
+Ela fala e ele fala.
+A mala é dele.
+A filme dá medo.
+O filme dá medo.
 
 
 
 Lesson 13 --------------------
 	 	 Words ---
-se, as, às, si, esse, mas, dos, sua, nas, isso, das, las, suco, saco, duas, seca, sala, isca, umas, selo, esses, anos, suas, seco, sino, eles, desse, casca, fusca, falsa, deles, classe, lemos, salada, escada, sacada, alunos, semana, escama, escudo, semanas, afiados, macacos, cuidados
+na, no, nó, fino, nome, nada, numa, duna, aluna, aluno, final, cafuné, caneca, canudo, felino, menina, menino
 
 
 	 	 Syllables ---
-as, es, is, sa, se, si, su, sá, sé, us
+na, ne, ni, nu, no
 
 
 	 	 Sentences ---
-O saco é da menina.
-O suco é do menino.
-Duas semanas.
-Casca é seca.
-Uma casca seca.
-Uma escada.
-O fusca do Leo.
+A caneca é do menino.
+A menina é uma aluna.
+A Manuela é uma fofa.
+O nome é do Mané.
+O cafuné na Manuela.
+O menino e a menina.
 
 
 
 Lesson 14 --------------------
 	 	 Words ---
+os, as, se, dos, mas, nas, esse, isso, nós, sol, sua, das, nos, umas, isca, saco, sala, seca, selo, sino, suas, suco, duas, eles, casca, mosca, somos, alunos, sacada, salada, escola, óculos
+
+
+	 	 Syllables ---
+sa, se, si, su, as, es, is, us, so, os
+
+
+	 	 Sentences ---
+Cola os cacos.
+O saco é da menina.
+O suco é do menino.
+Essa escola é da Manuela.
+Uma casca seca.
+
+
+
+Lesson 15 --------------------
+	 	 Words ---
 
 
 
 	 	 Syllables ---
-um
+
 
 
 	 	 Sentences ---
@@ -227,177 +234,123 @@ Um aluno e uma aluna na sala.
 
 
 
-Lesson 15 --------------------
-	 	 Words ---
-ar, ir, mar, ser, era, ler, siri, muro, caro, duro, fria, fera, urso, maré, assar, cair, arara, marca, curso, fraco, carne, nadar, clara, secar, ladra, fraca, surdo, claro, criar, crime, seria, surfar, careca, sucuri, murilo, áfrica, escuro, ferido, ferida, marido, escura, férias, marina, amarela, amarelo, caderno, armário, mercado, cadernos
-
-
-	 	 Syllables ---
-cra, cre, cri, cru, dra, dre, dri, dru, er, fra, fre, fri, fru, ir, ri, rum, ré, ur, ra
-
-
-	 	 Sentences ---
-A arara é do menino.
-O macaco é careca.
-Uma sucuri.
-Mel é amarelo.
-A arara é amarela.
-O muro marca o curso.
-Uma isca no mar.
-O mel é amarelo.
-
-
-
 Lesson 16 --------------------
 	 	 Words ---
-os, ao, sol, dor, nos, cor, los, fofa, mora, comi, come, fofo, coco, flor, amor, como, nome, odor, fome, foca, moda, mola, cola, dona, nono, dono, soco, sola, solo, sono, soma, fora, sofá, somar, calor, amora, mosca, comer, cofre, somos, adora, forma, aroma, forno, dorme, adoro, nomes, cores, cocos, cocada, carona, sacola, comida, escola, formas, morena, enorme, amoras, acordo, flores, sacolas, molusco, enormes, colorida, colorido, almofada, coloridos, coloridas
+ri, rua, rio, rodo, roma, rolo, roda, carro, sorri, ferro, corre, rosca, rádio, corria
 
 
 	 	 Syllables ---
-clo, co, cro, do, dro, flo, fo, fro, io, lo, mo, no, o, or, os, so
+ra, ri
 
 
 	 	 Sentences ---
-A cocada é do Didi.
-A ema é fofa.
-É o sol.
-Ela é uma ema fofa.
-O Didi é um fofo.
-Um dado na sacola.
-Um fofo.
-O sol é amarelo.
-A cocada é do Manuel.
-A ema é fofa. Ela come uma flor.
-Ela come uma salada.
-A almofada da Lua é colorida.
+O rio corre.
+A rosca roda.
 
 
 
 Lesson 17 --------------------
 	 	 Words ---
-vi, ovo, ver, voa, véu, uva, nova, vive, vila, vaca, novo, leve, ovos, lava, leva, uvas, luva, vela, vara, voar, deve, vida, nove, navio, veado, velas, corvo, larva, livro, livre, vamos, amava, oliva, valor, cavar, virar, vidro, viver, voará, vemos, novas, vivia, selva, favor, novos, savana, cavalo, árvore, livres, saliva, escova, amável, morava, ficava, várias, caverna, voadora, violino, verdura, árvores, deveria, adorava, escreve, verduras, universo, escrever
+vi, ovo, uva, voa, avó, vive, leve, luva, novo, vaca, vela, vila, vovó, nova, navio, oliva, velas, cavalo, escova, violino
 
 
 	 	 Syllables ---
-va, ve, vi, vo, vra, vre, vri, vro, vru, vu, véu
+va, vé, vi, vo, vu, ev, av, ov, iv, uv
 
 
 	 	 Sentences ---
-Ela mora na vila.
-O cavalo come verduras.
-Uma vaca.
-O corvo come uma larva.
-O cavalo e o veado.
-O livro da menina é novo.
-A vaca come verduras.
-Uma arara voa na sacada.
-A larva na caverna vive na lama.
-A mosca voa livre.
-Um véu é leve.
+A vaca corre. O cavalo corre.
+Eu levo uma luva.
+A Eva leva a mala.
+O cavalo da vila.
+As velas do navio.
 
 
 
 Lesson 18 --------------------
 	 	 Words ---
-te, to, tu, até, atum, ter, toca, está, moto, tomo, tudo, todo, foto, mato, toma, tosse, alto, neto, data, tela, neta, lata, ator, trio, toda, nota, esta, muito, frita, torta, muita, fruta, corta, lista, festa, testa, susto, fotos, solta, todas, lutar, letra, trono, carta, todos, altas, tomar, notas, volta, temos, vasto, caneta, estudo, muitos, tucano, muitas, letras, maleta, cometa, estuda, esteve, frutas, tomada, escuta, tremer, trocar, cortar, método, estava, tarefas, secreto, secreta, martelo, castelo, livreto, estrela, assustar, estamos, matéria, estudar, favorito, cotovelo, elétrico, floresta, telefone, voltamos, estrelas, estudava, florestas
+até, moto, mato, todo, tomo, rato, rata, reta, está, terra, esta, reto, toca, alto, foto, tosse, tudo, rosto, todas, testa, muito, lista, fotos, festa, vasto, túnel, muita, temos, volta, estuda, maleta, estudo, esteve, cometa, caneta, estava, tomada, revista, castelo, telefone
 
 
 	 	 Syllables ---
-ta, te, ti, to, tra, tre, tri, tro, tru, tu, té
+ta, te, to, tu, it, at, ot, ut, ét
 
 
 	 	 Sentences ---
-A amora é uma fruta de amor.
-Uma torta de ovos.
-O  menino corta verduras.
-A caneta na maleta.
-A moto da menina é um cometa.
 O cavalo vive no mato.
-Esta semana é de férias.
-O universo é vasto.
+A caneta está na maleta
+A caneta está na maleta.
 
 
 
 Lesson 19 --------------------
 	 	 Words ---
-pé, pia, por, para, pipa, copo, pato, sapo, pelo, pela, mapa, pula, pano, capa, pica, pata, sopa, peru, pena, puma, lupa, posso, perto, porco, prato, pesca, primo, piada, preta, pasta, prima, pelos, super, pressa, penas, pular, piano, pedra, perna, porta, vespa, época, plano, corpo, possui, prova, passar, preto, pipoca, panela, picolé, piloto, pedras, pirata, picada, sapato, pássaro, primas, pescar, passear, peteca, palito, pepino, pétala, pérola, peluda, planar, pulava, pessoas, pepita, passado, provas, perder, piratas, esperto, planeta, palavra, poderia, pássaros, pulamos, prestar, sapatos, pirulito, perereca, palavras, capturar, procurar, planetas, professor, professora
+pé, pó, pula, pipa, pato, sapo, após, pela, pelo, capa, copo, mapa, pena, época, pesca, piada, rápido, picada, pepino, pipoca, pétala, panela, sapato, piloto, planeta
 
 
 	 	 Syllables ---
-pa, pe, pi, pla, ple, pli, plo, plu, po, pra, pre, pri, pro, pru, pu, pum, pá, pé
+pa, pe, pi, po, pu, op, up, ep, ap, ip, pla
 
 
 	 	 Sentences ---
+O menino pesca o sapo no rio.
+O rio corre reto e rápido.
 O suco está no copo.
-O mapa do pirata é amarelo.
-A menina pula no pula pula.
-O menino pesca o sapo
-O primo do Pedro é o piloto da moto.
-Os ovos fritam na panela.
 
 
 
 Lesson 20 --------------------
 	 	 Words ---
-gata, gugu, fogo, galo, gato, lago, pega, mago, gado, gota, algo, grama, pegar, lugar, amigo, gosta, gatos, lagoa, magos, agora, amiga, prego, grilo, grito, garfo, folga, gosto, gorila, garoto, colega, comigo, amigos, amigas, perigo, garota, argola, agudos, alegre, alguma, pulgas, argolas, lagarta, formiga, lagosta, algumas, alegria, polegar, lagarto, colegas, devagar, gostava, cogumelo, gostaria, programa, progresso, tartaruga, cogumelos, significa
+gata, gugu, gato, fogo, gado, lago, galo, mago, gota, gosto, lagoa, amigo, gosta, amiga, magos, carrega, garrafa, comigo, colega, amigos, lagosta, cogumelo, significa
 
 
 	 	 Syllables ---
-ga, go, gra, gre, gri, gro, gru, gu
+ga, gá, go, ag, eg, ig, ug, og
 
 
 	 	 Sentences ---
+A menina carrega o suco na garrafa.
 A gata mia.
 O amigo do Gugu gosta de gatos.
-O pato nada no lago.
-O sapo mora na lagoa.
-La dama gosta de flores.
 
 
 
 Lesson 21 --------------------
 	 	 Words ---
-bi, boa, bia, balé, bolo, bico, bumbum, tumba, bola, boné, bela, bebe, belo, sabe, beba, lobo, tubo, cabo, bala, boca, bumbo, boas, abra, sobre, barco, lebre, barba, bolsa, beber, abril, bater, busca, subir, cobra, bloco, umbigo, sabiá, sabia, sabor, bonita, boneca, bonito, barata, barato, buraco, banana, batata, bebida, brigar, aberto, aberta, sábado, futebol, bateria, buracos, cabelos, coberta, problema, cobertor, borboleta, problemas
+bi, boa, bia, baú, rabo, boca, balé, bola, boné, burro, bala, barro, bico, bolo, belo, lobo, tumba, umbigo, bolsa, bloco, busca, bonito, batata, bonita, boneca, bebida, bússola, futebol, binóculos
 
 
 	 	 Syllables ---
-ba, be, bi, bla, ble, bli, blo, blu, bo, bra, bre, bri, bro, bru, bu, bum, bé
+ba, be, bi, bo, bu, ob, ab, bá, blo
 
 
 	 	 Sentences ---
+O rabo do rato.
 A piada está boa.
-A barba preta do garoto é falsa. Ele é um mago.
 A bola da menina pula.
-O boné na bolsa do menino é novo.
-O barco é do pirata.
-A boneca de pano é bela.
+O boné do menino é novo.
 
 
 
 Lesson 22 --------------------
 	 	 Words ---
-não, são, mão, pão, cão, tão, leão, grão, mãos, verão, sabão, balão, fogão, melão, mamão, limão, irmão, botão, avião, vilão, estão, missão, dragão, violão, gavião, cartão, cordão, irmãos, agrião, espião, tubarão, camarão, capitão, escorpião
+mão, cão, não, são, pão, leão, mamão, limão, balão, melão, botão, fogão, sabão, gavião, espião, violão, macarrão
 
 
 	 	 Syllables ---
-cão, mão, não, pão
+
 
 
 	 	 Sentences ---
-Eu tomo picolé no verão.
-No verão
-O balão voa no ar
-O tubarão nada no mar.
-No verão o lago é bonito.
-O dragão é colega do leão e do gorila.
-A lebre gosta de melão e mamão.
-Não perca a caneta.
+O cão não corre.
+O balão voa.
+O gavião voa alto.
 
 
 
 Lesson 23 --------------------
 	 	 Words ---
-que, aqui, quero, fique, caqui, queda, quilos, quiabo, aquela, parque, quadro, quieto, quarto, porque, queria, quadra, esquilo, pequena, pequeno, querido, máquina, daquele, mosquito, esquilos, pequenas, pequenos, periquito
+que, aqui, queda, fique, caqui, quilos, quieto, aquela, quiabo, esquilo, pequeno, pequena, mosquito
 
 
 	 	 Syllables ---
@@ -405,74 +358,125 @@ que, qui
 
 
 	 	 Sentences ---
-O esquilo come o grão da mão do menino.
+O cão fica quieto aqui.
 Aquela menina estuda violão.
-A lebre leva a tartaruga dela para o parque.
+O esquilo é pequeno e rápido.
 
 
 
 Lesson 24 --------------------
 	 	 Words ---
-faz, vez, fez, luz, dez, azul, zumbi, zero, azeda, fazer, zebra, feliz, nariz, azedo, veloz, vazia, nozes, vezes, buzina, moleza, cruzar, dezena, prazer, trazer, leveza, vazias, zelador, clareza, felizes, natureza, produzir, tristeza, fortaleza, organizar, tornozelo, sinalizar, armazenar
+fez, faz, luz, vez, arroz, zumbi, azul, vazia, azeda, feliz, veloz, bezerro, moleza, dezena, buzina
 
 
 	 	 Syllables ---
-za, ze, zi, zo, zu
+za, ze, zi, zá, zu, az, ez, uz, oz
 
 
 	 	 Sentences ---
-O que faz aqui.
+O que faz aqui?
 A buzina faz bi bi bi.
-A zebra vive na savana. Eu vi uma zebra.
-O limão é azedo.
-A pasta do zelador é azul.
-O limão é amarelo e azedo.
-A ginasta fez um mortal.
+Ela faz arroz na panela.
 
 
 
 Lesson 25 --------------------
 	 	 Words ---
-jogo, jato, jejum, loja, juca, jaca, soja, nojo, joia, vejo, joga, ajuda, sujar, jogar, jurar, justo, jogos, ajudo, jacaré, javali, pijama, janela, coruja, jaqueta, jiboia, viajar, igreja, jogada, abajur, ajudar, jornal, objetos, azulejo, trajeto, jogador, projeto, jararaca, maracujá, jogadores
+já, jejum, jato, jaca, jogo, jiló, loja, justo, ajuda, janela, javali, jogada, jaqueta
 
 
 	 	 Syllables ---
-ja, jo, ju, já
+ja, jo, ju, ji, je
 
 
 	 	 Sentences ---
-O jacaré não gosta de cafuné.
-O pijama do jacaré é todo colorido.
-Na natureza vive a coruja e o gavião.
 O javali fez jejum e come quiabo e caqui.
-Marina escreve uma carta para o jornal.
-João dá para Flávia a banana dele. 
-A janela está aberta.
-Eu gosto de maracujá.
+João come a jaca.
+João joga o jogo.
+O jato voa alto.
+A jogada é boa.
 
 
 
 Lesson 26 --------------------
 	 	 Words ---
-meu, deu, seu, leu, seus, comeu, bebeu, bateu, perdeu, escreveu
+ar, ir, grão, por, mar, ver, ser, era, ler, rir, muro, amor, para, fria, flor, mora, quero, caro, duro, irmão, siri, verão, larva, calor, adoro, amora, porta, marca, curso, letra, torta, corvo, claro, criar, crime, dragão, grilo, trono, primo, lebre, abril, cobra, zebra, fruta, vidro, livro, prego, parque, perto, carta, comer, barco, sobre, beber, fazer, carne, nariz, pegar, porco, correr, agora, arara, bater, cofre, cordão, frita, livre, lugar, nadar, preta, quadro, quarto, somar, sorrir, super, jacaré, sucuri, garoto, tubarão, jornal, férias, aberta, pescar, pérola, pirata, cruzar, brigar, prazer, trocar, flores, árvore, marina, ajudar, barata, camarão, coruja, gorila, passear, perder, pássaro, surfar, viajar, caverna, amarelo, estrela, iríamos, abóbora, amarela, caderno, formiga, lagarta, mercado, secreta, secreto, alegria, maracujá, colorida, refresca, natureza, universo, pirulito, elétrico, mamífero, brócolis, escorpião, escrever, favorito, jararaca, tartaruga, borboleta
 
 
 	 	 Syllables ---
-meu, seu
+re, ro, ru, ver, cro, fri, tro, gri, pra, pre
 
 
 	 	 Sentences ---
-Ele me deu uma carona.
-Eu li. Ele leu. Ela leu.
-Marina escreveu uma carta para o jornal.
-João deu para Flávia a banana dele.
-Abra seu caderno para escrever. 
+O caqui está maduro. Ele come o caqui.
+A noz é dura.
+O aluno faz um curso novo.
+Uma isca no mar.
+O muro é amarelo.
+Eu adoro o clima.
+O mar é frio.
+O dragão é colega do leão e do gorila.
+A janela está aberta.
+O universo é vasto.
+Eu gosto de maracujá.
+O mapa do pirata é amarelo.
+O menino corta verduras.
+Uma torta de ovos.
+A mosca voa livre.
+Uma arara voa na sacada.
+A vaca come verduras.
+A zebra vive na savana. Eu vi uma zebra.
+A barba preta do garoto. Ele é um mago.
+O primo do Pedro é o piloto da moto.
+A lebre leva a tartaruga dela para o parque.
+Na natureza vive a coruja e o gavião.
+Marina escreve uma carta.
+O corvo come uma larva.
+A almofada da lua é colorida.
+A amora é uma fruta de amor.
+A Ema é fofa. Ela come uma flor.
+O esquilo come o grão da mão do menino.
+Nós iremos arrumar o quarto.
+Nós veremos um filme.
+O Zé esteve aí mas agora está na escola.
 
 
 
 Lesson 27 --------------------
 	 	 Words ---
-vou, voou, ouve, levou, mudou, botou, ficou, pulou, pegou, jogou, babou, tocou, tomou, soube, falou, lavou, outra, pouco, ouvir, estou, gritou, amassou, outros, outras, tornou, voltou, colocou, vassoura, escapou, decolou
+meu, deu, seu, leu, roeu, seus, comeu, bebeu, bateu, correu, perdeu, escreveu
+
+
+	 	 Syllables ---
+meu, seu, deu
+
+
+	 	 Sentences ---
+O rato roeu.
+Ele me deu uma carona.
+Eu li. Ele leu. Ela leu.
+A Marina escreveu uma carta.
+O João deu à Flávia a bola dele.
+Abra o seu caderno para escrever.
+
+
+
+Lesson 28 --------------------
+	 	 Words ---
+ouvir
+
+
+	 	 Syllables ---
+
+
+
+	 	 Sentences ---
+
+
+
+Lesson 29 --------------------
+	 	 Words ---
+vou, voou, levou, mudou, botou, ficou, pulou, pegou, jogou, babou, tocou, tomou, soube, falou, lavou, outra, pouco, roupa, estou, gritou, outros, outras, tornou, voltou, roupas, amassou, decolou, vassoura, colocou, escapou, escorregou
 
 
 	 	 Syllables ---
@@ -480,22 +484,17 @@ vou, tou, gou, dou, sou
 
 
 	 	 Sentences ---
-Vaca amarela babou na panela.
-O menino jogou a bola no nariz do amigo.
 O escorpião pulou no zelador.
 O aluno botou o quadro na sala.
-A menina pegou o cartão e levou na loja.
+A menina pegou a roupa e levou na loja.
 O irmão dele tocou o violão.
-A vaca amarela babou na panela
 O pássaro voou para o alto da árvore.
-Eu vou para a cama.
-Eu vou para a cama. 
 
 
 
-Lesson 28 --------------------
+Lesson 30 --------------------
 	 	 Words ---
-pai, cai, vai, mais, saia, pais, praia, gaita, papai, atrai, finais, animais, papagaio
+vai, pai, cai, sai, mais, saia, pais, raio, praia, gaita, papai, atrai, finais, animais, papagaio
 
 
 	 	 Syllables ---
@@ -503,18 +502,26 @@ ai, pai, sai, gai
 
 
 	 	 Sentences ---
+Ele vai à pesca.
+Ele vai ler um livro.
+Ela vai abrir a porta.
+Ele vai escrever uma carta.
+Ela vai ajudar um amigo.
+Ele vai comer um maracujá.
+Ela vai levar o carro à loja.
 O pai pegou a gaita e tocou ela para o menino.
 A jaqueta do papai é bonita.
-Cai cai balão
-A saia da Lorena é bonita.
-Papai e eu vamos para a praia.Eu vejo um papagaio!Eu vou ver o papagaio.Papai toca a gaita e o papagaio volta para ouvir!
-Eu amo a praia.
+O balão cai.
+A saia da Lorena é amarela.
+O pai vai para mercado.
+O pai não come nozes.
+Os animais são amigos.
 
 
 
-Lesson 29 --------------------
+Lesson 31 --------------------
 	 	 Words ---
-sei, leio, amei, seis, teia, seio, areia, queimou, queijo, feijão, colei, peito, freio, feito, aveia, beijo, baleia, feiras, treina, queimar, cuidei, treino, veleiro, cadeira, leitura, torneio, coqueiro, primeira, treinava, treinados, palmeiras, travesseiro, prateleira
+sei, amei, seis, teia, leio, meia, areia, queimou, queijo, feijão, colei, peito, freio, feito, aveia, beijo, baleia, feiras, treina, queimar, cuidei, treino, veleiro, cadeira, leitura, torneio, primeira, treinava, treinados, palmeiras, prateleira
 
 
 	 	 Syllables ---
@@ -522,94 +529,88 @@ ei, rei, tei, lei, bei
 
 
 	 	 Sentences ---
-Mas o siri vive na areia.
+O siri vive na areia.
 O bolo queimou.
-Pela primeira vez
+Pela primeira vez.
 Eduardo leu o livro pela primeira vez.
 O João queimou o feijão.
 A baleia é amiga do camarão e da lagosta.
 O aluno colocou a cadeira na areia.
-A baleia fica no mar
-
-
-
-Lesson 30 --------------------
-	 	 Words ---
-rei, ri, rio, roeu, rir, rua, raio, reis, rabo, rato, rata, roupa, roma, rolo, roda, reta, rodo, roer, reto, rega, rosto, rádio, regar, rosca, redor, roubar, roupas, rápido, roedor, revista, refresca
-
-
-	 	 Syllables ---
-ra, re, ro, ru
-
-
-	 	 Sentences ---
-A Bia bebe o suco de uva. Ele é barato e refresca.
-O rabo do rato.
-O rato que roeu a roupa do rei de Roma.
-A jiboia comeu um rato.
-O gato está na rua.
-
-
-
-Lesson 31 --------------------
-	 	 Words ---
-terra, carro, burro, barro, correu, ferro, arroz, corre, corro, sorri, sorrir, correr, sorria, corria, carrega, macarrão, bezerro, garrafa, barraca, torrada, barriga, barreira, corremos, escorregou, ferradura, corredores
-
-
-	 	 Syllables ---
-
-
-
-	 	 Sentences ---
-O burro pulou no rio e o bezerro no buraco.
-A menina carrega o suco na garrafa.
-O rio corre reto e rápido.O rio refresca o rosto dos animais.
-A ema corre rápido.
-O carro é rápido.
+A baleia fica no mar.
 
 
 
 Lesson 32 --------------------
 	 	 Words ---
-ti, tia, tio, dia, diz, sede, pode, tira, leite, rede, dias, bate, disso, disse, sete, digo, time, tarde, forte, tigre, pedir, batia, tipos, marte, pedia, tirar, podia, fatia, parte, tigres, tapete, triste, parede, batida, tomate, divide, derrete, dividi, tirava, tirado, metade, fatias, divida, partes, sorvete, assistir, partida, perdida, dividir, vestido, praticar, crocodilo, acreditar, mordiscar, divertido, praticava, objetivos, divertidas, matemática, estivéssemos, dificuldades
+unha, sonho, ninho, ganhei, minha, senha, linha, punho, junho, nenhum, tenho, ganhou, rainha, senhor, sonhar, sonhos, galinha, minhoca, cozinha, vizinho, ursinho, caminho, furinho, senhora, maminha, marinho, cunhado, farinha, sininho, varinha, pezinho, sozinho, saquinho, caminhão, banheira, piranha, banheiro, sonhava, madrinha, parquinho, estranho, escolinha, narizinho, vovozinha, maluquinho, passarinho, estranhos, canarinho
+
+
+	 	 Syllables ---
+nha, nhe, nhi, nho, nhu
+
+
+	 	 Sentences ---
+A galinha botou ovo amarelinho.
+A minhoca é dorminhoca.
+O canarinho está no ninho. A galinha do vizinho botou ovo amarelinho.
+Quebrei a minha unha.
+
+
+
+Lesson 33 --------------------
+	 	 Words ---
+dia, diz, sede, disso, pode, rede, dias, disse, pedir, tarde, pedia, podia, saúde, parede, divide, dividi, orquídeas, crocodilo, acreditar, mordiscar
 
 
 	 	 Syllables ---
 
+
+
+	 	 Sentences ---
+Joca pede ajuda.
+Um dia de sol. A baleia fica no mar
+Um dia de sol. A baleia fica no mar.
+
+
+
+Lesson 34 --------------------
+	 	 Words ---
+ti, tio, tia, leite, tira, bate, sete, tinha, forte, tigre, batia, tipos, marte, tirar, parte, sítio, tigres, tapete, triste, batida, tomate, tirava, tirado, derrete, ratinho, tímido, sorvete, partida, assistir, ratinhos, praticar, praticava, objetivos, divertido, divertidas
+
+
+	 	 Syllables ---
+ti
 
 
 	 	 Sentences ---
 A caneta amarela é da tia.
 A moto é do meu tio.
 O fogo é forte.
-O veado comeu meu sorvete.
-Um dia de sol. A baleia fica no mar
-A Manuela tira foto do tucano. Ele vive no mato.
-O tucano do tio vive na toca.
-A Tina toma suco e tira fotos.
-O crocodilo pega o pato fraco e come ele como o seu prato.
-A barata no tapete do tio é voadora.
+O siri comeu meu sorvete.
+O crocodilo do tio vive na lagoa.
+A Tina toma suco todo dia.
 Ela não veste capa para a festa de magos.
 A picada do mosquito é forte.
-Quero que ele não fique triste.
+Não quero que ele fique triste.
 A menina tomou o leite.
-Um dia na praia é divertido.
-Um crocodilo mora no rio. O nome dele é Dilo. Dilo nada e ri. Dilo gosta do rio.
-O time está unido.
-O gorila é forte.
 
 
 
-Lesson 33 --------------------
+Lesson 35 --------------------
 	 	 Words ---
-eram, voam, moram, samba, campo, bambu, gambá, ficam, tambor, campeão, lampião, formam, ajudam, vampiro, acampar, ficaram, coletam, adoraram, dormiram, elaboram, gostavam
+amo, ama, voam, eram, cama, lama, moram, samba, campo, bambu, gambá, ficam, sonham, vamos, grama, tambor, lampião, formam, campeão, ajudam, vampiro, ficaram, coletam, acampar, adoraram, dormiram, elaboram, gostavam
 
 
 	 	 Syllables ---
-am, cam, sam, tam, bam, gam
+am
 
 
 	 	 Sentences ---
+A grama é verde e fina.
+A larva na caverna vive na lama.
+Papai e eu vamos para a praia. Eu vejo um papagaio ! Eu vou ver o papagaio. Papai toca a gaita e o papagaio volta para ouvir !
+Eu amo a praia.
+João veste o pijama.
 A lagarta e a formiga moram no cogumelo.
 O menino tocou o tambor no samba.
 O campeão levou a bola do campo.
@@ -619,52 +620,46 @@ Acampar no barro não é moleza.
 Eles eram felizes por ir à praia.
 Papai toca samba.
 Papai fez um muro de bambu.
-João fez um muro de bambu.
+Os amigos ajudam o João. As amigas dormiram na cama da Ema.
+Os pais moram no campo.
+O vampiro não gosta de sol.
 
 
 
-Lesson 34 --------------------
+Lesson 36 --------------------
 	 	 Words ---
-bem, sem, tem, vem, quem, além, tempo, jovem, neném, também, devem, fazem, vivem, podem, lembra, sempre, dormem, embora, permitem, preferem, tempestade
+bem, tem, vem, quem, sem, além, tempo, jovem, neném, também, devem, vivem, podem, lembra, sempre, dormem, embora, permitem, preferem, tempestade
 
 
 	 	 Syllables ---
-bem, em, vem, bém, mem
+em, vem, bém
 
 
 	 	 Sentences ---
 Um navio veleiro tem muitas velas.
-A festa da Eva tem muita comida.
+A neném comeu bem na festa.
 Ele levou muito tempo para comer o macarrão.
 A menina Rafa é bem jovem.
-O cofre tem um botão secreto.
 O neném gosta também de frutas.
 Sem o freio o carro não para.
 O gambá tem um odor forte.
-Temos tempo?
-Eles vivem no campo. 
-Ela tem um carro preto.
-Camilo vai à festa. E também?
-O coqueiro tem muitos cocos.
 
 
 
-Lesson 35 --------------------
+Lesson 37 --------------------
 	 	 Words ---
-som, com, bom, ombro, batom, pomba, tombo, bombom, bomba, tromba, sombra, zombar, comprou, crepom, comprar, compota, lombada, competir, trombeta, computador
+som, com, bom, ombro, batom, pomba, tombo, bombom, bomba, tromba, sombra, zombar, compra, crepom, comprou, comprar, compota, competir, trombeta, computador
 
 
 	 	 Syllables ---
-bom, om, som, tom
+bom, om, som
 
 
 	 	 Sentences ---
 O galo bica com o seu bico.
-Ele corta a fruta com uma faca.
-Uma lista com letras.
+A pomba comeu a fruta na sombra da árvore.
+Ela comprou um batom.
 Cuidado com a sua testa!
-Davi toma um susto com o som da moto.
-João lava a mão com sabão
 Colei um selo com o meu nome na cadeira.
 O Ricardo quer comprar um carro. Mas o carro é caro.
 A pomba voa no parque.
@@ -672,55 +667,56 @@ O menino carrega o computador na tomada.
 O menino levou um tombo.
 A prima dela gosta de bombom e compota no café.
 Zombar do amigo não é bonito.
-Ele escreve com a caneta.
-O cão joga com a bola dele.
-
-
-
-Lesson 36 --------------------
-	 	 Words ---
-fim, sim, assim, ruim, limpa, limpo, jardim, limpar
-
-
-	 	 Syllables ---
-fim, im, pim
-
-
-	 	 Sentences ---
-No jardim
-O fim do dia é calmo. Eu leio um livro.
-Eu vejo roupas na cama. Jogos estão por toda parte. Eu vou limpar tudo. Ufa! Agora, o quarto está limpo! Eu estou feliz.
-
-
-
-Lesson 37 --------------------
-	 	 Words ---
-céu, cego, cena, nasceu, cega, cresce, circo, aquece, doces, certa, aceita, cresceu, certo, fácil, coceira, alface, crescer, piscina, cinema, cidade, cenoura, receita, cebola, cereja, aquecer, decidi, morcego, oficina, cerejas, macieira, torcida, bocejar, crescesse, capacete, ciclista, especial, espacial, bicicleta, felicidade, motocicleta
-
-
-	 	 Syllables ---
-ce, cem, ci, céu
-
-
-	 	 Sentences ---
-Eu comi salada de alface
-O menino se jogou na piscina.
-O morcego é cego.
-Uma cena de filme.
-Uma cena de filme sobre a felicidade.
-O capacete aquece o rosto do ciclista.
-O cinema da cidade é perto da oficina.
-O circo tem muitos doces.
-A cidade é bonito.
-A receita do bolo é fácil de fazer.
-Vamos nadar na piscina!
-Papai me levou ao cinema no sábado.
+A Marília fez macarrão com cordão do meu sapato.
 
 
 
 Lesson 38 --------------------
 	 	 Words ---
-gibi, gema, gelo, imagem, magia, região, gibis, viagem, girar, geada, girafa, coragem, regina, rugido, tigela, girino, gelado, geladas, imaginei, gelatina, geladeira, proteger, ginástica
+fim, sim, assim, ruim, limpa, limpo, jardim, limpar
+
+
+	 	 Syllables ---
+im
+
+
+	 	 Sentences ---
+Nós vamos limpar o quarto.
+O gato mora no jardim.
+O fim do dia é calmo.
+Eu limpo e arrumo a sala.
+O dia é divertido e simples.
+O mar está ruim.
+Por mim
+Temos de limpar o patim do jardim.
+A Maria é simpática.
+
+
+
+Lesson 39 --------------------
+	 	 Words ---
+céu, cego, cena, cega, circo, aquece, doces, certa, aceita, certo, fácil, coceira, alface, cinema, cidade, receita, cebola, cereja, aquecer, cenoura, focinho, docinho, conheceu, difícil, oficina, torcida, bocejar, macieira, cócegas, conhecer, morcego, cerejas, delícia, difíceis, capacete, ciclista, especial, espacial, cebolinha, notícias, bicicleta, felicidade
+
+
+	 	 Syllables ---
+ce, ci
+
+
+	 	 Sentences ---
+Eu comi a salada de alface.
+O morcego é cego.
+Uma cena de filme sobre a felicidade.
+O capacete aquece o rosto do ciclista.
+O cinema da cidade é perto da oficina.
+O circo tem muitos doces.
+A avó do Bernardo colocou óculos para ler uma receita de bolo.
+O docinho de coco.
+
+
+
+Lesson 40 --------------------
+	 	 Words ---
+gibi, gema, gelo, magia, região, gibis, viagem, girar, imagem, girafa, regina, rugido, tigela, girino, gelado, coragem, geladas, imaginei, relógio, geladeira, gelatina, proteger
 
 
 	 	 Syllables ---
@@ -732,40 +728,37 @@ Eu leio gibi.
 O ovo tem gema.
 O João tem coragem de correr do leão.
 A imagem do livro é pequena.
-A Regina tem magia da felicidade.
+A Regina tem um gibi.
 O rugido do leão é forte.
 A menina colocou a gelatina na geladeira.
 Na tigela tem algumas cerejas geladas.
 A girafa gosta de cenoura.
 O girino é um sapo pequeno.
-A grama estava coberta de geada.
-O queijo está na geladeira.
+O relógio na parede está com muito pó.
 
 
 
-Lesson 39 --------------------
+Lesson 41 --------------------
 	 	 Words ---
-caixa, lixo, deixou, paixão, luxo, baixa, deixe, caixão, xale, coxa, xixi, puxa, peixe, deixa, queixo, peixes, trouxe, mexer, graxa, embaixo, bruxa, abaixo, xarope, faxina, lixeira, abacaxi, explicam, apaixonar, trouxemos, explorar, lagartixa
+lhe, ilha, olhei, olho, alho, milho, folha, filho, velho, bolha, colhe, palha, galho, filha, molho, julho, olhos, colhem, olhar, ovelha, coelho, abelha, joelho, mulher, orelha, trilho, toalha, colher, agulha, molhar, brilha, melhor, telhado, molhado, repolho, orvalho, orelhas, bilhete, espelho, medalha, batalha, escolhem, barulho, molhada, vermelho, vermelha, trabalho, barulhos, escolher, melhorar, filhotes, coelhinho, escolhida, compartilha, armadilhas, trabalhadora
 
 
 	 	 Syllables ---
-
+lha, lhe, lhi, lho, lhu
 
 
 	 	 Sentences ---
-O menino jogou a caixa no lixo.
-A Manuela tomou o xarope para tosse.
-O pai não deixou o garoto mexer na geladeira.
-A menina tem paixão pelos animais.
-Ele ama um abacaxi gelado para comer.
-O menino colocou a graxa para limpar o sapato dele.
-O papai tem um pijama de luxo.
+A galinha da ilha comeu o milho.
+O porco gosta da terra molhada.
+O telhado é azul.
+O coelho tem orelhas cumpridas
+O filho do coelho é o coelhinho.
 
 
 
-Lesson 40 --------------------
+Lesson 42 --------------------
 	 	 Words ---
-andou, andei, anta, anda, ande, quando, manga, jantou, cantou, andar, quanto, canta, ganso, grande, voando, andaram, cantar, branca, diante, jantar, zangada, gigante, jogando, durante, laranja, zangado, estante, espantou, falando, grandes, roubando, pegando, morando, morango, rolando, plantas, elefante, melancia, tranquila, morangos, elegante, pipocando, mostrando, abandonar, procurando, descansando
+ano, pano, andou, andei, anta, anda, piano, plano, quando, manga, jantou, cantou, andar, quanto, canta, semana, tucano, grande, voando, cantar, branca, diante, andaram, banana, jogando, durante, laranja, estante, falando, grandes, espantou, roubando, zangada, gigante, zangado, plantas, tranquila, elefante, melancia, morangos, pipocando, brilhantes
 
 
 	 	 Syllables ---
@@ -773,28 +766,35 @@ an, pan, tan
 
 
 	 	 Sentences ---
+O dado é do mano.
+Duas semanas.
+O pato está nadando no lago.
+A boneca de pano é bonita.
+Joana abre a janela.
+A Mariana bebeu o suco e comeu o pão.
+A Ana perdeu a bola.O João bateu à porta.
+A Ana perdeu a bola. O João bateu à porta.
+A Manuela tira foto do tucano. Ele vive no mato.
+A barata no tapete do tio é grande.
+O pato está nadando no lago calmo.
 A girafa é grande.
 A menina Zélia comeu uma torta azeda. Ela está muito zangada.
 A pipa está voando no ar.
 A pipoca na panela está pipocando.
-O elefante tem uma grande tromba.
+O elefante tem uma tromba grande.
 Vi um jato veloz voando pela janela.
-Durante a tempestade
+Durante a tempestade o menino tem medo.
 Felipe gosta de manga e laranja.
-O gigante ficou zangado com a anta.
+O gigante ficou zangado.
 O menino jantou macarrão e melancia.
-A estante é muito pequena e baixa.
 O gavião espantou a coruja.
-Quero ser como o papai quando crescer.
-O pássaro canta na árvore.
-O ganso nada no lago.
-Eu gosto de andar no parque.
+A Sandra fez cócegas no seu primo.
 
 
 
-Lesson 41 --------------------
+Lesson 43 --------------------
 	 	 Words ---
-uns, fundo, fungo, mundo, nunca, bunda, junto, juntar, imunda, juntos, imundo, afundar, segunda, segundo, triunfo, pergunta, perguntei, profundo, perguntas
+uns, nunca, fundo, fungo, mundo, junto, juntar, imunda, juntos, imundo, triunfo, segunda, afundar, perguntei, pergunta, perguntas
 
 
 	 	 Syllables ---
@@ -802,22 +802,16 @@ fun, un
 
 
 	 	 Sentences ---
-O fundo do mar tem muitos peixes coloridos.
 O mundo é muito grande.
-Nunca deixe o morcego cruzar a janela.
-O fungo deixou o barco afundar na região da lagoa.
-O fundo da bolsa do Juca é gigante.
+O barco dos piratas afundou.
+Perguntei ao Juca se podemos ir juntos para a escola.
 Ele gosta de juntar todo mundo para cantar.
-Todo mundo quer bolo! Por favor, divida.
-O mundo é grande.
-O fundo do rio é profundo.
-O fundo do rio é profundo. 
 
 
 
-Lesson 42 --------------------
+Lesson 44 --------------------
 	 	 Words ---
-onde, ontem, onda, sons, longa, conta, ondas, montou, contou, ponta, longe, condor, lontra, roncar, tronco, contra, monstro, esponja, pontudo, escondem, ondulado, esconder, continuou, concorda, confiante, respondeu, responder, conservar, congelador, pernilongo, bronzeador, camundongos, demonstrando
+onde, ontem, onda, sons, longa, conta, ondas, montou, contou, ponta, longe, condor, lontra, roncar, tronco, contra, escondem, conselho, monstro, esponja, pontudo, continuou, confiante, ondulado, esconder, concorda, responder, conservar, congelador, pernilongo
 
 
 	 	 Syllables ---
@@ -825,30 +819,30 @@ on, ton
 
 
 	 	 Sentences ---
+O rabo do rato é longo.
+O cofre contém um botão secreto.
+A pomba voou e se escondeu na sombra da árvore.
 A menina bonita de saia longa.
 As ondas do mar são muito divertidas para surfar.
-Eu vi o lugar onde mora um gorila.
+Eu vi o lugar onde mora o gorila.
 A fila é longa.
 Ontem andei de bicicleta e amei!
-A onda do mar vai e vem
+A onda do mar vai e vem.
 O gelo no congelador ficou duro.
-A segunda pergunta a menina não soube responder.
-O monstro gigante andou na terra e deixou a cidade com barro para todo o lado.
+A menina não soube responder a segunda pergunta.
 O condor voa alto.
 A lontra gosta de nadar no rio.
-A picada do pernilongo me deixou com coceira.
 A esponja na pia está imunda.
 O bico da pomba é ondulado e pontudo.
 A viagem de carro para a cidade é longa.
-Pergunta onde é a piscina grande.
-Ela não contou a onde perdeu a bola dele de futebol.
-No final do concurso
+Ela não contou aonde perdeu a bola de futebol dele.
+No final do concurso ele levou um tombo.
 
 
 
-Lesson 43 --------------------
+Lesson 45 --------------------
 	 	 Words ---
-lindo, pintei, ainda, cinco, patins, lindas, pintar, brinca, brincar, inverno, inspirou, insetos, brinquedo, interior, brinquedos, brincamos
+lindo, pintei, ainda, cinco, patins, lindas, pintar, brinca, brincar, inverno, inspirou, insetos, brinquedo, interior, brincamos, incrível, brinquedos
 
 
 	 	 Syllables ---
@@ -859,257 +853,282 @@ in, pin
 O tio da Manuela tira foto do tucano. Ele vive no mato. O tucano é lindo.
 O veleiro é um barco com velas. Pintei um quadro com um belo veleiro.
 Vamos sorrir e vamos brincar.
-
-
-
-Lesson 44 --------------------
-	 	 Words ---
-pau, aula, cauda, flauta, aurora, picapau, astronauta, restaurante, astronautas
-
-
-	 	 Syllables ---
-
-
-
-	 	 Sentences ---
-Paulo é o piloto da moto.
-Um garoto gritou comigo na sala de aula na escola.
-O Murilo toca a flauta na escola.
-Aurora é um belo nome que significa luz do dia.
-Fernanda é uma foca. Ela vive feliz com seus amigos Felipe e Fabiana. Fernanda adora fazer formas com a sua cauda. Juntos
-
-
-
-Lesson 45 --------------------
-	 	 Words ---
-mãe, mães, cães, mamãe
-
-
-	 	 Syllables ---
-mãe, pãe, ãe
-
-
-	 	 Sentences ---
-Os cães devem ser treinados e bem cuidados.
-Mamãe e eu vamos para o jardim. Mamãe rega as plantas. Eu ajudo a mamãe. Mamãe diz Muito bem Eu fico feliz. À tarde, Eu leio um livro para mamãe. Mamãe diz Muito bem Eu fico feliz. 
+Eu pintei o muro de branco.
+Os insetos não gostam do inverno.
+Os brinquedos favoritos da Mariana são: os patins e as bonecas.Os insetos vivem no campo.
+Os brinquedos favoritos da Mariana são: os patins e as bonecas. Os insetos vivem no campo.
 
 
 
 Lesson 46 --------------------
 	 	 Words ---
-onça, ação, moça, poço, dança, moço, taça, laço, louça, caça, faça, roça, praça, garçom, ouriço, caçar, dançar, braço, garça, berço, emoção, oração, força, almoço, abraço, terças, criança, começou, cabeça, paçoca, fumaça, carroça, coração, espaço, caçando, crianças, caçador, animação, alcançar, esforço, competição, maçaneta, dedicação, começando
+pau, aula, cauda, flauta, aurora, picapau
 
 
 	 	 Syllables ---
-
+pau, au, cau, nau, tau
 
 
 	 	 Sentences ---
-O garçom trouxe um copo para o moço.
-O papai gosta de beber suco na taça.
-O sapato sem laço.
-A onça caça ouriço mas cuidado onça
+Um garoto falou comigo na aula e me ajudou na atividade.
+O Murilo toca a flauta na escola.
+Aurora é um belo nome que significa luz do dia.
+Fernanda é uma foca. Ela vive feliz com seus amigos Felipe e Fabiana. Fernanda adora dar saltos e fazer brincadeiras com a sua cauda.
+A Bruno tocou flauta.
+O Bruno tocou flauta.
+O menino pegou um pau.
+O astronauta coloca sua roupa para andar na Lua.
+A boneca Emília é do programa O Sítio do Picapau Amarelo.
 
 
 
 Lesson 47 --------------------
 	 	 Words ---
-mês, você, bebê, três, nenê, purê, buquê, gênio, tênis, bebês, fêmea, prêmio, gênero, japonês, milênio
+mãe, mães, cães, mamãe
 
 
 	 	 Syllables ---
-dê, fê, pê
+mãe, pãe
 
 
 	 	 Sentences ---
-A mamãe deu leite para o bebê.
-A Laura nasceu no mês de abril.
-Você nasceu em que mês do ano?
-Você gosta de brincar com o que?
-Você mora onde?
-O que você gosta de cantar?
-Para onde você gostaria de viajar?
-Eu e você somos amigos.
+Os cães devem ser treinados e bem cuidados.
+Eu comprei pães na padaria.
+O Dia das Mães é em maio.
+Os cães gostam de brincar.
+A Rita gosta muito de cães.
+A mãe da Ema vai ao restaurante.
+A mamãe canta uma cantiga bonita.
+O batom vermelho da mamãe é bonito.
 
 
 
 Lesson 48 --------------------
 	 	 Words ---
-então, lenço, gente, quente, sentou, entre, tenda, vendo, venceu, lendo, agenda, entrar, agente, gentil, lençol, dentes, entendeu, nuvens, enquanto, vencer, atenção, ensinou, frente, ensina, polenta, sentada, encontrei, jumento, fazenda, fazendo, orientou, enxerga, bengala, pimenta, sentado, cliente, encaixar, entender, sentindo, encontro, pensava, entendia, batendo, alimento, silêncio, serpente, momentos, amêndoas, ensopado, gengibre, aprender, alimentou, aprendia, ciências, ensinaram, vendedora, monumento, aventuras, pacientes, paciência, dentadura, documento, ferimento, sonolento, alimentos, afugentar, entretanto, aprendido, ventilador, detergente, suficiente, finalmente, facilmente, ingredientes, rapidamente
+onça, ação, moça, poço, dança, moço, taça, laço, louça, caça, faça, roça, praça, garçom, ouriço, caçar, dançar, braço, garça, berço, emoção, oração, força, almoço, abraço, terças, cabeça, paçoca, fumaça, espaço, caçando, criança, começou, carroça, palhaço, coração, açúcar, esforço, crianças, alcançar, caçador, maçaneta, começando, competição
 
 
 	 	 Syllables ---
-en, pen, ten
+ça, ço, ção, çou
 
 
 	 	 Sentences ---
-A mamãe faz polenta frita no almoço.
-A moça perdeu o lenço na praça.
-A vendedora está sentada perto do monumento.
-Agenda de tarefas.
-O fogão está quente
-O jumento carrega as sacolas de alimento na fazenda.
-O que os alunos andaram fazendo esses dias?
-A Joana gosta de assistir às aventuras do Pica pau.
-As mães são geralmente muito pacientes.
-Os alunos ficaram em silêncio quando a professora falou.
-Sofia é uma serpente. Ela é muito tranquila. Sofia mora com seus irmãos
-Pedro é um papagaio. Pedro mora no parque. Suas penas são lindas e coloridas. Pedro gosta de se esconder entre as palmeiras. Ele adora passear pelo parque.
-Silêncio, por favor.
-Silêncio, por favor. O filme está começando.
-Eu gosto de amêndoas no meu bolo.
-As ciências ajudam a entender o mundo.
-Eu estudo ciências na escola.
-Eu estudo ciências na escola. O professor nos ensina sobre o planeta e os animais e plantas que vivem aqui.
-A gente vai à festa.
+O papai gosta de beber suco na taça.
+O sapato sem laço.
+A criança dança samba com a mãe.
+A Maria faz o almoço e lava a louça.
+A mãe abraçou a Ema.
+Vamos brincar na praça.
+A criança dorme no berço.
+As terças são calmas.
+O meu coração bate com força.
+A abóbora mais bonita levou a vitória na competição.
+As crianças adoraram o brócolis e o jiló no almoço.
+Faça um nó no laço do sapato.
+Bater a cabeça dói muito.
 
 
 
 Lesson 49 --------------------
 	 	 Words ---
-aí, sítio, família, sensível, delícia, tímido, iríamos, incrível, difíceis, difícil, notícias, mamífero, orquídeas
+xixi, caixa, lixo, deixou, luxo, baixa, deixe, caixão, xale, coxa, puxa, peixe, deixa, queixo, peixes, mexer, graxa, bruxa, abaixo, embaixo, xarope, faxina, baixinho, coxinha, baixinha, caixinha, abacaxi, apaixonar, lagartixa
 
 
 	 	 Syllables ---
-lí, mí
+
 
 
 	 	 Sentences ---
-A boneca Emília do sítio do Picapau.
-O nariz do tubarão é sensível.
-O Zé esteve aí perto mas agora está na escola.
-A rata fez macarrão com cordão do meu sapato. Que delícia!
-A boneca Emília é do programa O Sítio do Picapau Amarelo.
-O esquilo é um mamífero que vive nas florestas
+O menino jogou a caixa no lixo.
+A Manuela tomou o xarope para tosse.
+O pai não deixou o garoto mexer na geladeira.
+O garçom deixou um copo para o moço.
+Ele ama comer um abacaxi gelado.
+O menino colocou a graxa para limpar o sapato dele.
+O papai tem um pijama de luxo.
+A bruxa puxa a vassoura.
+O João joga xadrez com a Manuela.
+A caixa do Manuel está embaixo do xale.
+A estante é muito pequena e baixa.
+O fundo do mar tem muitos peixes coloridos.
+Nunca deixe o morcego cruzar a janela.
+O monstro gigante andou na terra e deixou a cidade com barro para todo o lado.
+A picada do pernilongo me deixou com coceira.
+O burro puxou a carroça.
+A múmia está no caixão.
+Lúcia é uma lagartixa azul. Ela é muito trabalhadora. Lúcia sempre ajuda os outros com alegria.
 
 
 
 Lesson 50 --------------------
 	 	 Words ---
-nó, pó, dó, avó, dói, nós, vovó, jiló, após, cópia, óculos, dominó, abóbora, vitória, biólogo, trópico, cócegas, relógio, próximo, brócolis, binóculo, próprias, binóculos
+mês, avô, alô, você, robô, bebê, vovô, três, nenê, purê, buquê, vôlei, judô, capô, cocô, gênio, tênis, bebês, fêmea, tricô, metrô, fôlego, ônibus, prêmio, gênero, vômito, cômoda, camelô, japonês, milênio, colônia, estômago, pôsteres
 
 
 	 	 Syllables ---
-dó, ló, nó, pó, tó
+
 
 
 	 	 Sentences ---
-A abóbora mais bonita levou a vitória na competição.
-A mala é da vovó.
-Eu quero ser biólogo quando crescer.
-A avó do Bernardo colocou óculos para ler uma receita de bolo.
-As crianças adoraram o brócolis e o jiló no almoço.
-A Sandra fez cócegas no seu primo.
-Faça um nó no laço do sapato.
-O relógio na parede está com muito pó.
+A mamãe deu leite para o bebê.
+O robô dançou no meio da sala.
+O ônibus parou perto da escola.
+O lobo correu pelo bosque até perder o fôlego.
+Você gosta de brincar com o que?
+Você mora onde?
+O pôr do sol deixou o céu bonito.
+Ô como avô.
+Para onde você gostaria de viajar?
+O que você gosta de cantar?
+Eu e você somos amigos.
+A Maria jogou o buquê.
+Este mês são as férias de verão.
+Eu como purê de batata com carne.
+O João gosta de três brinquedos.
+A Manuela ganhou um prêmio de boa aluna em Inglês.
+Os bebês são pequenos e lindos.
+Eu jogo tênis com o meu pai.
+O João é japonês e o Rui é inglês.
+A Ema comprou um buquê de flores.
+Você vai de ônibus para ver o jogo de vôlei na escola? Não
+Eu fico sem fôlego na aula de judô.
+Alô? Quem está falando?
+O avô e a avó moram no sítio.
+O avô me levou para pescar.
+Maria Clara faz judô todas as terças feiras.
+O capô do carro amassou na batida.
+A criança ficou com fome e o estômago dela começou roncar.
+Eu ganhei um prêmio esse mês.
+O vovô Paulo tem uma saúde de ferro.
 
 
 
 Lesson 51 --------------------
 	 	 Words ---
-alô, avô, vôlei, judô, robô, capô, vovô, cocô, tricô, metrô, ônibus, fôlego, vômito, cômoda, cômodo, camelô, colônia, estômago, pôsteres
+então, lenço, gente, quente, sentou, entre, tenda, vendo, venceu, lendo, agenda, entrar, agente, gentil, lençol, dentes, entendeu, nuvens, enquanto, vencer, atenção, ensinou, frente, ensina, polenta, sentada, jumento, fazenda, fazendo, orientou, bengala, pimenta, sentado, cliente, entender, sentindo, encontro, pensava, entendia, batendo, quentinho, silêncio, ciências, alimento, serpente, momentos, ensopado, gengibre, aprender, alimentou, aprendia, ensinaram, engenheira, sensível, paciência, vendedora, monumento, aventuras, pacientes, dentadura, documento, ferimento, sonolento, alimentos, afugentar, entretanto, aprendido, ventilador
 
 
 	 	 Syllables ---
-mô, pô, vô
+
 
 
 	 	 Sentences ---
-Alô? Você pegar ônibus para ver o jogo de vôlei? Não.
-Eu fico sem fôlego na aula de judô.
-Alô? Quem está falando?
-Você pode pegar ônibus e viajar para ver o jogo de vôlei.
-O avô me levou para pescar.
-Maria Clara faz judô todas as terças feiras.
-O capô do carro amassou na batida.
-A criança ficou com fome e o estômago dela começou roncar.
+Os alunos ficaram em silêncio quando a professora falou.
+A mamãe faz polenta frita no almoço.
+A moça perdeu o lenço na praça.
+A vendedora está sentada perto do monumento.
+Agenda de tarefas.
+O fogão está quente.
+O jumento carrega as sacolas de alimento na fazenda.
+O que os alunos andaram fazendo esses dias?
+As mães são geralmente muito pacientes.
+Sofia é uma serpente. Ela é muito tranquila. Sofia mora com seus irmãos.
+Pedro é um papagaio. Pedro mora no parque. Suas penas são lindas e coloridas. Pedro gosta de se esconder entre as palmeiras. Ele adora passear pelo parque.
+Silêncio
+Eu gosto de amêndoas no meu bolo.
+As ciências ajudam a entender o mundo.
+Eu estudo ciências na escola.
+Eu estudo ciências na escola. O professor nos ensina sobre o planeta e os animais e plantas que vivem aqui.
+A gente vai à festa.
+O abraço da vovó é quentinho.
+O nariz do tubarão é sensível.
+O menino pegou a bússola e se orientou no mapa em busca do caminho para a vila.
 
 
 
 Lesson 52 --------------------
 	 	 Words ---
-boi, doi, foi, dois, oito, pois, noite, apoio, depois, goiaba, dezoito, biscoito, caracóis, biscoitos
+boi, foi, dois, oito, pois, noite, apoio, goiaba, dezoito, biscoito
 
 
 	 	 Syllables ---
-boi, foi, oi
+
 
 
 	 	 Sentences ---
-A noite o boi ficou com sede.
-A Rafaela montou a barraca dela na terra e depois colocou a rede na parede.
+Boa noite
+À noite o boi ficou com sede.
 O Davi gosta muito de goiaba.
 João tem oito anos.
-Bater a cabeça doi muito.
 Quem tem dezoito anos?
 A noite foi fria e os animais não dormiram bem.
+O biscoito com a goiaba é uma delícia
+O biscoito com a goiaba é uma delícia.
 
 
 
 Lesson 53 --------------------
 	 	 Words ---
-chá, chão, cheia, acho, cheio, concha, chorou, chulé, bicho, bucha, ficha, chato, ducha, choro, chama, chuva, achar, rocha, chalé, chuchu, chegou, crochê, chorar, chegar, chocar, chifre, chover, fechar, flecha, chinês, machucou, chimpanzé, cachorro, chupeta, machado, chuveiro, chamado, chinelo, fechado, bolacha, mochila, cochilo, chaminé, bochecha, chovendo, chegaram, capricho, machucar, cochichar, churrasco, chegamos, chocolate, machucado, fechadura
+chá, chão, cheia, acho, cheio, chama, concha, chulé, bicho, chuva, bucha, ficha, chato, ducha, achar, rocha, chalé, chuchu, chegou, crochê, chorar, chegar, chocar, chifre, chover, fechar, flecha, chinês, machucou, cachorro, chupeta, machado, chuveiro, chinelo, fechado, bolacha, mochila, cochilo, chaminé, bochecha, chovendo, chegamos, chegaram, bichinho, chamado, capricho, machucar, cochichar, churrasco, chocolate, machucado, fechadura
 
 
 	 	 Syllables ---
-cha, che, chi, cho, chu
+
 
 
 	 	 Sentences ---
 A menina machucou o ombro.
 Eu encontrei uma concha colorida na praia.
-O chimpanzé chorou
-O chimpanzé levou um bolo para o chá da tarde com o seu amigo cachorro. De repente
-O meu tio comprou uma bela concha na praia.
+O chulé do sapato espantou até o cachorro.
 O chocolate é da Milena.
 O pé tem chulé.
 A mãe deu chupeta para a nenê não chorar.
 A avó faz um belo crochê.
 O caçador pegou o machado para caçar um bicho mas ele correu rápido e escapou.
+O palhaço escorregou no chão molhado e fez todo mundo rir.
+Minha mãe faz crochê.
 
 
 
 Lesson 54 --------------------
 	 	 Words ---
-usam, usa, asa, casa, pousou, vaso, pesa, mesa, coisa, rosa, asas, riso, pise, rosas, usando, brasa, blusa, mesmo, quiser, desde, museu, coisas, raposa, guloso, brasil, pesado, pisada, casaco, camisa, bisavô, chuvoso, sorriso, tesoura, besouro, tesouro, mesmas, usamos, visitou, apesar, presunto, deserto, precisa, preciso, nervosa, desordem, resolveu, televisão, mariposa, saboroso, camisola, camiseta, casamento, desistia, resolver, delicioso, deliciosa, estudioso, televisor, sobremesa, entusiasmo
+usam, usa, asa, coisa, casa, pousou, vaso, pesa, mesa, rosa, asas, riso, pise, rosas, usando, museu, brasa, blusa, mesmo, quiser, usamos, desde, coisas, raposa, guloso, pesado, pisada, casaco, camisa, bisavô, chuvoso, sorriso, tesoura, besouro, tesouro, mesmas, visitou, apesar, vasinho, desenhei, música, brasil, presunto, deserto, precisa, preciso, nervosa, desordem, resolveu, agasalho, desenhar, televisão, mariposa, saboroso, camisola, camiseta, casamento, desistia, resolver, estudioso, televisor, sobremesa, entusiasmo, delicioso, deliciosa
 
 
 	 	 Syllables ---
-esa, ose, usu
+
 
 
 	 	 Sentences ---
-A família se mudou para uma casa nova com uma televisão bem grande.
+A vovó fez um bolo fofinho e gostoso para o avô e as crianças. O cheirinho doce tomou conta da casa
+O couro rasgou babou na panela.
+O couro da bola rasgou na brincadeira.
+A família se mudou para uma casa nova.
 A mariposa colorida pousou no vaso de rosas.
-A raposa pulou para pegar o presunto.
-João limpa a mão usando sabão
+A raposa pulou na mesa para pegar o presunto.
+João limpa a mão usando sabão.
 No deserto faz muito calor.
 O galo guloso come tudo.
 O gato pesa dois quilos.
 O queijo é muito saboroso.
 O quiabo é delicioso.
-A casa.
 A tia da Marília mora no sítio e faz uma comida deliciosa.
 A Cecília colocou dois cadernos e uma coisa secreta na bolsa da escola.
-Gabriel é um ouriço. Gabriel é muito estudioso. Gabriel
-José era um menino tímido que amava dançar
-Com paciência, Camilo resolveu o problema.
-O caderno está na mesa.
+O balão pousou no telhado
+O balão pousou no telhado.
+A caixinha de música toca um som bem baixinho.
 
 
 
 Lesson 55 --------------------
 	 	 Words ---
-viu, caiu, ouviu, pediu, subiu, abriu, fugiu, sorriu, sentiu, partiu, dividiu, construiu, desistiu
+viu, riu, caiu, ouviu, pediu, subiu, abriu, fugiu, sorriu, sentiu, partiu, dividiu, construiu, desistiu
 
 
 	 	 Syllables ---
-viu, riu, diu
+
 
 
 	 	 Sentences ---
+A Rafa riu.
+A Rosa viu o cachorro e riu.
+A Marina abriu a caixa e colocou os seus brinquedos dentro.
+A onça viu o ouriço no chão e se escondeu com atenção.
+A boiada dormiu no pasto verde.
+A joia caiu no chão.
+O chapéu do mágico sumiu junto com o coelho!
 A jararaca pediu um suco no jardim.
-A professora pediu para a gente fazer a conta de somar.
+A professora abriu o livro e pediu para a gente fazer a conta de somar.
 O José viu um javali jogando futebol.
 O navio dos piratas partiu.
 O zumbi caiu de bumbum na tumba.
@@ -1121,123 +1140,70 @@ Maria abriu a janela e o gato dela fugiu.
 
 Lesson 56 --------------------
 	 	 Words ---
-kalulu
+
 
 
 	 	 Syllables ---
-ka, ko
+
 
 
 	 	 Sentences ---
-O Kalulu era muito esperto. Um dia
-O Kalulu era uma lebre feliz.Uma borboleta azul sentou no seu nariz.Em um circo
-Kalulu é uma lebre que ajuda as crianças com leitura.
-Kalulu vive na África e é amigo de outros animais.
 
 
 
 Lesson 57 --------------------
 	 	 Words ---
-hino, homem, hora, hoje, herói, humor, horta, hiena, heitor, harpa, havia, humano, humana, higiene, honesto, heroína, história, hipopótamo
+hino, homem, hora, hoje, herói, humor, horta, hiena, harpa, havia, heitor, humano, humana, higiene, honesto, heroína, história
 
 
 	 	 Syllables ---
-ha, he, hi
+
 
 
 	 	 Sentences ---
-Na horta
+O avô contou uma história para a criança.
+O herói afoito venceu o dragão.
+A hiena riu tanto que quase caiu da árvore.
 O hino do Brasil é muito bonito.
 O homem é um agente secreto.
 A Luana ajuda na horta da escola.
 A hiena é um animal que come carne.
 Quem é o seu super herói favorito?
 O hipopótamo é um animal muito pesado.
+O helicóptero assustou o gato que dormia no telhado.
+O herói escorregou na banana e caiu.
+O homem colocou a meia no pé mas esqueceu de colocar o sapato.
+Olhei de binóculos para ver o hipopótamo no mato.
+O Heitor bateu o joelho na mesa
+A história fala sobre uma minhoca que fugia da galinha.
+A Heloísa tem um baú de brinquedos.
 
 
 
 Lesson 58 --------------------
 	 	 Words ---
-lhe, ilha, olhei, olho, alho, milho, folha, filho, velho, bolha, colhe, palha, galho, filha, molho, julho, olhos, colhem, olhar, ovelha, coelho, abelha, joelho, gralha, mulher, orelha, trilho, toalha, colher, agulha, molhar, brilha, melhor, molhada, telhado, palhaço, molhado, orvalho, orelhas, gralhas, espelho, medalha, bilhete, batalha, repolho, conselho, escolhem, barulho, vermelho, vermelha, trabalho, agasalho, barulhos, escolher, melhorar, filhotes, brilhantes, orgulhoso, escolhida, orgulhosa, compartilha, armadilhas, trabalhadora
+água, guia, égua, pague, pegue, águia, iguais, seguir, apague, guarda, águias, foguete, fogueira, figueira, cegueira, guitarra, guardar, laguinho, guardado, guepardo, preguiça, foguetes, português
 
 
 	 	 Syllables ---
-lha, lhe, lhi, lho, lhu
+gu
 
 
 	 	 Sentences ---
-A ovelha da ilha comeu o milho
-O balão vermelho voa no céu.
-O batom vermelho da mamãe é bonito.
-O porco gosta da terra molhada.
-O telhado é azul.
-Olhei de binóculos para ver o hipopótamo no trópico.
-O palhaço escorregou no chão molhado e fez todo mundo rir.
-A abelha pousou na rosa vermelha e se molhou numa bolha de orvalho.
-O Heitor bate o joelho na mesa
-O coelho tem orelhas cumpridas
-Adela é um esquilo. Adela tem muitas amigas. Alina é amiga de Adela. Alina é um esquilo amável. Alina colhe amêndoas. Alina compartilha as amêndoas com Adela. Adela e Alina são boas amigas.
-
-
-
-Lesson 59 --------------------
-	 	 Words ---
-água, guia, égua, pague, pegue, águia, iguais, seguir, apague, guarda, águias, mangueira, foguete, fogueira, figueira, cegueira, guitarra, guardar, conseguem, conseguiu, guardado, guepardo, preguiça, foguetes, conseguia, perseguiu, português, conseguimos, jaguatirica
-
-
-	 	 Syllables ---
-gue, gui, gué
-
-
-	 	 Sentences ---
+Nós vamos beber água.
+"O Kalulu era uma lebre feliz e muito esperta. Vivia na África e era amigo de outros animais. Sempre quando alguém pedia ajuda, Kalulu estava cheio de ideias. Um dia, uma borboleta azul sentou no seu nariz e ele abriu a sua boca em espanto: ""Que borboleta linda!"". Mas a borboleta se assustou e saiu voando. Kalulu riu pois viu que assim livre a borboleta era feliz."
+O farol guia os barcos à noite.
 A mangueira do jardim lembra uma jararaca na grama.
 A onça bebeu água no poço.
 Eu estudo português com o Kalulu.
 O barco pode afundar se entrar muita água.
 O foguete subiu rápido.
-O fungo cresce no pão velho que está guardado.
 O guepardo andou de patins.
 Sabe quem é chamado de Gato do Mato? É a jaguatirica
-Otávio é um bicho preguiça. Ele mora em uma árvore cheia de orquídeas. Otávio cuida da sua vovó Laura.  não enxerga bem no escuro. Por isso
-O esquilo é um mamífero que vive nas florestas, mas também se adapta a viver na cidade. O esquilo faz sua casa em buracos de árvores, onde dorme e guarda sua comida. Ele gosta de armazenar comida para ter o suficiente durante o inverno. No inverno, os esquilos dormem juntos para conservar o calor.O corpo do esquilo é esguio e tem uma longa e chamativa cauda peluda. Sua cabeça é pequena e tem olhos brilhantes. Além disso, possui dentes agudos e afiados que permitem roer seus alimentos, por isso é chamado de um animal roedor.
-Com paciência, conseguimos resolver o problema.
 
 
 
-Lesson 60 --------------------
-	 	 Words ---
-unha, ninho, ganhei, minha, senha, linha, lenha, punho, junho, nenhum, sonho, tinha, tenho, ganhou, sonham, senhor, sonhar, rainha, sonhos, caixinha, baixinho, focinho, galinha, minhoca, vizinho, quentinho, docinho, ursinho, caminho, furinho, senhora, maminha, marinho, cunhado, farinha, sininho, varinha, pezinho, sozinho, cozinha, vasinho, coxinha, laguinho, saquinho, bichinho, caminhão, baixinha, banheira, piranha, banheiro, sonhava, ratinho, desenhei, conheceu, amiguinho, coelhinho, madrinha, conhecer, joaninha, parquinho, ratinhos, desenhar, engenheira, estranho, canarinho, escolinha, narizinho, vovozinha, cebolinha, coleguinha, maluquinho, passarinho, estranhos, historinha, acompanhasse
-
-
-	 	 Syllables ---
-nha, nhe, nhi, nho, nhu, nhá
-
-
-	 	 Sentences ---
-A coceira no focinho.
-A galinha botou ovo amarelinho.
-A historinha fala sobre um herói com muito humor.
-A minhoca é dorminhoca.
-A minhoca é dorminhoca. O canarinho está no ninho. A galinha do vizinho botou ovo amarelinho.
-Eu ganhei um prêmio esse mês.
-Meu amiguinho pegou uma folha gigante.
-Minha mãe faz crochê.
-O abraço da vovó é quentinho.
-O canarinho está no ninho.
-O docinho de coco.
-O filho do coelho é o coelhinho.
-O ursinho andou pelo caminho do mato até a caverna
-Era uma vez um passarinho chamado Tico que sonhava em voar alto no céu como uma águia ele sabia que as águias eram os reis do céu e sonhava em alcançar as nuvens mais altas um dia Tico decidiu pedir à águia que o ajudasse a aprender a voar melhor ele foi até ela e disse eu gostaria de voar tão alto quanto você mas não sei como você poderia me ajudar a águia que tinha grandes asas sorriu e disse a Tico é claro passarinho mas você precisa entender que não tem as mesmas asas que eu você precisa aprender a voar com o que você tem Tico ficou triste por um momento mas sabia que a águia estava certa então ele começou a praticar todos os dias ele pulava do galho e batia as asas com toda a força que tinha e assim continuou dia após dia então um dia Tico voou mais alto do que nunca ele sentiu o ar sob suas pequenas asas e entendeu como usá las para planar ele voou pelo céu com leveza e alegria sentindo se livre agora Tico está orgulhoso de seu progresso e sabe que não é preciso ser uma águia para voar alto tudo o que você precisa é praticar e acreditar em si mesmo e ele sempre se lembra das sábias palavras da águia esforce se com o que você tem passarinho e você voará tão alto quanto quiser voar
-Um dia, ao chegar na porta de sua casa, ele ouviu sons estranhos. Ele foi até lá e viu um rato enorme pegando todas as suas nozes. João precisa fazer algo para proteger suas nozes. Ele chama seus colegas do campo: os ratinhos, os ouriços e até mesmo os pássaros, para assustar o rato. Juntos, eles criam um plano. Os ratinhos fazem armadilhas para pegar o rato, os ouriços formam uma barreira ao redor das nozes e os pássaros voam perto do rato para empurrá lo para as armadilhas. Os colegas conseguem capturar o rato e ficam muito felizes. Eles explicam que ele deve procurar suas próprias nozes e não pegar as dos outros. O rato aceita o conselho e, juntos, eles coletam nozes e cogumelos para o próximo ano.
-Um dia, ao chegar na porta de sua casa, ele ouviu sons estranhos. Ele foi até lá e viu um rato enorme pegando todas as suas nozes. João precisa fazer algo para proteger suas nozes. Ele chama seus colegas do campo: os ratinhos, os ouriços e até mesmo os pássaros, para assustar o rato. Juntos, eles criam um plano. Os ratinhos fazem armadilhas para pegar o rato, os ouriços formam uma barreira ao redor das nozes e os pássaros voam perto do rato para empurrá lo para as armadilhas. Os colegas conseguem capturar o rato e ficam muito felizes. Eles explicam que ele deve procurar suas próprias nozes e não pegar as dos outros. O rato aceita o conselho e, juntos, eles coletam nozes e cogumelos para o próximo ano
-Há dois gatos morando em minha casa. Seus nomes são Pepita e Coco. Uma é amarela e a outra é branca. Gosto de persegui los. Eles se escondem e eu os encontro. É assim que brincamos. Eles vivem comigo desde que eram bebês. Eu cuidei deles quando os trouxemos para casa. Meu irmão os alimentou. Eles eram muito pequenos e carinhosos. Agora eles estão crescidos mas eu ainda cuido deles.
-Nos finais de semana, gosto de tomar sorvete. Meu pai nos leva depois do almoço. Meu irmão Lucas, minha mana Martina e eu vamos com ele. Todos escolhem o sabor que preferem. Meu sorvete favorito é de morango. Às vezes está quente e o sorvete derrete. Você tem que comê lo bem rápido. Certa vez, Martina deixou cair seu sorvete e ficou muito triste. Dividi um pouco do meu com ela. Ela ficou feliz e voltamos juntos para casa.
-Ana era uma menina que gostava de olhar as estrelas da janela. Toda noite, ela pensava em explorar o espaço. O quarto de Ana tinha pôsteres de astronautas e foguetes. Ela queria viajar para o espaço quando crescesse. Quando Ana fez dez anos, ela visitou um museu do espaço com sua família. Ela viu foguetes enormes e planetas coloridos. Ana ficou muito animada Depois desse dia, Ana queria ainda mais ser astronauta. Ela estudava muito e aprendia sobre matemática e ciências. Ana cresceu e se tornou uma engenheira espacial. Um dia, ela foi escolhida para ir em uma missão para Marte. Ana ficou animada e nervosa. Depois de muito treino ela finalmente decolou. Voar pelo espaço e ver a Terra de longe era incrível Quando voltou, Ana era uma heroína. Ela inspirou crianças do mundo todo a seguir seus sonhos, mesmo os mais difíceis.
-Em uma cidade tranquila do interior do Brasil, vivia Daniel, um garoto alegre que gostava de ir à escola todos os dias. Entretanto, havia uma matéria em que ele tinha dificuldades matemática. Apesar de estudar e prestar atenção nas aulas, Daniel não entendia e ficava triste quando tirava notas ruins nas provas. Mas Daniel não desistiu. Ele queria melhorar. Com a ajuda de seu professor e o apoio de seus pais ele começou a estudar mais. Ele revisava os exercícios várias vezes, praticava os problemas e pedia ajuda quando não entendia alguma coisa. Pouco a pouco, ele começou a entender mais e a melhorar. Chegou o dia da prova final de matemática e Daniel se sentiu confiante no que sabia. Ele respondeu a todas as perguntas, demonstrando tudo o que havia aprendido. Quando as notas chegaram, Daniel não conseguia acreditar ele havia tirado a melhor nota de sua vida em matemática Seu professor e seus colegas de classe o parabenizaram. Daniel estava muito orgulhoso de seu esforço. Daquele dia em diante, Daniel se tornou um exemplo para todos, mostrando que, com esforço e dedicação, os objetivos podem ser alcançados.
-
-
-
-Lesson 61 --------------------
+Lesson 59 --------------------
 	 	 Words ---
 irmã, maçã, manhã, amanhã, campeã
 
@@ -1247,35 +1213,32 @@ irmã, maçã, manhã, amanhã, campeã
 
 
 	 	 Sentences ---
+O exercício estava fácil.
+O museu abriu as portas hoje para uma exposição de brinquedos.
+A Rafaela passou a noite e de manhã foi pescar no rio.
 Minha irmã dança balé.
 Amanhã
 A macieira dá maçãs.
 A avó fez compota de maçã.
-Minha irmã Elena e eu vamos brincar no parque depois do café da manhã. Não vamos à escola hoje porque estamos de férias. Elena tem dez anos e eu tenho sete. Hoje, brincamos de ser astronautas. Corremos e pulamos pelo parque bem devagar, como se estivéssemos no espaço. Faz de conta que estamos vendo a Terra da Lua. É tão divertido Eu adoro brincar com Elena nos dias de folga.
-Nos finais de semana, gosto de tomar sorvete. Meu pai nos leva depois do almoço. Meu irmão Lucas, minha irmã Martina e eu vamos com ele. Todos escolhem o sabor que preferem. Meu sorvete favorito é de morango. Às vezes está quente e o sorvete derrete. Você tem que comê lo bem rápido. Certa vez, Martina deixou cair seu sorvete e ficou muito triste. Dividi um pouco do meu com ela. Ela ficou feliz e voltamos juntos para casa.
-Vitória era uma menina que adorava jogar tênis. Ela morava em uma cidade pequena no Brasil. Todos os dias, Vitória ia para a quadra perto de sua casa. Ela treinava com o Souza, seu treinador. Vitória queria ser uma grande jogadora de tênis. Vitória treinava muito. Ela corria, pulava e batia na bola com força. Ela aprendia coisas novas todos os dias. Chegou o dia do torneio. Vitória estava nervosa e animada. Sua primeira partida foi contra João, um jogador forte. Depois de jogar bem, Vitória ganhou a partida Vitória continuou jogando contra outros jogadores. Cada vez era mais difícil, mas ela não desistia. Na grande final, Vitória jogou contra Marina, a campeã do ano passado. Foi uma partida difícil e longa. Mas Vitória ficou calma e fez o seu melhor. Vitória venceu Ela ganhou o torneio e todos a parabenizaram. Vitória ficou muito feliz e orgulhosa. Agora, Vitória é um exemplo para outras crianças que sonham em vencer.
-Era uma vez uma família de cinco macacos o pai macaco, a mãe macaca e seus três filhotes. Eles gostavam de passar o dia procurando comida, descansando embaixo das árvores e penteando os pelos uns dos outros para tirar pequenos insetos. Um dia, a família de macacos conheceu o coelho Kalulu. A família de macacos foi muito gentil com Kalulu. Os macacos ensinaram a Kalulu como procurar comida na selva e como limpar os pelos para se proteger dos insetos. Kalulu, por sua vez, ensinou os pequenos macacos a pular e correr rapidamente. Certa manhã, enquanto a família de macacos estava procurando comida, Kalulu ouviu um barulho estranho. Era um caçador ilegal caçando animais na selva. Rápido e pequeno, Kalulu podia correr e se esconder facilmente, mas não queria abandonar seus amigos. Então, ele decidiu fazer algo para ajudar os macacos. Ele correu à frente do caçador ilegal. O caçador o perseguiu com entusiasmo para pegar um coelho, mas Kalulu era muito rápido. Enquanto isso, a família de macacos conseguiu se esconder. O plano deu certo e o caçador ilegal foi embora de mãos vazias.
+Eu toco saxofone na escola de música.
+A fênix é um pássaro de fogo.
+Tem oxigênio no ar que respiramos.
+Essa história é muito complexa
+Você tem telefone fixo em casa?
+Vou chamar um táxi para irmos ao teatro ver um espectáculo de mágica.
 
 
 
-Lesson 62 --------------------
+Lesson 60 --------------------
 	 	 Words ---
-baú, túnel, múmia, saúde, música, bússola, açúcar
+
 
 
 	 	 Syllables ---
-lú, nú
+
 
 
 	 	 Sentences ---
-A caixinha de música toca um som bem baixinho.
-A Heloísa tem um baú de brinquedos.
-A múmia está no caixão.
-O vovô Paulo tem uma saúde de ferro.
-Menino pegou bússola e se orientou no mapa em busca do caminho para a vila.
-Lúcia é uma lagartixa azul. Ela é muito trabalhadora. Lúcia sempre ajuda os outros com alegria. Nos momentos livres
-Úrsula é uma gralha. Úrsula usa seu bico para comer uvas. Úrsula bate as asas e voa alto. Ela sempre leva comida no bico para outras gralhas. Úrsula é especial!
-Hoje fui ao mercado com minha mãe. Ela me pediu que a acompanhasse para escolher os ingredientes para fazer uma sobremesa. Ela me deu uma lista com os nomes dos ingredientes que eu deveria procurar. Nos corredores, encontrei morangos, amoras e açúcar. Também vi uma caixa de biscoitos de que gosto muito. Perguntei à minha mãe se eu poderia comprá los, mas ela disse que não, pois iríamos fazer outra sobremesa deliciosa. Em vez de biscoitos, ela me comprou algumas cores para desenhar. Quando chegamos em casa, usamos os ingredientes para assar juntos. Enquanto a sobremesa estava no forno, imaginei como ela seria e a desenhei.
 
 
 

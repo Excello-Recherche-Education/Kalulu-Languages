@@ -1,6 +1,6 @@
 # Kalulu-Languages
 
-Language packs used by the [Kalulu](https://github.com/Excello-Recherche-Education/Kalulu) application, an open-source educational game that helps children learn to read through grapheme-phoneme decoding.
+Language packs used by the [Kalulu](https://github.com/Excello-Recherche-Education/Kalulu-Frontend) application, an open-source educational game that helps children learn to read through grapheme-phoneme decoding.
 
 ## Available languages
 
@@ -127,6 +127,22 @@ An optimized file is only kept if it is **strictly smaller** than the original â
 
 ## Adding or modifying a language
 
-To add or modify a language pack, use the **Prof_Tool** included in the [Kalulu frontend repository](https://github.com/Excello-Recherche-Education/Kalulu). Prof_Tool provides a graphical interface to edit linguistic data (grapheme-phoneme correspondences, words, syllables, sentences) and export a complete, ready-to-deploy language pack.
+To add or modify a language pack, use the **Prof_Tool** included in the [Kalulu frontend repository](https://github.com/Excello-Recherche-Education/Kalulu-Frontend). Prof_Tool provides a graphical interface to edit linguistic data (grapheme-phoneme correspondences, words, syllables, sentences) and export a complete, ready-to-deploy language pack.
 
-For more details on Prof_Tool and the overall Kalulu architecture, see the [Kalulu frontend README](https://github.com/Excello-Recherche-Education/Kalulu#readme).
+For more details on Prof_Tool and the overall Kalulu architecture, see the [Kalulu frontend README](https://github.com/Excello-Recherche-Education/Kalulu-Frontend#readme).
+
+---
+
+## Related Repositories
+
+| Repository | Description |
+|---|---|
+| [Kalulu (Frontend)](https://github.com/Excello-Recherche-Education/Kalulu-Frontend) | The Godot-based reading game for children |
+| [Kalulu Backend](https://github.com/Excello-Recherche-Education/Kalulu-AWS-Lambda) | Serverless API â€” authentication, sync, dashboards, and data management |
+| [Kalulu Language Lambda](https://github.com/Excello-Recherche-Education/Kalulu-Language-Lambda) | Pipeline that processes language packs and updates the database |
+
+---
+
+Built with care by [Excello Recherche & Education](https://github.com/Excello-Recherche-Education)
+
+We also have a [website](https://excellolab.org/)

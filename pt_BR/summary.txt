@@ -44,7 +44,7 @@ mia
 
 
 	 	 Syllables ---
-i, í, mi, I
+i, í, mi
 
 
 	 	 Sentences ---
@@ -55,11 +55,11 @@ A Mia e Mimi.
 
 Lesson 5 --------------------
 	 	 Words ---
-ao
+
 
 
 	 	 Syllables ---
-ó
+ó, mo, o
 
 
 	 	 Sentences ---
@@ -72,7 +72,7 @@ fé, fofa
 
 
 	 	 Syllables ---
-fa, fá, fi, if, ef
+fa, fá, fi, fo, fe
 
 
 	 	 Sentences ---
@@ -87,7 +87,7 @@ eu, uma, fui, múmia
 
 
 	 	 Syllables ---
-u, fu, mu, eu
+u, fu, mu
 
 
 	 	 Sentences ---
@@ -102,7 +102,7 @@ da, de, fada, muda
 
 
 	 	 Syllables ---
-da, ed, dá, dé, ad, du, di
+da, dá, du, di, do
 
 
 	 	 Sentences ---
@@ -117,7 +117,7 @@ li, lua, ela, mola, filé, mula, mala, lula, lima, fila, dela, fala, família, a
 
 
 	 	 Syllables ---
-la, li, lu, al, el, ul, il
+la, li, lu, lo, le
 
 
 	 	 Sentences ---
@@ -135,7 +135,7 @@ café, cola, foca, cuca, fica, cueca, cuida, comida, cocada
 
 
 	 	 Syllables ---
-ca, co, cu, cá, cla
+ca, cu, cá, cla, co
 
 
 	 	 Sentences ---
@@ -149,7 +149,7 @@ do, coco, dedo, dado, lado, fofo, como, mico, calmo
 
 
 	 	 Syllables ---
-O, mo, io, fo, do, od, lo, ol, flo
+flo
 
 
 	 	 Sentences ---
@@ -167,7 +167,7 @@ ele, fome, dele, come, filme
 
 
 	 	 Syllables ---
-fe, le
+
 
 
 	 	 Sentences ---
@@ -187,7 +187,7 @@ na, no, nó, fino, nome, nada, numa, duna, aluna, aluno, final, cafuné, caneca,
 
 
 	 	 Syllables ---
-na, ne, ni, nu, no
+na, ni, nu, no, ne
 
 
 	 	 Sentences ---
@@ -206,7 +206,7 @@ os, as, se, dos, mas, nas, esse, isso, nós, sol, sua, das, nos, umas, isca, sac
 
 
 	 	 Syllables ---
-sa, se, si, su, as, es, is, us, so, os
+sa, se, si, su, as, es, is, us, os, so
 
 
 	 	 Sentences ---
@@ -255,7 +255,7 @@ vi, ovo, uva, voa, avó, vive, leve, luva, novo, vaca, vela, vila, vovó, nova, 
 
 
 	 	 Syllables ---
-va, vé, vi, vo, vu, ev, av, ov, iv, uv
+va, vi, vu, vo
 
 
 	 	 Sentences ---
@@ -273,7 +273,7 @@ até, moto, mato, todo, tomo, rato, rata, reta, está, terra, esta, reto, toca, 
 
 
 	 	 Syllables ---
-ta, te, to, tu, it, at, ot, ut, ét
+ta, te, tu, to
 
 
 	 	 Sentences ---
@@ -289,7 +289,7 @@ pé, pó, pula, pipa, pato, sapo, após, pela, pelo, capa, copo, mapa, pena, ép
 
 
 	 	 Syllables ---
-pa, pe, pi, po, pu, op, up, ep, ap, ip, pla
+pa, pi, pu, pla, po, pe
 
 
 	 	 Sentences ---
@@ -305,7 +305,7 @@ gata, gugu, gato, fogo, gado, lago, galo, mago, gota, gosto, lagoa, amigo, gosta
 
 
 	 	 Syllables ---
-ga, gá, go, ag, eg, ig, ug, og
+ga, gá, go, gu
 
 
 	 	 Sentences ---
@@ -321,7 +321,7 @@ bi, boa, bia, baú, rabo, boca, balé, bola, boné, burro, bala, barro, bico, bo
 
 
 	 	 Syllables ---
-ba, be, bi, bo, bu, ob, ab, bá, blo
+ba, bi, bu, bá, bo, be, blo
 
 
 	 	 Sentences ---
@@ -354,7 +354,7 @@ que, aqui, queda, fique, caqui, quilos, quieto, aquela, quiabo, esquilo, pequeno
 
 
 	 	 Syllables ---
-que, qui
+qui, que
 
 
 	 	 Sentences ---
@@ -370,7 +370,7 @@ fez, faz, luz, vez, arroz, zumbi, azul, vazia, azeda, feliz, veloz, bezerro, mol
 
 
 	 	 Syllables ---
-za, ze, zi, zá, zu, az, ez, uz, oz
+za, zi, zá, zu, ze
 
 
 	 	 Sentences ---
@@ -386,7 +386,7 @@ já, jejum, jato, jaca, jogo, jiló, loja, justo, ajuda, janela, javali, jogada,
 
 
 	 	 Syllables ---
-ja, jo, ju, ji, je
+ja, ju, ji, jo, je
 
 
 	 	 Sentences ---
@@ -404,7 +404,7 @@ ar, ir, grão, por, mar, ver, ser, era, ler, rir, muro, amor, para, fria, flor, 
 
 
 	 	 Syllables ---
-re, ro, ru, ver, cro, fri, tro, gri, pra, pre
+ru, fri, gri, pra, pre, re, ro, tro, cro, vre
 
 
 	 	 Sentences ---
@@ -546,7 +546,7 @@ unha, sonho, ninho, ganhei, minha, senha, linha, punho, junho, nenhum, tenho, ga
 
 
 	 	 Syllables ---
-nha, nhe, nhi, nho, nhu
+nha, nhi, nhu, nhe, nho
 
 
 	 	 Sentences ---
@@ -632,7 +632,7 @@ bem, tem, vem, quem, sem, além, tempo, jovem, neném, também, devem, vivem, po
 
 
 	 	 Syllables ---
-em, vem, bém
+em, vem
 
 
 	 	 Sentences ---
@@ -699,7 +699,7 @@ céu, cego, cena, cega, circo, aquece, doces, certa, aceita, certo, fácil, coce
 
 
 	 	 Syllables ---
-ce, ci
+ci, ce
 
 
 	 	 Sentences ---
@@ -720,7 +720,7 @@ gibi, gema, gelo, magia, região, gibis, viagem, girar, imagem, girafa, regina, 
 
 
 	 	 Syllables ---
-ge, gi
+gi, ge
 
 
 	 	 Sentences ---
@@ -744,7 +744,7 @@ lhe, ilha, olhei, olho, alho, milho, folha, filho, velho, bolha, colhe, palha, g
 
 
 	 	 Syllables ---
-lha, lhe, lhi, lho, lhu
+lha, lhi, lhu, lhe, lho
 
 
 	 	 Sentences ---
@@ -804,7 +804,6 @@ fun, un
 	 	 Sentences ---
 O mundo é muito grande.
 O barco dos piratas afundou.
-Perguntei ao Juca se podemos ir juntos para a escola.
 Ele gosta de juntar todo mundo para cantar.
 
 
@@ -866,7 +865,7 @@ pau, aula, cauda, flauta, aurora, picapau
 
 
 	 	 Syllables ---
-pau, au, cau, nau, tau
+pau
 
 
 	 	 Sentences ---
@@ -897,7 +896,6 @@ Eu comprei pães na padaria.
 O Dia das Mães é em maio.
 Os cães gostam de brincar.
 A Rita gosta muito de cães.
-A mãe da Ema vai ao restaurante.
 A mamãe canta uma cantiga bonita.
 O batom vermelho da mamãe é bonito.
 
@@ -909,7 +907,7 @@ onça, ação, moça, poço, dança, moço, taça, laço, louça, caça, faça, 
 
 
 	 	 Syllables ---
-ça, ço, ção, çou
+ça
 
 
 	 	 Sentences ---
@@ -1186,12 +1184,11 @@ Lesson 58 --------------------
 
 
 	 	 Syllables ---
-gu
+
 
 
 	 	 Sentences ---
 Nós vamos beber água.
-"O Kalulu era uma lebre feliz e muito esperta. Vivia na África e era amigo de outros animais. Sempre quando alguém pedia ajuda, Kalulu estava cheio de ideias. Um dia, uma borboleta azul sentou no seu nariz e ele abriu a sua boca em espanto: ""Que borboleta linda!"". Mas a borboleta se assustou e saiu voando. Kalulu riu pois viu que assim livre a borboleta era feliz."
 O farol guia os barcos à noite.
 A mangueira do jardim lembra uma jararaca na grama.
 A onça bebeu água no poço.
@@ -1225,20 +1222,6 @@ A fênix é um pássaro de fogo.
 Tem oxigênio no ar que respiramos.
 Essa história é muito complexa
 Você tem telefone fixo em casa?
-Vou chamar um táxi para irmos ao teatro ver um espectáculo de mágica.
-
-
-
-Lesson 60 --------------------
-	 	 Words ---
-
-
-
-	 	 Syllables ---
-
-
-
-	 	 Sentences ---
 
 
 

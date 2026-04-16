@@ -77,12 +77,14 @@ z,z,Consonant,0
 ãe,ãj,Vowel,0
 ão,ãw,Vowel,0
 ç,s,Consonant,0
-é,E,Vowel,0
+é,E,Vowel,1
+é,e,Vowel,0
 ém,ē,Vowel,0
 ê,e,Vowel,0
 ên,ē,Vowel,0
 í,i,Vowel,0
 ín,ī,Vowel,0
-ó,O,Vowel,0
+ó,O,Vowel,1
+ó,o,Vowel,0
 ô,o,Vowel,0
 ú,u,Vowel,0

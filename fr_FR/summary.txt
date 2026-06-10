@@ -132,7 +132,7 @@ vé, va, ve, vi, vo, vu, av, iv, ov, uv, év
 
 	 	 Sentences ---
 Il a lavé le sas.
-Il a vissé la vis.
+il a vissé la vis
 Le vélo a sali le sol.
 Il va à la villa.
 Il y va à vélo.
@@ -185,7 +185,7 @@ na, ne, ni, no, nu, né
 	 	 Sentences ---
 La souris se mit sur le lit.
 Il se lave.
-La sonnerie a sonné.
+la sonnerie a sonné
 La louve salue la Lune.
 Le narval va sous le navire.
 Le lilas orne le mur.
@@ -199,7 +199,6 @@ Une alarme sonne.
 Le rat vit sous la ville.
 À minuit il sort.
 Il avale une olive.
-Le bus arrive.
 
 
 
@@ -231,7 +230,6 @@ Le lilas a fané.
 Il a fini le livre.
 Le fruit a mûri.
 Il a vu le film.
-Le bouilloire siffle.
 
 
 
@@ -283,7 +281,6 @@ da, de, di, do, du, ad, id, od, oud
 
 
 	 	 Sentences ---
-Je vide les ordures.
 Je marche sur la dune.
 Il nous a donné de la limonade.
 Je me suis douché.
@@ -305,8 +302,6 @@ ta, ti, te, to, tu, té, at, it, ot, ut
 
 	 	 Sentences ---
 Je lis le titre du livre.
-Tu es triste.
-Tu es sorti.
 La marmotte dort toute la journée.
 Il dort toute la journée.
 Finis ta tartine.
@@ -334,7 +329,6 @@ Papa remue la soupe.
 Le chat a attrapé une truite.
 Papa va à la douche.
 Il se prépare vite.
-Tu es rapide.
 Notre mamie a un chat. Le chat a attrapé une souris.
 Le pilote prépare notre départ.
 As tu pris ta trousse de stylos ?
@@ -392,7 +386,6 @@ dè, mè, pè, tê, ê, è
 Je suis très rapide !
 Ouvre la fenêtre.
 La fête a duré toute la nuit.
-Tu es très fort ! 
 Le jour se lève.
 
 
@@ -413,6 +406,7 @@ Le bébé a bu tout le bol de soupe
 Bonne nuit.
 Je me suis assis à table.
 Le bébé ne dort pas.
+le bus arrive
 
 
 
@@ -456,7 +450,7 @@ Le chat noir ronronne sur le canapé.
 Apporte ton ballon !
 Son père lui raconte un conte de fées.
 Le lion garde sa tribu.
-Le bébé boit son biberon.
+le bébé boit son biberon
 Apporte ton livre.
 
 
@@ -473,7 +467,6 @@ que, qui
 	 	 Sentences ---
 Ne taquine pas ta copine !
 Le bouchon se bloque.
-Tu es à la boutique.
 Écoute la dame qui parle.
 
 
@@ -488,21 +481,27 @@ es, les, des, tes, ses, mes
 
 
 	 	 Sentences ---
+tu es très fort
 Il est très fort !
 Il est pas à la boutique.
 Il est rapide.
+tu es triste
 Il est triste.
+tu es sorti
 Il est sorti.
 Qui est de retour.
+je vide les ordures
 Le bébé est un amour.
 La pomme est bonne.
 Mamie est malade.
+tu es à la boutique
+tu es rapide
 
 
 
 Lesson 29 --------------------
 	 	 Words ---
-dent, lent, vent, encre, entra, entre, entré, envie, envoie, menton, pencha, pensa, pense, pensé, pente, rendu, tente, client, comment, encore, endroit, enfuir, enlève, ennuie, enquête, entendu, entoure, environ, envole, immense, moment, rendre, rentra, rentre, rentré, sentir, souvent, tendre, torrent, trente, vendre, ventre, enfile, attente, attendre, attentif, contente, défense, élément, encadre, endormi, ensuite, entendit, entendre, entière, pendule, prendre, prudent, prendra, aventure, bâtiment, défendre, dentiste, document, endormir, identité, poliment, sûrement, vendredi, vivement, apprendre, attentivement, pratiquement
+dent, lent, vent, encre, entra, entre, entré, envie, envoie, menton, pencha, pensa, pense, pensé, pente, rendu, tente, client, comment, encore, endroit, enfuir, enlève, ennuie, enquête, entendu, entoure, environ, envole, immense, moment, rendre, rentra, rentre, rentré, sentir, souvent, tendre, torrent, trente, vendre, ventre, enfile, attente, attendre, attentif, contente, défense, élément, encadre, endormi, ensuite, entendit, entendre, entière, pendule, prendre, prudent, prendra, aventure, bâtiment, défendre, dentiste, document, endormir, identité, poliment, sûrement, vendredi, vivement, apprendre, lentement, attentivement, pratiquement
 
 
 	 	 Syllables ---
@@ -510,9 +509,9 @@ en
 
 
 	 	 Sentences ---
-Il gravit lentement la pente.
+il gravit lentement la pente
 Le vent souffle fort sur la colline.
-Je me brosse les dents
+je me brosse les dents
 La tarte sent si bon.
 
 
@@ -529,7 +528,7 @@ an, ban, tan, man
 	 	 Sentences ---
 Il sèche la tâche sur sa manche.
 Écoute la chanson à la radio.
-Le bus roule dans la rue.
+le bus roule dans la rue
 Mon frère a un an.
 Il commande la crêpe fourrée de chocolat.
 
@@ -569,7 +568,7 @@ Le téléski nous remonte sur la piste de ski.
 
 Lesson 33 --------------------
 	 	 Words ---
-air, gai, mai, quai, aide, aile, aime, aimé, fait, lait, mais, paix, vrai, paie, aidant, aigle, balai, caisse, clair, faire, frais, laine, laisse, laissé, paire, reine, seine, avait, était, anglais, connaît, éclair, épaisse, faible, fraîche, jamais, laissant, maigre, mairie, maître, marais, mauvais, monnaie, palais, pleine, traire, aimable, apparaît, baleine, entraîne, fontaine, parfait, prairie, semaine, vraiment, portrait, retraite
+air, gai, mai, quai, aide, aile, aime, aimé, fait, lait, mais, paix, vrai, paie, aidant, aigle, balai, caisse, clair, faire, frais, laine, laisse, laissé, paire, reine, seine, avait, était, anglais, connaît, éclair, épaisse, faible, fraîche, jamais, laissant, maigre, mairie, maître, marais, mauvais, monnaie, palais, pleine, traire, aimable, apparaît, baleine, entraîne, fontaine, parfait, prairie, semaine, vraiment, portrait, retraite, madeleine
 
 
 	 	 Syllables ---
@@ -583,7 +582,7 @@ Je sais lire !
 
 Lesson 34 --------------------
 	 	 Words ---
-bain, fin, main, nain, pain, pin, vin, ainsi, brin, enfin, grain, juin, plein, train, bassin, copain, coussin, demain, dinde, éteint, gamin, lapin, malin, marin, matin, moulin, pinson, poulain, poussin, requin, sapin, soudain, câlin, lutin, chagrin, crainte, devint, inconnu, instant, intrus, invente, inventé, invite, invité, jardin, peindre, peintre, prochain, éteindre, féminin, inquiète, installa, installe, installé, peinture, romarin, bulletin, masculin
+bain, fin, main, nain, pain, pin, vin, ainsi, brin, enfin, grain, juin, plein, train, bassin, copain, coussin, demain, dinde, éteint, gamin, lapin, malin, marin, matin, moulin, pinson, poulain, poussin, requin, sapin, soudain, câlin, lutin, chemin, chagrin, crainte, devint, inconnu, instant, intrus, invente, inventé, invite, invité, jardin, peindre, peintre, prochain, éteindre, féminin, inquiète, installa, installe, installé, peinture, romarin, bulletin, masculin
 
 
 	 	 Syllables ---
@@ -642,11 +641,11 @@ Tu dessines un carré.
 La petite courut vers sa maman.
 La lionne chasse la gazelle.
 Je me sèche avec une serviette.
-Je balaie les miettes sur le sol.
+je balaie les miettes sur le sol
 Il a renversé du jus sur son pantalon.
 J'ai pris une pomme en dessert.
 Elle a vu ses copines au parc. Elle a couru à toute vitesse jusqu'à elles.
-Papa coupe les carottes puis il les jette dans la casserole.
+papa coupe les carottes puis il les jette dans la casserole
 
 
 
@@ -661,11 +660,10 @@ ci, cy, ce, iç, ça, ço
 
 	 	 Sentences ---
 Quelle chance! 
-Nous allons avec papy pour les vacances.
+nous allons avec papy pour les vacances
 Le sol est couvert de glace.
 Le cyclone souffle fort sur le port.
 Tu as cinq ans.
-Notre équipe a reçu une médaille.
 Je dessine un cercle.
 Silence pendant que nous regardons le film.
 La météo est glaciale en ce moment.
@@ -702,7 +700,7 @@ pem, tem, lem, mem, em
 
 
 	 	 Sentences ---
-Les soldats ont été pris dans une embuscade.
+les soldats ont été pris dans une embuscade
 
 
 
@@ -735,7 +733,7 @@ om, bom, lom
 
 	 	 Sentences ---
 Il joue du trombone
-On coupe les pommes pour la compote.
+on coupe les pommes pour la compote
 
 
 
@@ -785,13 +783,13 @@ aise, ose, base, besoin, case, cause, chaise, choisi, chose, cousin, maison, mis
 Elle a rempli le vase de roses.
 La fusée décolle de la Terre.
 Elle a compris la ruse.
-Mon cousin est venu pour les vacances.
+mon cousin est venu pour les vacances
 
 
 
 Lesson 46 --------------------
 	 	 Words ---
-aider, aimer, aller, fier, jouer, boucher, bouger, cacher, casser, changer, chanter, chasser, chauffer, coller, coucher, couler, couper, créer, crier, danger, danser, dîner, donner, entier, entrer, jeter, laisser, lancer, laver, léger, lever, manger, monter, nager, passer, pêcher, penser, plier, poser, pousser, quitter, rêver, rocher, rouler, sauter, sauver, sécher, semer, sonner, tirer, tomber, toucher, voler, goûter, ajouter, allumer, amuser, annoncer, arracher, arrêter, arriver, arroser, attacher, attaquer, attirer, avaler, avancer, berger, brûler, chercher, clocher, collier, courrier, creuser, échapper, écouter, empêcher, envoler, éviter, fermer, former, frapper, garder, gibier, glisser, grimper, indiquer, inventer, janvier, marcher, marquer, métier, montrer, occuper, oublier, panier, papier, parler, placer, plancher, planter, pleurer, plonger, pommier, pompier, porter, prêter, remuer, rentrer, rester, sentier, souffler, terrier, tourner, tromper, trouver, verser, voilier, admirer, apporter, atelier, attraper, caresser, décider, décorer, découper, déjeuner, demander, déranger, dernier, dessiner, deviner, dévorer, diriger, éclater, emporter, fermier, février, grenier, mesurer, premier, quartier, raconter, ramasser, remonter, réparer, repérer, répéter, reposer, retirer, sanglier, séparer, sorcier, tablier, trembler, visiter, cavalier, cuisiner, déplacer, discuter, escalier, imaginer, partager, policier, préparer, protéger, réaliser, regarder, respirer, saladier, terminer, utiliser, vérifier, chevalier
+aider, aimer, aller, fier, jouer, boucher, bouger, cacher, casser, changer, chanter, chasser, chauffer, coller, coucher, couler, couper, créer, crier, danger, danser, dîner, donner, entier, entrer, jeter, laisser, lancer, laver, léger, lever, manger, monter, nager, passer, pêcher, penser, plier, poser, pousser, quitter, rêver, rocher, rouler, sauter, sauver, sécher, semer, sonner, tirer, tomber, toucher, voler, goûter, ajouter, allumer, amuser, annoncer, arracher, arrêter, arriver, arroser, attacher, attaquer, attirer, avaler, avancer, berger, brûler, chercher, clocher, collier, courrier, creuser, échapper, écouter, empêcher, envoler, éviter, fermer, former, frapper, garder, gibier, glisser, grimper, indiquer, inventer, janvier, marcher, marquer, métier, montrer, occuper, oublier, panier, papier, parler, placer, plancher, planter, pleurer, plonger, pommier, pompier, porter, prêter, remuer, rentrer, rester, sentier, souffler, terrier, tourner, tromper, trouver, verser, voilier, enlever, admirer, apporter, atelier, attraper, caresser, décider, décorer, découper, déjeuner, demander, déranger, dernier, dessiner, deviner, dévorer, diriger, éclater, emporter, fermier, février, grenier, mesurer, premier, quartier, raconter, ramasser, remonter, réparer, repérer, répéter, reposer, retirer, sanglier, séparer, sorcier, tablier, trembler, visiter, cavalier, cuisiner, déplacer, discuter, escalier, imaginer, partager, policier, préparer, protéger, réaliser, regarder, respirer, saladier, terminer, utiliser, vérifier, chevalier
 
 
 	 	 Syllables ---
@@ -803,9 +801,9 @@ Allons jouer au ballon dans le parc.
 On a la quiche pour le déjeuner.
 Nous irons écouter un concert.
 Elle adore manger des frites sur la plage.
-La reine mange une madeleine pour le goûter.
-Elle mange une madeleine pour le goûter.
-Il faut écouter attentivement la maîtresse.
+la reine mange une madeleine pour le goûter
+elle mange une madeleine pour le goûter
+il faut écouter attentivement la maîtresse
 Après l'école, on prendra une glace pour le goûter !
 
 
@@ -835,7 +833,7 @@ et
 
 	 	 Sentences ---
 Papa m'a offert un bouquet de muguet.
-Ferme les volets.
+ferme les volets
 Elle a attrapé un poisson dans le filet.
 Le pêcheur a attrapé plein de seiches dans son filet.
 Mon oncle joue du trombone et piano. Il est très doué pour la musique.
@@ -852,12 +850,11 @@ eau
 
 
 	 	 Sentences ---
-Les dames mangent la tarte
-Les bébés ne dorment pas.
-Les bus roulent dans la rue.
-Les chats grimpent.
+les dames mangent la tarte
+les bébés ne dorment pas
+les bus roulent dans la rue
+les chats grimpent
 Le corbeau est un oiseau.
-Le phare éclaire le chemin des bateaux.
 
 
 
@@ -872,7 +869,7 @@ thé, hibou, huit, heure, cahier, herbe, hiver, bonheur, dehors, hamster, harico
 
 	 	 Sentences ---
 Mamie adore manger des huîtres sur la plage.
-Les enfants jouent dehors.
+les enfants jouent dehors
 Lis nous une histoire sur la chouette et le hibou.
 
 
@@ -902,9 +899,8 @@ ign, ogn, agn
 
 	 	 Sentences ---
 Le cygne flotte sur la mare.
-Les vignes poussent dans le vignoble.
+les vignes poussent dans le vignoble
 Mon cousin est un guignol !
-Il a gagné un trophée au tennis.
 Mon cousin est mignon.
 
 
@@ -923,13 +919,13 @@ Viens chez moi !
 Venez chez moi !
 Vous mangez au restaurant.
 Vous marchez vite.
-Vous devez prendre le bus.
+vous devez prendre le bus
 
 
 
 Lesson 54 --------------------
 	 	 Words ---
-banc, bille, billet, camp, chaud, fille, fond, long, loup, quand, riz, rond, rend, attend, blanc, bord, brille, doigt, drap, entend, étang, flanc, froid, grand, grille, juillet, lourd, nord, pied, prend, sept, sourd, tard, tronc, trop, vingt, cerf, apprend, beaucoup, chenille, compter, coquille, corps, famille, fillette, fusil, galop, gentille, papillon, répond, sirop, vanille, brigand, canard, comprend, crapaud, cuillère, gourmand, lézard, marchand, plafond, profond, regard, renard, reprend, retard, têtard, estomac, léopard, placard, respect, printemps
+banc, bille, billet, camp, chaud, fille, fond, long, loup, quand, riz, rond, rend, attend, blanc, bord, brille, doigt, drap, entend, étang, flanc, froid, grand, grille, juillet, lourd, nord, pied, prend, sept, sourd, tard, tronc, trop, vingt, cerf, apprend, beaucoup, chenille, compter, coquille, corps, famille, fillette, fusil, galop, gentille, papillon, répond, sirop, vanille, brigand, canard, comprend, crapaud, cuillère, gourmand, lézard, marchand, plafond, profond, regard, renard, reprend, retard, têtard, médaille, estomac, léopard, placard, respect, printemps
 
 
 	 	 Syllables ---
@@ -941,6 +937,7 @@ Tu as mangé trop de bonbons.
 Le marchand vend des légumes sur le marché.
 Le filet de poisson grille dans le four.
 Maman a attaché ses longs cheveux.
+notre équipe a reçu une médaille
 
 
 
@@ -954,7 +951,7 @@ oeuf, boeuf, coeur, noeud, oeuvre
 
 
 	 	 Sentences ---
-Nous avons peigné les longs poils du chien après la randonnée pour enlever toute la saleté et les noeuds.
+nous avons peigné les longs poils du chien après la randonnée pour enlever toute la saleté et les noeuds
 
 
 
@@ -974,7 +971,7 @@ Ceci est un message confidentiel !
 
 Lesson 57 --------------------
 	 	 Words ---
-photo, phare, phrase, alphabet, téléphone
+photo, phare, phrase, alphabet, trophée, téléphone
 
 
 	 	 Syllables ---
@@ -982,6 +979,9 @@ photo, phare, phrase, alphabet, téléphone
 
 
 	 	 Sentences ---
+il a gagné un trophée au tennis
+le phare éclaire le chemin des bateaux
+il a gagné un trophée au tennis
 
 
 
@@ -995,7 +995,6 @@ foyer, noyau, loyer, noyer, aboyer, croyez, envoyer, joyeux, voyant, envoyez, em
 
 
 	 	 Sentences ---
-Nous payons le loyer.
 Envoyez la lettre par la poste.
 Un noyer pousse dans mon jardin.
 Papa paie le loyer.
@@ -1013,6 +1012,7 @@ seuil, vieil, conseil, détail, fauteuil, pareil, réveil, soleil, sommeil, meil
 
 
 	 	 Sentences ---
+la bouilloire siffle
 La bouilloire siffle.
 Il y avait une grenouille près du lac.
 

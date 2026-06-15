@@ -30,7 +30,7 @@ me, ema
 
 
 	 	 Syllables ---
-ma, me, má
+ma, mé, má
 
 
 	 	 Sentences ---
@@ -117,7 +117,7 @@ li, lua, ela, mola, filé, mula, mala, lula, lima, fila, dela, fala, família, a
 
 
 	 	 Syllables ---
-la, li, lu, lo, le
+la, li, lu, fló, lo, le
 
 
 	 	 Sentences ---
@@ -149,7 +149,7 @@ do, coco, dedo, dado, lado, fofo, como, mico, calmo
 
 
 	 	 Syllables ---
-flo
+
 
 
 	 	 Sentences ---
@@ -240,7 +240,7 @@ ri, rua, rio, rodo, roma, rolo, roda, carro, sorri, ferro, corre, rosca, rádio,
 
 
 	 	 Syllables ---
-ra, ri
+
 
 
 	 	 Sentences ---
@@ -321,7 +321,7 @@ bi, boa, bia, baú, rabo, boca, balé, bola, boné, burro, bala, barro, bico, bo
 
 
 	 	 Syllables ---
-ba, bi, bu, bá, bo, be, blo
+ba, bi, bu, bá, bo, be, bló
 
 
 	 	 Sentences ---
@@ -404,7 +404,7 @@ ar, ir, grão, por, mar, ver, ser, era, ler, rir, muro, amor, para, fria, flor, 
 
 
 	 	 Syllables ---
-ru, fri, gri, pra, pre, re, ro, tro, cro, vre
+ra, ru, ri, fri, gri, pra, pre, re, ro, tro, cró, vré
 
 
 	 	 Sentences ---

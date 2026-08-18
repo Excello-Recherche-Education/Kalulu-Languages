@@ -1,0 +1,60 @@
+name: Kalulu Voice Lines
+
+# Mirror of the workflow in Kalulu-Frontend, with the checkouts swapped: the packs
+# live here, the code they are checked against lives there, and the check script
+# travels with that checkout so it is only maintained in one place.
+# Reminder only: this workflow never fails a build.
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  speeches:
+    runs-on: ubuntu-latest
+    permissions:
+      # An explicit block sets every unlisted scope to none. Both repositories are
+      # public today, so checkout would succeed without it, but spelling out the read
+      # access keeps the job working if either one ever goes private.
+      contents: read
+      pull-requests: write
+    steps:
+      - name: Checkout the language packs
+        uses: actions/checkout@v4
+        with:
+          # Only the file names are compared, so the mp3 payloads stay in LFS storage.
+          lfs: false
+          path: packs
+
+      - name: Checkout the frontend
+        uses: actions/checkout@v4
+        with:
+          repository: Excello-Recherche-Education/Kalulu-Frontend
+          path: frontend
+
+      - name: Build the report
+        run: |
+          python3 frontend/.github/scripts/check_kalulu_speeches.py \
+            --frontend frontend --packs packs | tee report.md >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Post or update the pull-request comment
+        continue-on-error: true
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const marker = '<!-- kalulu-voice-lines -->';
+            const body = `${marker}\n${fs.readFileSync('report.md', 'utf8')}`;
+            const { owner, repo } = context.repo;
+            const issue_number = context.issue.number;
+            const comments = await github.paginate(github.rest.issues.listComments, {
+              owner, repo, issue_number,
+            });
+            const previous = comments.find((comment) => comment.body.includes(marker));
+            if (previous) {
+              await github.rest.issues.updateComment({
+                owner, repo, comment_id: previous.id, body,
+              });
+            } else {
+              await github.rest.issues.createComment({ owner, repo, issue_number, body });
+            }

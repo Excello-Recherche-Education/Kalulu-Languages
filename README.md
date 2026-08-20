@@ -125,6 +125,12 @@ A GitHub Actions workflow is available to optimize all media assets (PNG images,
 
 An optimized file is only kept if it is **strictly smaller** than the original — the workflow never makes things worse. If any files are improved, the workflow automatically creates a pull request to `main` on the branch `chore/optimize-media-assets`.
 
+## Kalulu's voice lines
+
+The narrator lines Kalulu speaks on the menus, in the gardens, and inside the minigames live in `<locale>/language_sounds/kalulu/`. They are synthesized with macOS `say` using a high-quality ("Enhanced") voice per locale, then re-encoded with ffmpeg.
+
+See **[KALULU-VOICE-GENERATION.md](KALULU-VOICE-GENERATION.md)** for the full procedure: which voice each locale uses, the texts, and — the part that matters most — how to match each pack's own loudness, since the packs sit as much as 13 dB apart and the game applies no compression at playback.
+
 ## Adding or modifying a language
 
 To add or modify a language pack, use the **Prof_Tool** included in the [Kalulu frontend repository](https://github.com/Excello-Recherche-Education/Kalulu-Frontend). Prof_Tool provides a graphical interface to edit linguistic data (grapheme-phoneme correspondences, words, syllables, sentences) and export a complete, ready-to-deploy language pack.

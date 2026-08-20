@@ -106,10 +106,14 @@ too loud in `es_CO`.
 3. `gain = target − raw`. Add `,alimiter=limit=0.99:attack=5:release=60` after the
    `volume` filter **only for a positive gain**, to catch the few peaks it pushes up.
 
-4. Verify (below). Iterate on the gain if the result missed by more than ~1 dB —
-   the mp3 encode shifts things slightly.
+4. Verify (below). The mp3 encode lands consistently **~0.5 dB below** the gain you
+   asked for, in either direction of gain — measured across eight files. Aim 0.5 dB
+   above target if you want to hit it exactly; otherwise just check the result falls
+   inside the sibling range, and only iterate if it missed by more than ~1 dB.
 
 ### Levels used for `brain_screen_victory.mp3`
+
+Siblings: the `brain_screen_*` / `gardens_screen_*` family.
 
 | Pack | Raw | Gain | Result | Sibling range |
 |---|---|---|---|---|
@@ -117,6 +121,23 @@ too loud in `es_CO`.
 | `es_AR` | −17.8 | **−2.0 dB** | −19.9 LUFS | −18.8 to −21.9 |
 | `es_CO` | −17.8 | **−10.7 dB** | −28.9 LUFS | −27.2 to −30.9 |
 | `pt_BR` | −17.9 | **+2.6 dB** + limiter | −15.7 LUFS | −14.5 to −16.2 |
+
+### Levels measured for `boss_help.mp3` — reference only, not shipped
+
+`boss_help` deliberately duplicates `boss_intro` (see
+[boss_help is a deliberate duplicate](#boss_help-is-a-deliberate-duplicate)), so these
+files were generated and then set aside. The numbers are kept because they show the
+part that is easy to get wrong: **the sibling family depends on the line, not just on
+the pack.** `boss_help` belongs to the minigame help lines (`ants_help`, `crabs_help`,
+…), which sit at a different level from the `brain_screen_*` family above — and
+`fr_FR` and `es_CO` are 12 dB apart on the very same line.
+
+| Pack | Raw | Gain | Result | Sibling median | Sibling range |
+|---|---|---|---|---|---|
+| `fr_FR` | −17.7 | **+1.3 dB** + limiter | −16.8 LUFS | −16.4 | −17.5 to −15.7 |
+| `es_AR` | −17.5 | **−4.0 dB** | −21.9 LUFS | −21.5 | −22.6 to −19.4 |
+| `es_CO` | −17.6 | **−11.2 dB** | −29.3 LUFS | −28.75 | −30.9 to −13.1 |
+| `pt_BR` | −18.0 | **+2.5 dB** + limiter | −15.9 LUFS | −15.5 | −17.8 to −14.9 |
 
 ---
 
@@ -183,6 +204,54 @@ to 11.3 s with no code change.
 > para explorar o mundo, todo o conhecimento está agora ao seu alcance. Estou
 > orgulhoso de você!
 
+### Draft texts for a real `boss_help.mp3` — written, not shipped
+
+Kept here so the work is not lost if the decision changes. These were written from the
+mechanic rather than translated, because no French help line has ever existed to
+translate: `boss_minigame.gd` presents a word and the child sorts it — a real word
+goes in the **book**, a pseudoword in the **bin**.
+
+**fr_FR**
+> Lis bien le mot qui apparaît. Si c'est un vrai mot, mets-le dans le livre. Sinon,
+> jette-le à la poubelle. Tu peux y arriver !
+
+**es_AR / es_CO / es_UY**
+> Lee bien la palabra que aparece. Si es una palabra de verdad, ponla en el libro.
+> Si no, tírala a la basura. ¡Tú puedes!
+
+**pt_BR**
+> Leia bem a palavra que aparece. Se for uma palavra de verdade, coloque no livro.
+> Se não, jogue no lixo. Você consegue!
+
+With the gains in the table above, these come out at 7.2–9.0 s, inside the 2–9.7 s
+range the other help lines occupy.
+
+---
+
+## boss_help is a deliberate duplicate
+
+In every pack, `boss_help.mp3` is a byte-identical copy of `boss_intro.mp3`. **This is
+intentional, not a defect.** The boss help button is meant to replay the intro for now;
+having the file in place keeps the option of giving it its own line later without
+touching the frontend.
+
+It has been that way in `fr_FR` since the pack's first commit (`3ec7c1a6`). The other
+four packs had no `boss_help.mp3` at all until 2026-08-20 — so the button was silent
+there, `load_external_sound` returning `null`. Duplicating the intro into each pack
+fixed that.
+
+To restore or re-apply the duplication:
+
+```bash
+for d in fr_FR es_AR es_CO es_UY pt_BR; do
+  cp "$d/language_sounds/kalulu/boss_intro.mp3" "$d/language_sounds/kalulu/boss_help.mp3"
+done
+```
+
+If a genuine help line is ever wanted, the drafts and levels are
+[above](#draft-texts-for-a-real-boss_helpmp3--written-not-shipped) — generate, then
+stop copying.
+
 ---
 
 ## es_UY is a copy of es_AR
@@ -233,10 +302,10 @@ python3 Kalulu-Frontend/.github/scripts/check_kalulu_speeches.py \
 It runs on every frontend pull request and comments the report. Two blind spots to
 keep in mind:
 
-- **It compares file names, never content.** A file copied from a sibling to fill a
-  gap reads as present. `fr_FR/boss_help.mp3` is a byte-identical copy of
-  `boss_intro.mp3`, so no pack actually has a boss help line even though the count
-  says 51/51. Find them by hashing the folder:
+- **It compares file names, never content.** A file copied from a sibling to fill a gap
+  reads as present, so a green report does not mean every line is its own recording.
+  Some of those copies are deliberate — `boss_help` is one — but check rather than
+  assume, by hashing the folder:
 
   ```bash
   cd <locale>/language_sounds/kalulu

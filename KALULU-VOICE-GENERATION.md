@@ -204,6 +204,44 @@ to 11.3 s with no code change.
 > para explorar o mundo, todo o conhecimento está agora ao seu alcance. Estou
 > orgulhoso de você!
 
+### Texts and levels used for `penguin_intro` / `help` / `end`
+
+Translated from the French recordings (transcribed by ear — see
+[You cannot transcribe audio here](#you-cannot-transcribe-audio-here)). `fr_FR` already
+had all three and was left untouched.
+
+French, for reference. Note the intro is the help line plus one closing phrase:
+
+> **help** — Avec ton doigt, montre au pingouin les lettres silencieuses.
+> **intro** — Avec ton doigt, montre au pingouin les lettres silencieuses. À toi de jouer !
+> **end** — Bravo, tu as aidé le pingouin à trouver toutes les lettres silencieuses.
+
+**es_AR / es_CO / es_UY**
+> **help** — Con tu dedo, muéstrale al pingüino las letras mudas.
+> **intro** — Con tu dedo, muéstrale al pingüino las letras mudas. ¡Te toca jugar!
+> **end** — ¡Bravo! Ayudaste al pingüino a encontrar todas las letras mudas.
+
+**pt_BR**
+> **help** — Com o seu dedo, mostre ao pinguim as letras mudas.
+> **intro** — Com o seu dedo, mostre ao pinguim as letras mudas. Agora é a sua vez!
+> **end** — Parabéns! Você ajudou o pinguim a encontrar todas as letras mudas.
+
+The French says *lettres silencieuses* where standard French would say *muettes*. The
+translations use **letras mudas** / **letras mudas**, the term children meet at school
+in both languages, rather than mirroring that choice literally.
+
+**`end` sits louder than `intro` and `help`** in the Spanish packs — a congratulation
+line, not an instruction. Measure per line type, not per pack:
+
+| | es_AR | es_CO | pt_BR |
+|---|---|---|---|
+| `intro` target / gain / result | −21.2 / −2.8 dB / −21.2 | −29.1 / −10.5 dB / −29.1 | −15.3 / +2.9 dB / −15.1 |
+| `help` target / gain / result | −21.5 / −3.7 dB / −21.5 | −28.75 / −10.5 dB / −28.7 | −15.5 / +2.2 dB / −15.3 |
+| `end` target / gain / result | −18.4 / −0.3 dB / −18.3 | −26.45 / −7.8 dB / −26.4 | −15.9 / +2.2 dB / −15.8 |
+
+Every one landed within 0.2 dB of target by aiming 0.5 dB high, which is the
+compensation described in [Procedure](#procedure).
+
 ### Draft texts for a real `boss_help.mp3` — written, not shipped
 
 Kept here so the work is not lost if the decision changes. These were written from the
@@ -225,6 +263,22 @@ goes in the **book**, a pseudoword in the **bin**.
 
 With the gains in the table above, these come out at 7.2–9.0 s, inside the 2–9.7 s
 range the other help lines occupy.
+
+---
+
+## You cannot transcribe audio here
+
+There is no speech-to-text tool on this machine, and Claude Code cannot listen to a
+file. So when an existing line has to be translated, **the text has to come from a
+person who plays the file** — that is how the `penguin_*` lines were done.
+
+It matters: the French `penguin_help` says *"avec ton doigt, montre au pingouin les
+lettres silencieuses"*, while the code calls the handler `_on_snowball_thrown`. Writing
+the line from the code alone would have produced an instruction about throwing
+snowballs that the French never mentions.
+
+Homebrew is installed, so `brew install whisper-cpp` plus a multilingual model would
+lift this limitation permanently. Worth doing before the next batch of translations.
 
 ---
 

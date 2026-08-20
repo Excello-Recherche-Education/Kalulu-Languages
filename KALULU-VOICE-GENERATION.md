@@ -312,10 +312,12 @@ keep in mind:
   md5 -r *.mp3 | sort \
     | awk '{if ($1 == prev) print "  " prevfile " == " $2; prev = $1; prevfile = $2}'
   ```
-- **Its "rename" verdicts on legacy files mislead.** It reports
-  `garden_screen_*` as a misspelling of the live `gardens_screen`, but those line
-  *names* do not exist either — they are leftovers from a retired screen layout and
-  should be deleted, not renamed.
+- **Its "rename" verdicts can mislead.** When `es_AR` and `es_UY` still carried 28
+  files from a retired screen layout, the report proposed renaming `garden_screen_*`
+  to the live `gardens_screen`. That would have been wrong: the line *names*
+  (`feedback_on_assessment_failed`, `tuto_on_lesson_1_complete_oneshot`, …) did not
+  exist either, under any category. They were deleted on 2026-08-20. Before acting on
+  a rename verdict, check that the *name* is live and not just the category.
 
 ---
 

@@ -49,9 +49,12 @@ jobs:
           tag_name: ${{ steps.tag.outputs.tag }}
           name: "Language Packs — ${{ steps.tag.outputs.tag }}"
           body: |
-            Language packs updated from PR #${{ github.event.pull_request.number }}.
+            Language packs built from `${{ github.ref_name }}` at ${{ github.sha }},
+            released by @${{ github.actor }}.
 
             **Included packs:**${{ steps.zip.outputs.packs }}
+
+            Each pack's `version.txt` carries the date of the last change made to it.
 
             Download the desired pack below.
           files: dist/*.zip

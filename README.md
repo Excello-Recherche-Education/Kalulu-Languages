@@ -24,7 +24,7 @@ Each `<locale>` folder follows the same layout:
 ├── syllables_list.csv       # Syllables with GP breakdown
 ├── sentences_list.csv       # Sentences associated with each lesson
 ├── summary.txt              # Human-readable lesson-by-lesson summary (words, syllables, sentences)
-├── version.txt              # ISO 8601 timestamp of the last pack generation
+├── version.txt              # ISO 8601 UTC timestamp of the last change to this pack
 ├── language_sounds/         # Audio files (MP3) — words, phonemes, syllables
 ├── tracing_data/            # Letter tracing data (CSV coordinate paths)
 │   └── <letter>_lower.csv, <letter>_upper.csv
@@ -136,6 +136,19 @@ See **[KALULU-VOICE-GENERATION.md](KALULU-VOICE-GENERATION.md)** for the full pr
 To add or modify a language pack, use the **Prof_Tool** included in the [Kalulu frontend repository](https://github.com/Excello-Recherche-Education/Kalulu-Frontend). Prof_Tool provides a graphical interface to edit linguistic data (grapheme-phoneme correspondences, words, syllables, sentences) and export a complete, ready-to-deploy language pack.
 
 For more details on Prof_Tool and the overall Kalulu architecture, see the [Kalulu frontend README](https://github.com/Excello-Recherche-Education/Kalulu-Frontend#readme).
+
+**Whatever the route, update the pack's `version.txt`** so it always carries the date of
+the last change made to that pack:
+
+```bash
+date -u +%Y-%m-%dT%H:%M:%S > <locale>/version.txt
+```
+
+A Prof_Tool export writes this file itself, so it is already correct. Anything edited
+outside Prof_Tool — a CSV by hand, an MP3 re-recorded under `language_sounds/`, tracing
+or look-and-learn media, `language.db` patched in place — must be stamped in the same
+commit. The timestamp travels into every Checker report as `pack_version`, so a stale
+one attributes a tester's feedback to a pack that no longer exists.
 
 ---
 

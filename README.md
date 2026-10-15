@@ -36,12 +36,14 @@ Each `<locale>` folder follows the same layout:
 
 ## SQLite database (`language.db`)
 
-The database contains 14 tables describing the pedagogical progression:
+The database contains 13 tables describing the pedagogical progression. Its exact
+structure, who reads which part of it, and the rules the data must follow are in
+[SCHEMA.md](SCHEMA.md) (schema version 1, [`schema/v1.sql`](schema/v1.sql)).
 
 | Table | Description |
 |-------|-------------|
 | `GPs` | Grapheme-phoneme correspondences (grapheme, phoneme, vowel/consonant type, exception flag) |
-| `Lessons` | Numbered lessons (1 to 60) |
+| `Lessons` | Numbered lessons (60 in `fr_FR`) |
 | `GPsInLessons` | GP ↔ lesson association (which GP is introduced in which lesson) |
 | `Words` | Vocabulary words with reading/writing flags |
 | `GPsInWords` | GP breakdown of each word with position |
@@ -50,9 +52,9 @@ The database contains 14 tables describing the pedagogical progression:
 | `Sentences` | Sentences composed of vocabulary words |
 | `WordsInSentences` | Word ↔ sentence association with position |
 | `Pseudowords` | Pseudowords generated from real words (decoding exercises) |
-| `LessonsExercises` | Exercise types assigned to each lesson |
+| `LessonsExercises` | The one to three minigames of each lesson (`0` = no minigame in that slot) |
 | `ExerciseTypes` | Exercise type reference table |
-| `LettersTracingData` | Letter tracing paths (may be empty if tracing data lives in `tracing_data/`) |
+| `LettersTracingData` | Unused and empty in every pack: letter tracings live in `tracing_data/` |
 
 ## CSV files
 

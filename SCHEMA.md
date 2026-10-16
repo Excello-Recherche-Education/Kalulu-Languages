@@ -8,10 +8,11 @@ holds, who depends on which part of it, and the rules the data must follow.
 this page explains it. A database says which version it follows in
 `PRAGMA user_version`.
 
-> **Status, 2026-10-16: all five packs are at version 1.** Version 1 is the
-> schema the packs already used — `fr_FR`'s, the most complete — with nothing
-> added; four packs were migrated to it, see "Where the packs stand". The model
-> database new languages start from, in Kalulu-Frontend, follows separately.
+> **Status, 2026-10-16: all five packs, and the model database new languages
+> start from, are at version 1.** Version 1 is the schema the packs already
+> used — `fr_FR`'s, the most complete — with nothing added; the others were
+> migrated to it, see "Where the packs stand". The model is Kalulu-Frontend's
+> `model_database.db` (Kalulu-Frontend#361), which Kalulu-ProfTool copies.
 
 ## Why this exists
 
@@ -147,7 +148,7 @@ four of the five differed from it:
 | `pt_BR` | dropped the old foreign keys on `LessonsExercises.Exercise1`/`Exercise2`; `ExerciseTypes`; `user_version` |
 | `es_AR`, `es_UY` | the foreign keys; added `Reading`/`Writing` to `Sentences`; `ExerciseTypes`; `user_version` |
 | `es_CO` | the foreign keys; added `Reading`/`Writing` to `Words`, `Syllables` and `Sentences`; `ExerciseTypes`; `user_version` |
-| `model_database.db` (Kalulu-Frontend) | the same as `es_CO`, and its five obsolete `ExerciseTypes` rows (`Syllable`, `Pairing`, `Words`, `Sentences`, `Boss`) replaced by the ten minigames — applied in Kalulu-Frontend |
+| `model_database.db` (Kalulu-Frontend) | the same as `es_CO`, and its five obsolete `ExerciseTypes` rows (`Syllable`, `Pairing`, `Words`, `Sentences`, `Boss`) replaced by the ten minigames — Kalulu-Frontend#361, merged into `3.1.7` as `5dfdd7b3` |
 
 - **The old foreign keys rejected `0`**, the "no minigame" value, and both the game
   and the Prof Tool enforce foreign keys. The Prof Tool used to drop them when

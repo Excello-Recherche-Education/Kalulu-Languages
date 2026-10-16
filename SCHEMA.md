@@ -90,7 +90,10 @@ used by a decoding minigame.
 ### When it is taught
 
 **`Lessons`** (`LessonNb`) — the numbered lessons. **Join on `ID`, order by
-`LessonNb`**: they are equal in every pack today, but nothing guarantees it.
+`LessonNb`**: they are not always equal. In `fr_FR` and `pt_BR` they are; in the
+three Spanish packs lessons 36 and 37 have IDs 40 and 41. The Prof Tool renumbers
+the IDs to match the numbers just before it writes an export ZIP, but these packs
+are stored un-renumbered.
 
 **`GPsInLessons`** (`GPID`, `LessonID`) — which GP each lesson introduces. A word
 or syllable becomes available at the latest lesson among its GPs; the game works

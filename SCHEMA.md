@@ -119,9 +119,9 @@ that it adds and removes nothing; a later version may drop it.
 
 ## Rules the data must follow
 
-Structure is only half the contract. These hold in a correct pack, and **are not
-yet checked anywhere** — a validator in this repository's CI is the step after the
-migration:
+Structure is only half the contract. These hold in a correct pack, and are
+checked with the structure on every pull request (see "How the packs are checked"
+below):
 
 1. Every word and syllable that a lesson can offer has a decomposition, with
    positions `0, 1, 2…` and no gap.
@@ -132,12 +132,48 @@ migration:
 4. `ExerciseTypes` matches `MinigameTypes.NAMES`, row for row.
 5. `user_version` is the schema version the pack follows.
 
-Known breaches, found by other means: in `fr_FR`, seven words lost a GP from their
-decomposition and `payons` has none at all (rules 1 and 2), and lessons 37 and 40
-list the same minigame twice (allowed by these rules, possibly a mistake); in
-`es_CO`, lesson 37 has no `LessonsExercises` row at all, so the game finds no
-minigame for it (rule 3). Details in Kalulu-Main's
+Known breaches, all reported by the validator: in `fr_FR`, seven words lost a GP
+from their decomposition and `payons` has none at all (rule 1); in `es_CO`,
+lesson 37 has no `LessonsExercises` row at all, so the game finds no minigame for
+it (rule 3). In `fr_FR`, lessons 37 and 40 also list the same minigame twice —
+allowed by these rules, possibly a mistake. No pack breaks rule 2: every GP left
+in a decomposition is taught by some lesson. Details in Kalulu-Main's
 `docs/agent/Kalulu-Languages.BUG.md`.
+
+## How the packs are checked
+
+`.github/scripts/validate_packs.py` checks every `<locale>/language.db`.
+
+**A pack change reaches `main` through a pull request, never a direct push** —
+including a Prof Tool export: commit it on a branch, open a pull request, and merge
+once it is validated. The *Validate Language Packs* workflow runs on every pull
+request into `main` (when it is opened, and again on every push to its branch) and
+posts its report as a comment on the pull request, updated in place. Run it
+locally the same way before opening one:
+
+```bash
+python3 .github/scripts/validate_packs.py                    # every pack
+python3 .github/scripts/validate_packs.py fr_FR/language.db  # one
+```
+
+| Level | What | Effect |
+|---|---|---|
+| error | `user_version` is not the newest `schema/v<n>.sql` (rule 5); tables, columns, types, defaults, keys or indexes differ from that file; `integrity_check` fails; `foreign_key_check` finds rows pointing at nothing | the check fails |
+| warning | rules 1 to 4 | reported; `--strict` makes them fail too, once the known breaches are fixed |
+| notice | lessons whose `ID` differs from their `LessonNb` | reported only |
+
+- **Structure is compared as SQLite reports it** (`PRAGMA table_info`,
+  `foreign_key_list`, `index_list`), not as SQL text: the packs mix quoted and
+  unquoted column definitions written by different tools, which mean the same.
+- **Rule 1 is checked on every word and syllable**, not only those a lesson can
+  offer.
+- **Rule 4 needs the game's `MinigameTypes.NAMES`**, read from a Kalulu-Frontend
+  checkout: `--frontend <path>`, or the `Kalulu-Frontend` folder beside this
+  repository in a Kalulu-Main working copy. CI has neither, so there it only
+  checks that the packs agree with each other, and says so.
+- **The report is a comment on the pull request** because annotations only show
+  inline on the files a pull request changes, and a pack's findings are often in
+  files it does not touch. The same report is in the run's summary.
 
 ## Where the packs stand
 
@@ -177,6 +213,8 @@ None of this reaches a device until the pack ZIPs are next uploaded to S3.
 - **A change is a new version**: a new `schema/v<n>.sql`, a migration from the
   previous one, and `user_version` set to *n* in every pack and in
   `model_database.db` together. A version file is never edited after it is in use.
+  The validator always compares with the newest `schema/v<n>.sql`, so the new file
+  and the migrated packs go in the same commit, or every pack fails.
 - **Prefer adding to changing.** A new table or a new column with a default is
   invisible to a program that does not ask for it; renaming or removing breaks
   whoever reads it. Check the table above before removing anything.

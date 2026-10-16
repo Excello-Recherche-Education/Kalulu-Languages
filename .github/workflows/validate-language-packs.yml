@@ -1,0 +1,38 @@
+name: Validate Language Packs
+
+# Changes reach main through a pull request, never a direct push: this runs on
+# the pull request, and its result is what decides whether it can be merged.
+on:
+  pull_request:
+    branches: [main]
+    types: [opened, reopened, synchronize]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  validate:
+    name: Validate language packs
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        # language.db is not in LFS, and nothing else is read: no LFS download.
+
+      - name: Check every language.db against the schema and SCHEMA.md's rules
+        # Errors (schema version, structure, integrity, foreign keys) fail the
+        # check; the data rules are warnings for now.
+        run: python3 .github/scripts/validate_packs.py --report validation-report.md
+
+      # The report goes on the pull request itself: annotations only show inline
+      # on files the pull request changes, which a pack's findings often are not.
+      # One comment, updated on every push to the branch.
+      - name: Post the report on the pull request
+        if: always() && github.event_name == 'pull_request' && hashFiles('validation-report.md') != ''
+        uses: marocchino/sticky-pull-request-comment@v2
+        with:
+          header: language-pack-validation
+          path: validation-report.md

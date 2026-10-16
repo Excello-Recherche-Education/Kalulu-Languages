@@ -8,11 +8,10 @@ holds, who depends on which part of it, and the rules the data must follow.
 this page explains it. A database says which version it follows in
 `PRAGMA user_version`.
 
-> **Status, 2026-10-15: version 1 is written down, not yet applied.** It is the
-> schema the packs already use — `fr_FR`'s, the most complete — with nothing
-> added. No database carries a version yet (every `user_version` is 0), and four
-> of the five packs differ from it in small ways; see "Where the packs stand".
-> Bringing them to version 1 is the next step.
+> **Status, 2026-10-16: all five packs are at version 1.** Version 1 is the
+> schema the packs already used — `fr_FR`'s, the most complete — with nothing
+> added; four packs were migrated to it, see "Where the packs stand". The model
+> database new languages start from, in Kalulu-Frontend, follows separately.
 
 ## Why this exists
 
@@ -131,33 +130,43 @@ migration:
 
 Known breaches, found by other means: in `fr_FR`, seven words lost a GP from their
 decomposition and `payons` has none at all (rules 1 and 2), and lessons 37 and 40
-list the same minigame twice (allowed by these rules, possibly a mistake). Details
-in Kalulu-Main's `docs/agent/Kalulu-Languages.BUG.md`.
+list the same minigame twice (allowed by these rules, possibly a mistake); in
+`es_CO`, lesson 37 has no `LessonsExercises` row at all, so the game finds no
+minigame for it (rule 3). Details in Kalulu-Main's
+`docs/agent/Kalulu-Languages.BUG.md`.
 
 ## Where the packs stand
 
-Compared on 2026-10-15 against `schema/v1.sql`, by table, column, type, default,
-nullability and foreign key. No database has views, triggers or indexes of its
-own.
+**Every pack follows version 1** since 2026-10-16: structure identical to
+`schema/v1.sql`, `user_version = 1`. Before that, none carried a version, and
+four of the five differed from it:
 
-| Database | Structure | `ExerciseTypes` | `user_version` |
-|---|---|---|---|
-| `fr_FR` | **matches v1** | row 10 says `fish` | 0 |
-| `pt_BR` | old foreign keys on `LessonsExercises.Exercise1`/`Exercise2` | row 10 says `fish` | 0 |
-| `es_AR`, `es_UY` | old foreign keys; no `Reading`/`Writing` on `Sentences` | row 10 says `fish` | 0 |
-| `es_CO` | old foreign keys; no `Reading`/`Writing` on `Words`, `Syllables` or `Sentences` | row 10 says `fish` | 0 |
-| `model_database.db` (Kalulu-Frontend) | old foreign keys; no `Reading`/`Writing` on any table | 5 obsolete rows (`Syllable`, `Pairing`, `Words`, `Sentences`, `Boss`) | 0 |
+| Database | What the migration changed |
+|---|---|
+| `fr_FR` | `ExerciseTypes` row 10, `fish` → `boss`; `user_version` |
+| `pt_BR` | dropped the old foreign keys on `LessonsExercises.Exercise1`/`Exercise2`; `ExerciseTypes`; `user_version` |
+| `es_AR`, `es_UY` | the foreign keys; added `Reading`/`Writing` to `Sentences`; `ExerciseTypes`; `user_version` |
+| `es_CO` | the foreign keys; added `Reading`/`Writing` to `Words`, `Syllables` and `Sentences`; `ExerciseTypes`; `user_version` |
+| `model_database.db` (Kalulu-Frontend) | the same as `es_CO`, and its five obsolete `ExerciseTypes` rows (`Syllable`, `Pairing`, `Words`, `Sentences`, `Boss`) replaced by the ten minigames — applied in Kalulu-Frontend |
 
-- **The old foreign keys** reject `0`, the "no minigame" value. The Prof Tool drops
-  them when *Lesson Exercises* opens; only `fr_FR` has had that done.
-- **The missing `Reading` / `Writing` columns** are why `es_CO` exports empty
-  lists, and why **every new language starts without them**: the model lacks them.
-- **`fish` is the boss's former name.** The Prof Tool rewrites the table when
-  *Lesson Exercises* opens; every pack was exported before the rename.
+- **The old foreign keys rejected `0`**, the "no minigame" value, and both the game
+  and the Prof Tool enforce foreign keys. The Prof Tool used to drop them when
+  *Lesson Exercises* opened; only `fr_FR` had had that done.
+- **The missing `Reading` / `Writing` columns** were why `es_CO` exported empty
+  word and syllable lists — the export query failed outright — and why every new
+  language started without them. Added with v1's defaults, `1` and `0`: exactly
+  what the Prof Tool used to add when a screen opened.
+- **`fish` was the boss's former name**; every pack had been exported before the
+  rename.
 
-None of this changes what the game shows: it reads none of the columns or rows
-involved. It changes what the Prof Tool exports, and what the next tools can rely
-on.
+**What was checked.** Every table kept every row unchanged, apart from the
+intended changes; the `LessonsExercises` rebuild kept its IDs and its
+`AUTOINCREMENT` counter; SQLite's `integrity_check` and `foreign_key_check` pass.
+The game's own `Database` functions, run in Godot against every lesson of every
+pack before and after, return byte-identical results. Opening the Prof Tool's
+schema-patching screens on a migrated pack no longer changes its schema, and
+`es_CO`'s word and syllable export now returns its 1,622 words and 240 syllables.
+None of this reaches a device until the pack ZIPs are next uploaded to S3.
 
 ## Changing the schema
 

@@ -273,7 +273,7 @@ Je suis ravi !
 
 Lesson 18 --------------------
 	 	 Words ---
-de, dé, du, dit, dos, doux, dur, sud, doué, dame, déjà, demi, dire, donna, donne, donné, doré, dort, douche, drôle, idée, judo, lundi, midi, mode, rude, vide, dodo, doudou, dure, duré, dune, douché, adore, dessous, dessus, lourde, mardi, ordre, radio, radis, défilé, défini, déroule, devenu, devine, deviné, dormir, madame, malade, mordre, ordonna, salade, soldat, solide, admire, domino, samedi, donnera, maladie, devenir, limonade, Normandie
+de, dé, du, dit, dos, doux, dur, sud, doué, dame, déjà, demi, dire, donna, donne, donné, doré, dort, douche, idée, judo, lundi, midi, mode, rude, vide, dodo, doudou, dure, duré, dune, douché, adore, dessous, dessus, drôle, lourde, mardi, ordre, radio, radis, défilé, défini, déroule, devenu, devine, deviné, dormir, madame, malade, mordre, ordonna, salade, soldat, solide, admire, domino, samedi, donnera, maladie, devenir, limonade, Normandie
 
 
 	 	 Syllables ---
@@ -354,7 +354,7 @@ Voilà une idée !
 
 Lesson 22 --------------------
 	 	 Words ---
-cou, arc, car, cas, choc, clé, clou, col, côte, côté, cour, cri, cru, lac, pic, sac, toc, cache, caché, café, canne, cape, carré, casse, cassé, cave, chacun, coche, code, colle, comme, commun, connu, couche, couché, coucou, coude, coule, coupe, coupé, couru, coûte, cria, crié, cuir, cuit, parc, vécu, cacao, cadre, calme, canal, canot, carte, chacal, classe, cloche, coffre, colis, copie, corde, coudre, couloir, couple, courir, course, courte, crâne, croire, décor, éclat, école, écoute, écria, écrit, écume, occupe, récré, score, secoua, secoue, sucre, accorde, accroche, accroché, active, calcul, caméra, caniche, carotte, carrosse, chacune, colline, colonne, commune, couronne, couvrir, cuivre, culotte, découpe, éclate, écrire, écrite, écurie, fracas, secours, soucoupe, tricot, copine, canapé, décoré, décolle, picore, article, chocolat, colorie, costume, déclara, découvre, décrire, discours, miracle, parcours, radical, récolte, recopie, vacarme, victime, licorne, cascade, tricote, copines, activité, camarade, capitale, caravane, carnaval, écriture, sécurité, casserole, crocodile
+cou, arc, car, cas, choc, clé, clou, col, cour, cri, cru, lac, pic, sac, toc, cache, caché, café, canne, cape, carré, casse, cassé, cave, chacun, coche, code, colle, comme, commun, connu, côte, côté, couche, couché, coucou, coude, coule, coupe, coupé, couru, coûte, cria, crié, cuir, cuit, parc, vécu, cacao, cadre, calme, canal, canot, carte, chacal, classe, cloche, coffre, colis, copie, corde, coudre, couloir, couple, courir, course, courte, crâne, croire, décor, éclat, école, écoute, écria, écrit, écume, occupe, récré, score, secoua, secoue, sucre, accorde, accroche, accroché, active, calcul, caméra, caniche, carotte, carrosse, chacune, colline, colonne, commune, couronne, couvrir, cuivre, culotte, découpe, éclate, écrire, écrite, écurie, fracas, secours, soucoupe, tricot, copine, canapé, décoré, décolle, picore, article, chocolat, colorie, costume, déclara, découvre, décrire, discours, miracle, parcours, radical, récolte, recopie, vacarme, victime, licorne, cascade, tricote, copines, activité, camarade, capitale, caravane, carnaval, écriture, sécurité, casserole, crocodile
 
 
 	 	 Syllables ---
@@ -434,7 +434,7 @@ Regarde par la vitre.
 
 Lesson 26 --------------------
 	 	 Words ---
-bon, mon, non, son, ton, ont, donc, dont, lion, pont, vont, font, allons, avion, avons, ballon, bâton, boisson, bonbon, bouchon, bouton, canon, chaton, cochon, conte, coton, front, longue, marron, monde, monta, monte, monté, mouton, oncle, ourson, poisson, ronde, salon, savon, selon, sinon, ponts, balcon, bondir, bondit, bonjour, bonsoir, buisson, camion, carton, charbon, contre, dragon, flacon, fondre, gronde, mission, montre, patron, violon, seront, concours, consonne, contact, contrôle, émission, monstre, raconte, raconté, remonte, répondu, réponse, réunion, volonté, ronronne, biberon, contenu, chaperon, bûcheron, conduire, consulte, continua, continue, convenir, profonde, répondre, construire
+bon, mon, non, son, ton, ont, donc, dont, lion, pont, vont, font, allons, avion, avons, ballon, bâton, boisson, bonbon, bouchon, bouton, canon, chaton, cochon, conte, coton, front, longue, marron, monde, monta, monte, monté, mouton, oncle, ourson, poisson, ronde, salon, savon, selon, sinon, ponts, balcon, bondir, bondit, bonjour, bonsoir, buisson, camion, carton, charbon, contre, dragon, flacon, fondre, gronde, mission, montre, patron, violon, seront, concours, consonne, contact, émission, monstre, raconte, raconté, remonte, répondu, réponse, réunion, volonté, ronronne, biberon, contenu, chaperon, bûcheron, conduire, consulte, continua, continue, contrôle, convenir, profonde, répondre, construire
 
 
 	 	 Syllables ---
@@ -518,7 +518,7 @@ La tarte sent si bon.
 
 Lesson 30 --------------------
 	 	 Words ---
-chant, dans, élan, gant, plan, sans, tant, allant, angle, bande, banque, bilan, chanson, chante, danse, écran, enfant, langue, maman, manche, manque, riant, roman, ruban, santé, tante, tantôt, angoisse, blanche, branche, courant, criant, dedans, devant, donnant, durant, éléphant, fantôme, grande, levant, méchant, passant, pendant, planche, plante, poussant, savant, tirant, viande, vivant, volant, volcan, enfants, ajoutant, arrivant, charmant, commande, demanda, demande, demandé, dimanche, franchir, grandir, méchante, montrant, pantalon, parlant, portant, pourtant, prenant, puissant, quantité, quarante, rentrant, revanche, sortant, souriant, suivant, tournant, toboggan, cantine, suivante, randonnée, poursuivant
+chant, dans, élan, gant, plan, sans, tant, allant, angle, bande, banque, bilan, chanson, chante, danse, écran, enfant, langue, maman, manche, manque, riant, roman, ruban, santé, tante, angoisse, blanche, branche, courant, criant, dedans, devant, donnant, durant, grande, levant, méchant, passant, pendant, planche, plante, poussant, savant, tantôt, tirant, viande, vivant, volant, volcan, enfants, ajoutant, arrivant, charmant, commande, demanda, demande, demandé, dimanche, fantôme, franchir, grandir, méchante, montrant, pantalon, parlant, portant, pourtant, prenant, puissant, quantité, quarante, rentrant, revanche, sortant, souriant, suivant, tournant, toboggan, cantine, suivante, randonnée, poursuivant
 
 
 	 	 Syllables ---
@@ -971,7 +971,7 @@ Ceci est un message confidentiel !
 
 Lesson 57 --------------------
 	 	 Words ---
-photo, phare, phrase, alphabet, trophée, téléphone
+photo, phare, phrase, éléphant, alphabet, trophée, téléphone
 
 
 	 	 Syllables ---

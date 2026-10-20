@@ -89,11 +89,13 @@ used by a decoding minigame.
 
 ### When it is taught
 
-**`Lessons`** (`LessonNb`) — the numbered lessons. **Join on `ID`, order by
-`LessonNb`**: they are not always equal. In `fr_FR` and `pt_BR` they are; in the
-three Spanish packs lessons 36 and 37 have IDs 40 and 41. The Prof Tool renumbers
-the IDs to match the numbers just before it writes an export ZIP, but these packs
-are stored un-renumbered.
+**`Lessons`** (`LessonNb`) — the numbered lessons. **A lesson's `ID` is its
+`LessonNb`** (rule 6), in every pack since 2026-10-20. The Language Lambda depends
+on it: it writes `GPsInLessons.LessonID` to MySQL as the lesson number. Until then
+the three Spanish packs stored lessons 36 and 37 under IDs 40 and 41, which only
+the Prof Tool's export put right, by renumbering just before writing the ZIP — so
+a ZIP made from the repository directly would have given MySQL lessons 40 and 41.
+The game is unaffected either way: it joins on `ID` and orders by `LessonNb`.
 
 **`GPsInLessons`** (`GPID`, `LessonID`) — which GP each lesson introduces. A word
 or syllable becomes available at the latest lesson among its GPs; the game works
@@ -131,6 +133,7 @@ below):
    lesson has at least one minigame.
 4. `ExerciseTypes` matches `MinigameTypes.NAMES`, row for row.
 5. `user_version` is the schema version the pack follows.
+6. Every lesson's `ID` is its `LessonNb`.
 
 Known breaches, all reported by the validator: in `fr_FR`, seven words lost a GP
 from their decomposition and `payons` has none at all (rule 1); in `es_CO`,
@@ -158,9 +161,13 @@ python3 .github/scripts/validate_packs.py fr_FR/language.db  # one
 
 | Level | What | Effect |
 |---|---|---|
-| error | `user_version` is not the newest `schema/v<n>.sql` (rule 5); tables, columns, types, defaults, keys or indexes differ from that file; `integrity_check` fails; `foreign_key_check` finds rows pointing at nothing | the check fails |
+| error | `user_version` is not the newest `schema/v<n>.sql` (rule 5); tables, columns, types, defaults, keys or indexes differ from that file; `integrity_check` fails; `foreign_key_check` finds rows pointing at nothing; a lesson's `ID` is not its `LessonNb` (rule 6) | the check fails |
 | warning | rules 1 to 4 | reported; `--strict` makes them fail too, once the known breaches are fixed |
-| notice | lessons whose `ID` differs from their `LessonNb` | reported only |
+| notice | a rule that could not be checked, and why | reported only |
+
+**Rule 6 is an error although it is a data rule**, because breaking it is not
+contained in the pack: the Language Lambda would write the wrong lesson numbers
+into production MySQL.
 
 - **Structure is compared as SQLite reports it** (`PRAGMA table_info`,
   `foreign_key_list`, `index_list`), not as SQL text: the packs mix quoted and
@@ -198,6 +205,14 @@ four of the five differed from it:
   what the Prof Tool used to add when a screen opened.
 - **`fish` was the boss's former name**; every pack had been exported before the
   rename.
+
+**Lesson IDs, 2026-10-20.** In `es_AR`, `es_CO` and `es_UY`, lessons 36 and 37 went
+from IDs 40 and 41 to 36 and 37 — one `UPDATE Lessons SET ID = LessonNb`, carried
+to `GPsInLessons` and `LessonsExercises` by their `ON UPDATE CASCADE`. Every other
+row of every table is unchanged, and so is the `AUTOINCREMENT` counter (41), as a
+Prof Tool export leaves it. The Language Lambda's own code, run on each pack before
+and after, now gives lessons 36 and 37 where it gave 40 and 41, with the same
+lesson names, gardens and GPs. `es_AR` and `es_UY` are still byte-identical.
 
 **What was checked.** Every table kept every row unchanged, apart from the
 intended changes; the `LessonsExercises` rebuild kept its IDs and its

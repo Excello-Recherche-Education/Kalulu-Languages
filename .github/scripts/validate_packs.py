@@ -6,13 +6,13 @@ SCHEMA.md is the contract; this is what checks it. For each <locale>/language.db
   errors    - the pack does not follow the schema, or is damaged:
               user_version is not the latest schema/v<n>.sql (rule 5), its
               tables, columns, defaults, keys or indexes differ from that file,
-              SQLite's integrity_check fails, or foreign_key_check finds rows
-              pointing at nothing.
+              SQLite's integrity_check fails, foreign_key_check finds rows
+              pointing at nothing, or a lesson's ID is not its lesson number
+              (rule 6).
   warnings  - the data breaks rules 1 to 4 of SCHEMA.md. Reported, not fatal
               (yet): some packs are known to break them. --strict makes them
               fatal.
-  notices   - worth knowing, not a rule: lesson IDs that differ from lesson
-              numbers.
+  notices   - a rule that could not be checked, and why.
 
 Exits 1 when there is an error (or, with --strict, a warning), 0 otherwise.
 Python standard library only, so CI needs nothing installed.
@@ -318,12 +318,14 @@ def check_exercise_types(report: PackReport, names: list[str], source: str) -> N
 
 
 def check_lesson_ids(conn: sqlite3.Connection, report: PackReport) -> None:
-    """Not a rule: the Prof Tool renumbers lesson IDs on export, stored packs may
-    not be renumbered, and the Language Lambda reads LessonID as the lesson number."""
+    """Rule 6: every lesson's ID is its lesson number. An error, not a warning:
+    the Language Lambda writes GPsInLessons.LessonID to MySQL as the lesson
+    number, so a pack that breaks it puts lessons the game does not have into
+    production."""
     rows = conn.execute("SELECT ID, LessonNb FROM Lessons WHERE ID != LessonNb ORDER BY LessonNb").fetchall()
     if rows:
         report.add(
-            "notice", "lesson IDs",
+            "error", "rule 6",
             f"{len(rows)} lesson(s) have an ID different from their lesson number",
             [f"lesson {number} has ID {lesson_id}" for lesson_id, number in rows],
         )

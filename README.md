@@ -102,6 +102,14 @@ from LFS, builds each ZIP in the layout a Prof Tool export has (one top-level
 records the commit and the run it came from, and the bucket keeps every previous
 version.
 
+**A pack that has not changed since it was last published is skipped**, so `all` is
+safe to run: an upload changes the object's date, which makes every device download
+the pack again, and runs the Language Lambda. "Changed" means the content of the
+`<locale>/` folder (its git tree, stored on the object as a fingerprint), not the
+ZIP, which differs on every run. Tick *force* to upload unchanged packs anyway. The
+run summary says, pack by pack, what was uploaded or skipped and why; a dry run says
+what would be.
+
 **Every upload starts the Language Lambda**, which rewrites that language's lessons
 and gardens in DEV *and* PROD MySQL. Devices download the new pack the next time
 they check. Run it on purpose, not as a test — the dry run is the test.

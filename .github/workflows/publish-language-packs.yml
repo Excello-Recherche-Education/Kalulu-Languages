@@ -5,11 +5,17 @@ name: Publish Language Packs
 # that language's lessons in DEV and PROD MySQL. So it is run by hand, from
 # main only, after the pull request carrying the change is merged.
 #
+# A pack that has not changed since it was last published is skipped: an upload
+# changes the object's date, which makes every device download the pack again,
+# and runs the Lambda for nothing. "Changed" is decided on the pack's content -
+# the git tree of its <locale>/ folder, stored on the object - not on the ZIP,
+# which differs on every run because zip records each file's checkout time.
+#
 # Languages-Checker/ is not touched: copying a pack there for the volunteer
 # testers stays a manual step.
 #
 # The AWS role (Kalulu-Main's AWS/language-packs-publisher.yaml) can be assumed
-# by a run on main of this repository only, and can write nothing but
+# by a run on main of this repository only, and can read and write nothing but
 # <locale>.zip at the bucket root.
 on:
   workflow_dispatch:
@@ -19,7 +25,11 @@ on:
         required: true
         default: all
       dry_run:
-        description: Build and check the ZIPs, upload nothing
+        description: Build and check the ZIPs, and say which would be uploaded; upload nothing
+        type: boolean
+        default: false
+      force:
+        description: Upload even the packs that have not changed since they were published
         type: boolean
         default: false
 
@@ -96,11 +106,58 @@ jobs:
             exit 1
           fi
 
+      # In a dry run too: telling which packs would be uploaded means reading
+      # what the bucket holds.
+      - name: Get AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ vars.LANGUAGE_PACKS_PUBLISH_ROLE_ARN }}
+          role-session-name: publish-language-packs-${{ github.run_id }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      # The fingerprint of a pack is the git tree of its folder: it changes when,
+      # and only when, a file in it does (an LFS file through its pointer). A
+      # published object carries it as "tree" metadata. No object, or one
+      # without it - everything published before this check existed - counts
+      # as changed.
+      - name: Compare with what the bucket holds
+        id: changed
+        env:
+          PACKS: ${{ steps.packs.outputs.list }}
+          FORCE: ${{ inputs.force }}
+        run: |
+          upload=""
+          : > compare.md
+          for locale in $PACKS; do
+            tree=$(git rev-parse "HEAD:$locale")
+            # The role cannot list the bucket, so a missing object answers 403,
+            # not 404: any failure here means "no fingerprint to compare".
+            published=$(aws s3api head-object --bucket "$BUCKET" --key "$locale.zip" \
+              --query 'Metadata.tree' --output text 2>/dev/null || echo "none")
+            if [ "$published" = "$tree" ] && [ "$FORCE" != "true" ]; then
+              echo "$locale: unchanged since it was published ($tree), skipped"
+              echo "| \`$locale\` | unchanged, skipped | \`$tree\` |" >> compare.md
+            else
+              if [ "$published" = "$tree" ]; then
+                reason="unchanged, forced"
+              elif [ "$published" = "none" ] || [ "$published" = "None" ]; then
+                reason="no fingerprint on S3"
+              else
+                reason="changed (was \`$published\`)"
+              fi
+              echo "$locale: $reason"
+              echo "| \`$locale\` | $reason | \`$tree\` |" >> compare.md
+              upload="$upload $locale"
+            fi
+          done
+          echo "list=$(echo $upload | xargs)" >> "$GITHUB_OUTPUT"
+
       # The layout of a Prof Tool export: one top-level <locale>/ folder, files
       # only (-D: no directory entries), no OS metadata.
       - name: Build the ZIPs
+        if: steps.changed.outputs.list != ''
         env:
-          PACKS: ${{ steps.packs.outputs.list }}
+          PACKS: ${{ steps.changed.outputs.list }}
         run: |
           mkdir -p dist
           for locale in $PACKS; do
@@ -113,21 +170,14 @@ jobs:
             echo "$locale.zip: $(unzip -Z1 "dist/$locale.zip" | wc -l) files, $(stat -c %s "dist/$locale.zip") bytes"
           done
 
-      - name: Get AWS credentials
-        if: ${{ !inputs.dry_run }}
-        uses: aws-actions/configure-aws-credentials@v4
-        with:
-          role-to-assume: ${{ vars.LANGUAGE_PACKS_PUBLISH_ROLE_ARN }}
-          role-session-name: publish-language-packs-${{ github.run_id }}
-          aws-region: ${{ env.AWS_REGION }}
-
       # One PUT per ZIP, with its SHA-256: S3 refuses the upload if the bytes
-      # that arrive are not the ones sent. The commit and the run are stored on
-      # the object, so what the bucket holds can always be traced to its source.
+      # that arrive are not the ones sent. The commit, the run and the pack's
+      # fingerprint are stored on the object, so what the bucket holds can
+      # always be traced to its source, and the next run can tell it apart.
       - name: Upload to the bucket root
-        if: ${{ !inputs.dry_run }}
+        if: ${{ !inputs.dry_run && steps.changed.outputs.list != '' }}
         env:
-          PACKS: ${{ steps.packs.outputs.list }}
+          PACKS: ${{ steps.changed.outputs.list }}
         run: |
           {
             echo "## Published language packs"
@@ -140,15 +190,16 @@ jobs:
           for locale in $PACKS; do
             file="dist/$locale.zip"
             sum=$(openssl dgst -sha256 -binary "$file" | base64)
+            tree=$(git rev-parse "HEAD:$locale")
             version=$(aws s3api put-object \
               --bucket "$BUCKET" --key "$locale.zip" --body "$file" \
               --content-type application/zip \
               --checksum-algorithm SHA256 --checksum-sha256 "$sum" \
-              --metadata "commit=$GITHUB_SHA,run=$GITHUB_RUN_ID" \
+              --metadata "commit=$GITHUB_SHA,run=$GITHUB_RUN_ID,tree=$tree" \
               --query VersionId --output text)
             stored=$(aws s3api head-object --bucket "$BUCKET" --key "$locale.zip" --checksum-mode ENABLED \
-              --query '[ChecksumSHA256, ContentLength, Metadata.commit]' --output text)
-            expected=$(printf '%s\t%s\t%s' "$sum" "$(stat -c %s "$file")" "$GITHUB_SHA")
+              --query '[ChecksumSHA256, ContentLength, Metadata.commit, Metadata.tree]' --output text)
+            expected=$(printf '%s\t%s\t%s\t%s' "$sum" "$(stat -c %s "$file")" "$GITHUB_SHA" "$tree")
             if [ "$stored" != "$expected" ]; then
               echo "::error::s3://$BUCKET/$locale.zip does not hold what was uploaded: $stored"
               exit 1
@@ -157,17 +208,26 @@ jobs:
             echo "| \`$locale\` | $(stat -c %s "$file") | \`$sum\` | \`$version\` |" >> "$GITHUB_STEP_SUMMARY"
           done
 
-      - name: Dry run summary
-        if: ${{ inputs.dry_run }}
+      - name: Summary
+        if: always() && steps.changed.outcome == 'success'
         env:
-          PACKS: ${{ steps.packs.outputs.list }}
+          DRY_RUN: ${{ inputs.dry_run }}
+          UPLOAD: ${{ steps.changed.outputs.list }}
         run: |
           {
-            echo "## Dry run: nothing uploaded"
+            if [ "$DRY_RUN" = "true" ]; then
+              echo "## Dry run: nothing uploaded"
+            fi
             echo
-            echo "| Pack | Files | Bytes |"
+            echo "### What the bucket held"
+            echo
+            echo "| Pack | Decision | Fingerprint |"
             echo "|---|---|---|"
-            for locale in $PACKS; do
-              echo "| \`$locale\` | $(unzip -Z1 "dist/$locale.zip" | wc -l) | $(stat -c %s "dist/$locale.zip") |"
-            done
+            cat compare.md
+            echo
+            if [ -z "$UPLOAD" ]; then
+              echo "Every pack is unchanged since it was published: nothing to upload. Tick *force* to upload them anyway."
+            elif [ "$DRY_RUN" = "true" ]; then
+              echo "Would upload: \`$UPLOAD\`."
+            fi
           } >> "$GITHUB_STEP_SUMMARY"

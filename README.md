@@ -85,15 +85,37 @@ Language packs are consumed in two ways:
 
 2. **By the Language Lambda** — when an updated pack is uploaded to S3, the `Kalulu-Language-Lambda` extracts `language.db`, distributes the lessons across 20 gardens, and updates the backend's MySQL tables (DEV + PROD).
 
+## Publishing to the app
+
+What the game downloads, and what the Language Lambda reads, is `<locale>.zip` at
+the root of the language-pack S3 bucket. The **Publish Language Packs** workflow
+puts it there, and is the only way it gets there:
+
+1. Merge the pull request carrying the change — it has passed the pack validator.
+2. **Actions → Publish Language Packs → Run workflow**, on `main`. Give the packs to
+   publish (`all`, or e.g. `es_AR es_CO`). Tick *dry run* to build and check the
+   ZIPs without uploading them.
+
+The workflow validates the packs again, checks that every media file was fetched
+from LFS, builds each ZIP in the layout a Prof Tool export has (one top-level
+`<locale>/` folder), and uploads it with its SHA-256, which S3 verifies. Each object
+records the commit and the run it came from, and the bucket keeps every previous
+version.
+
+**Every upload starts the Language Lambda**, which rewrites that language's lessons
+and gardens in DEV *and* PROD MySQL. Devices download the new pack the next time
+they check. Run it on purpose, not as a test — the dry run is the test.
+
+The `Languages-Checker/` folder, which the volunteer testers' web tool reads, is not
+touched: copying a pack there stays a manual step.
+
 ## Releases
 
-When a pull request is merged into `main`, a GitHub Actions workflow automatically:
+The **Release Language Packs** workflow, run by hand, zips every locale folder
+(matching the `xx_XX` pattern) and attaches the ZIPs to a new GitHub Release. A
+release is an archive for people; it reaches neither the app nor the testers.
 
-1. Detects all locale folders (matching the `xx_XX` pattern)
-2. Compresses each one into a ZIP archive (e.g. `fr_FR.zip`, `pt_BR.zip`)
-3. Creates a new GitHub Release with all ZIP files attached as downloadable assets
-
-Each language pack can be downloaded directly from the [Releases page](../../releases). The latest packs are always available at:
+Each language pack can be downloaded from the [Releases page](../../releases). The latest packs are always available at:
 
 ```
 https://github.com/Excello-Recherche-Education/Kalulu-Languages/releases/latest/download/<locale>.zip

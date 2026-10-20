@@ -1,0 +1,173 @@
+name: Publish Language Packs
+
+# Puts <locale>.zip at the root of the language-pack bucket: the file the game
+# downloads, and the upload that triggers the Language Lambda, which rewrites
+# that language's lessons in DEV and PROD MySQL. So it is run by hand, from
+# main only, after the pull request carrying the change is merged.
+#
+# Languages-Checker/ is not touched: copying a pack there for the volunteer
+# testers stays a manual step.
+#
+# The AWS role (Kalulu-Main's AWS/language-packs-publisher.yaml) can be assumed
+# by a run on main of this repository only, and can write nothing but
+# <locale>.zip at the bucket root.
+on:
+  workflow_dispatch:
+    inputs:
+      locales:
+        description: 'Packs to publish: "all", or locales separated by spaces, e.g. "es_AR es_CO"'
+        required: true
+        default: all
+      dry_run:
+        description: Build and check the ZIPs, upload nothing
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+  id-token: write
+
+concurrency:
+  group: publish-language-packs
+  cancel-in-progress: false
+
+env:
+  BUCKET: kalulu-app-language-packs
+  AWS_REGION: eu-west-3
+
+jobs:
+  publish:
+    name: Publish language packs
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Refuse any branch but main
+        if: github.ref != 'refs/heads/main'
+        run: |
+          echo "::error::Packs are published from main only. This run is on $GITHUB_REF."
+          exit 1
+
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          lfs: true
+
+      - name: Choose the packs
+        id: packs
+        env:
+          REQUESTED: ${{ inputs.locales }}
+        run: |
+          if [ "$REQUESTED" = "all" ]; then
+            packs=$(find . -mindepth 1 -maxdepth 1 -type d -regex '\./[a-z][a-z]_[A-Z][A-Z]' -printf '%f\n' | sort | xargs)
+          else
+            packs=""
+            for locale in $REQUESTED; do
+              if [[ ! "$locale" =~ ^[a-z]{2}_[A-Z]{2}$ ]] || [ ! -f "$locale/language.db" ]; then
+                echo "::error::No language pack named '$locale'."
+                exit 1
+              fi
+              packs="$packs $locale"
+            done
+            packs=$(echo $packs | xargs -n1 | sort -u | xargs)
+          fi
+          if [ -z "$packs" ]; then
+            echo "::error::No pack to publish."
+            exit 1
+          fi
+          echo "Packs: $packs"
+          echo "list=$packs" >> "$GITHUB_OUTPUT"
+
+      - name: Validate them
+        env:
+          PACKS: ${{ steps.packs.outputs.list }}
+        run: |
+          python3 .github/scripts/validate_packs.py $(for locale in $PACKS; do echo "$locale/language.db"; done)
+
+      # Without LFS, the MP3, PNG and OGV files would be 130-byte pointers, and
+      # the game would install a pack with no sound and no pictures.
+      - name: Check every media file is real, not an LFS pointer
+        env:
+          PACKS: ${{ steps.packs.outputs.list }}
+        run: |
+          pointers=$(grep -rlI '^version https://git-lfs.github.com/spec/v1' $PACKS || true)
+          if [ -n "$pointers" ]; then
+            echo "::error::$(echo "$pointers" | wc -l) file(s) are LFS pointers, not their content."
+            echo "$pointers" | head -20
+            exit 1
+          fi
+
+      # The layout of a Prof Tool export: one top-level <locale>/ folder, files
+      # only (-D: no directory entries), no OS metadata.
+      - name: Build the ZIPs
+        env:
+          PACKS: ${{ steps.packs.outputs.list }}
+        run: |
+          mkdir -p dist
+          for locale in $PACKS; do
+            zip -q -r -X -D "dist/$locale.zip" "$locale" -x '*/.DS_Store' '*/__MACOSX/*' '*/Thumbs.db'
+            unzip -tq "dist/$locale.zip"
+            if ! unzip -Z1 "dist/$locale.zip" | grep -qx "$locale/language.db"; then
+              echo "::error::dist/$locale.zip has no $locale/language.db."
+              exit 1
+            fi
+            echo "$locale.zip: $(unzip -Z1 "dist/$locale.zip" | wc -l) files, $(stat -c %s "dist/$locale.zip") bytes"
+          done
+
+      - name: Get AWS credentials
+        if: ${{ !inputs.dry_run }}
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ vars.LANGUAGE_PACKS_PUBLISH_ROLE_ARN }}
+          role-session-name: publish-language-packs-${{ github.run_id }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      # One PUT per ZIP, with its SHA-256: S3 refuses the upload if the bytes
+      # that arrive are not the ones sent. The commit and the run are stored on
+      # the object, so what the bucket holds can always be traced to its source.
+      - name: Upload to the bucket root
+        if: ${{ !inputs.dry_run }}
+        env:
+          PACKS: ${{ steps.packs.outputs.list }}
+        run: |
+          {
+            echo "## Published language packs"
+            echo
+            echo "From \`$GITHUB_SHA\`, to \`s3://$BUCKET/\`. Each upload starts the Language Lambda, which updates that language in DEV and PROD MySQL."
+            echo
+            echo "| Pack | Bytes | SHA-256 | S3 version |"
+            echo "|---|---|---|---|"
+          } >> "$GITHUB_STEP_SUMMARY"
+          for locale in $PACKS; do
+            file="dist/$locale.zip"
+            sum=$(openssl dgst -sha256 -binary "$file" | base64)
+            version=$(aws s3api put-object \
+              --bucket "$BUCKET" --key "$locale.zip" --body "$file" \
+              --content-type application/zip \
+              --checksum-algorithm SHA256 --checksum-sha256 "$sum" \
+              --metadata "commit=$GITHUB_SHA,run=$GITHUB_RUN_ID" \
+              --query VersionId --output text)
+            stored=$(aws s3api head-object --bucket "$BUCKET" --key "$locale.zip" --checksum-mode ENABLED \
+              --query '[ChecksumSHA256, ContentLength, Metadata.commit]' --output text)
+            expected=$(printf '%s\t%s\t%s' "$sum" "$(stat -c %s "$file")" "$GITHUB_SHA")
+            if [ "$stored" != "$expected" ]; then
+              echo "::error::s3://$BUCKET/$locale.zip does not hold what was uploaded: $stored"
+              exit 1
+            fi
+            echo "$locale.zip: uploaded, S3 version $version"
+            echo "| \`$locale\` | $(stat -c %s "$file") | \`$sum\` | \`$version\` |" >> "$GITHUB_STEP_SUMMARY"
+          done
+
+      - name: Dry run summary
+        if: ${{ inputs.dry_run }}
+        env:
+          PACKS: ${{ steps.packs.outputs.list }}
+        run: |
+          {
+            echo "## Dry run: nothing uploaded"
+            echo
+            echo "| Pack | Files | Bytes |"
+            echo "|---|---|---|"
+            for locale in $PACKS; do
+              echo "| \`$locale\` | $(unzip -Z1 "dist/$locale.zip" | wc -l) | $(stat -c %s "dist/$locale.zip") |"
+            done
+          } >> "$GITHUB_STEP_SUMMARY"

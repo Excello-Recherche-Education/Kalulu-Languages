@@ -148,11 +148,11 @@ in a decomposition is taught by some lesson. Details in Kalulu-Main's
 `.github/scripts/validate_packs.py` checks every `<locale>/language.db`.
 
 **A pack change reaches `main` through a pull request, never a direct push** —
-including a Prof Tool export: commit it on a branch, open a pull request, and merge
-once it is validated. The *Validate Language Packs* workflow runs on every pull
-request into `main` (when it is opened, and again on every push to its branch) and
-posts its report as a comment on the pull request, updated in place. Run it
-locally the same way before opening one:
+including a pack saved from the Prof Tool: commit it on a branch, open a pull
+request, and merge once it is validated. The *Validate Language Packs* workflow
+runs on every pull request into `main` (when it is opened, and again on every
+push to its branch) and posts its report as a comment on the pull request,
+updated in place. Run it locally the same way before opening one:
 
 ```bash
 python3 .github/scripts/validate_packs.py                    # every pack

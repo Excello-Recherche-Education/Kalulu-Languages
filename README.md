@@ -97,8 +97,8 @@ puts it there, and is the only way it gets there:
    ZIPs without uploading them.
 
 The workflow validates the packs again, checks that every media file was fetched
-from LFS, builds each ZIP in the layout a Prof Tool export has (one top-level
-`<locale>/` folder), and uploads it with its SHA-256, which S3 verifies. Each object
+from LFS, builds each ZIP in the layout the app and the Language Lambda read (one
+top-level `<locale>/` folder), and uploads it with its SHA-256, which S3 verifies. Each object
 records the commit and the run it came from, and the bucket keeps every previous
 version.
 
@@ -165,9 +165,18 @@ See **[KALULU-VOICE-GENERATION.md](KALULU-VOICE-GENERATION.md)** for the full pr
 
 ## Adding or modifying a language
 
-To add or modify a language pack, use the **Prof_Tool** included in the [Kalulu frontend repository](https://github.com/Excello-Recherche-Education/Kalulu-Frontend). Prof_Tool provides a graphical interface to edit linguistic data (grapheme-phoneme correspondences, words, syllables, sentences) and export a complete, ready-to-deploy language pack.
+To add or modify a language pack, use the **[Kalulu Prof Tool](https://github.com/Excello-Recherche-Education/Kalulu-ProfTool)**, the language-pack editor. It has a repository of its own (it used to live inside Kalulu-Frontend), and ready-to-run builds for macOS, Windows and Linux are on its [releases page](https://github.com/Excello-Recherche-Education/Kalulu-ProfTool/releases). It provides a graphical interface to edit the linguistic data — grapheme-phoneme correspondences, words, syllables, sentences, lessons and their minigames, letter tracings, Look & Learn media and recordings.
 
-For more details on Prof_Tool and the overall Kalulu architecture, see the [Kalulu frontend README](https://github.com/Excello-Recherche-Education/Kalulu-Frontend#readme).
+The Prof Tool works on the pack folders of this repository directly, with no archive in between:
+
+1. **Open language.db** and pick `<locale>/language.db` in a checkout of this repository. The Prof Tool works on its own copy of that pack folder.
+2. Edit the pack.
+3. **Save** onto the same `<locale>/language.db`. The Prof Tool regenerates the CSV lists, `summary.txt` and `version.txt`, then writes the whole pack back into that folder.
+4. Commit the result on a branch and open a pull request — see [How the packs are checked](SCHEMA.md#how-the-packs-are-checked).
+
+Saving overwrites files but never deletes any: a file removed from a pack in the Prof Tool has to be removed from this repository by hand, in the same pull request.
+
+For more on the Prof Tool itself, see its [README](https://github.com/Excello-Recherche-Education/Kalulu-ProfTool#readme); for the overall Kalulu architecture, the [Kalulu frontend README](https://github.com/Excello-Recherche-Education/Kalulu-Frontend#readme).
 
 **Whatever the route, update the pack's `version.txt`** so it always carries the date of
 the last change made to that pack:
@@ -176,10 +185,10 @@ the last change made to that pack:
 date -u +%Y-%m-%dT%H:%M:%S > <locale>/version.txt
 ```
 
-A Prof_Tool export writes this file itself, so it is already correct. Anything edited
-outside Prof_Tool — a CSV by hand, an MP3 re-recorded under `language_sounds/`, tracing
-or look-and-learn media, `language.db` patched in place — must be stamped in the same
-commit. The timestamp travels into every Checker report as `pack_version`, so a stale
+Saving from the Prof Tool writes this file itself, so it is already correct. Anything
+edited outside the Prof Tool — a CSV by hand, an MP3 re-recorded under `language_sounds/`,
+tracing or look-and-learn media, `language.db` patched in place — must be stamped in the
+same commit. The timestamp travels into every Checker report as `pack_version`, so a stale
 one attributes a tester's feedback to a pack that no longer exists.
 
 ---
@@ -189,7 +198,8 @@ one attributes a tester's feedback to a pack that no longer exists.
 | Repository | Description |
 |---|---|
 | [Kalulu (Frontend)](https://github.com/Excello-Recherche-Education/Kalulu-Frontend) | The Godot-based reading game for children |
-| [Kalulu Backend](https://github.com/Excello-Recherche-Education/Kalulu-AWS-Lambda) | Serverless API — authentication, sync, dashboards, and data management |
+| [Kalulu Prof Tool](https://github.com/Excello-Recherche-Education/Kalulu-ProfTool) | The language-pack editor these packs are made with |
+| [Kalulu Backend](https://github.com/Excello-Recherche-Education/Kalulu-Backend) | Serverless API — authentication, sync, dashboards, and data management |
 | [Kalulu Language Lambda](https://github.com/Excello-Recherche-Education/Kalulu-Language-Lambda) | Pipeline that processes language packs and updates the database |
 
 ---

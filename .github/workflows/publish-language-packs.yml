@@ -152,8 +152,8 @@ jobs:
           done
           echo "list=$(echo $upload | xargs)" >> "$GITHUB_OUTPUT"
 
-      # The layout of a Prof Tool export: one top-level <locale>/ folder, files
-      # only (-D: no directory entries), no OS metadata.
+      # The layout the app and the Language Lambda read: one top-level <locale>/
+      # folder, files only (-D: no directory entries), no OS metadata.
       - name: Build the ZIPs
         if: steps.changed.outputs.list != ''
         env:

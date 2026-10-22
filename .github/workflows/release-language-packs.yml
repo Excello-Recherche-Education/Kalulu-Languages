@@ -12,7 +12,7 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           lfs: true
 
@@ -44,7 +44,7 @@ jobs:
           echo "Generated tag: $tag"
 
       - name: Create GitHub Release with language packs
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@v3
         with:
           tag_name: ${{ steps.tag.outputs.tag }}
           name: "Language Packs — ${{ steps.tag.outputs.tag }}"

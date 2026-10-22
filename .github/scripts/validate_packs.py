@@ -7,11 +7,14 @@ SCHEMA.md is the contract; this is what checks it. For each <locale>/language.db
               user_version is not the latest schema/v<n>.sql (rule 5), its
               tables, columns, defaults, keys or indexes differ from that file,
               SQLite's integrity_check fails, foreign_key_check finds rows
-              pointing at nothing, or a lesson's ID is not its lesson number
-              (rule 6).
-  warnings  - the data breaks rules 1 to 4 of SCHEMA.md. Reported, not fatal
-              (yet): some packs are known to break them. --strict makes them
-              fatal.
+              pointing at nothing, or the data breaks rules 2, 3, 4 or 6 of
+              SCHEMA.md: a GP no lesson teaches, a lesson without minigames,
+              a minigame list that is not the game's, a lesson ID that is not
+              its lesson number.
+  warnings  - the data breaks rule 1 of SCHEMA.md (a word or syllable with a
+              missing or broken decomposition). Reported, not fatal, while a
+              known case waits for a decision (payons in fr_FR). --strict makes
+              it fatal.
   notices   - a rule that could not be checked, and why.
 
 Exits 1 when there is an error (or, with --strict, a warning), 0 otherwise.
@@ -238,7 +241,7 @@ def check_gps_taught(conn: sqlite3.Connection, report: PackReport) -> None:
     ).fetchall()
     if rows:
         report.add(
-            "warning", "rule 2",
+            "error", "rule 2",
             f"{len(rows)} GP(s) are used in words or syllables but taught by no lesson",
             [f"{g}-{p} (in {w} word(s), {s} syllable(s))" for g, p, w, s in rows],
         )
@@ -257,7 +260,7 @@ def check_lesson_exercises(conn: sqlite3.Connection, report: PackReport) -> None
         ):
             invalid.append(f"lesson {lesson}: {column} = {value}")
     if invalid:
-        report.add("warning", "rule 3", f"{len(invalid)} minigame slot(s) name no ExerciseTypes row", invalid)
+        report.add("error", "rule 3", f"{len(invalid)} minigame slot(s) name no ExerciseTypes row", invalid)
 
     missing = [
         f"lesson {row[0]}"
@@ -266,7 +269,7 @@ def check_lesson_exercises(conn: sqlite3.Connection, report: PackReport) -> None
         )
     ]
     if missing:
-        report.add("warning", "rule 3", f"{len(missing)} lesson(s) have no LessonsExercises row, so no minigame", missing)
+        report.add("error", "rule 3", f"{len(missing)} lesson(s) have no LessonsExercises row, so no minigame", missing)
 
     empty = [
         f"lesson {row[0]}"
@@ -276,7 +279,7 @@ def check_lesson_exercises(conn: sqlite3.Connection, report: PackReport) -> None
         )
     ]
     if empty:
-        report.add("warning", "rule 3", f"{len(empty)} lesson(s) have all three minigame slots empty", empty)
+        report.add("error", "rule 3", f"{len(empty)} lesson(s) have all three minigame slots empty", empty)
 
     doubled = [
         f"lesson {row[0]} ({row[1]} rows)"
@@ -287,7 +290,7 @@ def check_lesson_exercises(conn: sqlite3.Connection, report: PackReport) -> None
     ]
     if doubled:
         report.add(
-            "warning", "rule 3",
+            "error", "rule 3",
             f"{len(doubled)} lesson(s) have more than one LessonsExercises row; the game adds them all up",
             doubled,
         )
@@ -314,7 +317,7 @@ def check_exercise_types(report: PackReport, names: list[str], source: str) -> N
             details.append(f"ID {exercise_id}: {have[exercise_id]}, expected no row")
         elif have[exercise_id] != want[exercise_id]:
             details.append(f"ID {exercise_id}: {have[exercise_id]}, expected {want[exercise_id]}")
-    report.add("warning", "rule 4", f"ExerciseTypes does not match {source}", details)
+    report.add("error", "rule 4", f"ExerciseTypes does not match {source}", details)
 
 
 def check_lesson_ids(conn: sqlite3.Connection, report: PackReport) -> None:
@@ -465,7 +468,7 @@ def report_markdown(reports: list[PackReport], rule_4_note: str, latest: int) ->
     else:
         verdict = "✅ **No errors.**"
     if warnings:
-        verdict += f" {warnings} warning(s) about the data rules, not blocking for now."
+        verdict += f" {warnings} warning(s) about decompositions (rule 1), not blocking for now."
     lines = [
         "## Language pack validation",
         "",

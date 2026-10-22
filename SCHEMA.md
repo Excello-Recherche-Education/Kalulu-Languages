@@ -135,13 +135,12 @@ below):
 5. `user_version` is the schema version the pack follows.
 6. Every lesson's `ID` is its `LessonNb`.
 
-Known breaches, all reported by the validator: in `fr_FR`, seven words lost a GP
-from their decomposition and `payons` has none at all (rule 1); in `es_CO`,
-lesson 37 has no `LessonsExercises` row at all, so the game finds no minigame for
-it (rule 3). In `fr_FR`, lessons 37 and 40 also list the same minigame twice —
-allowed by these rules, possibly a mistake. No pack breaks rule 2: every GP left
-in a decomposition is taught by some lesson. Details in Kalulu-Main's
-`docs/agent/Kalulu-Languages.BUG.md`.
+Known breaches, as of 2026-10-22: one. In `fr_FR`, `payons` has no decomposition at
+all (rule 1). Its spelling needs an `ay` GP the pack does not have, and how to
+teach it is waiting for the experts. The seven French words that lost a GP and
+`es_CO`'s lesson 37 without minigames were fixed in October 2026. In `fr_FR`,
+lessons 37 and 40 list the same minigame twice — allowed by these rules, possibly
+a mistake. Details in Kalulu-Main's `docs/agent/Kalulu-Languages.BUG.md`.
 
 ## How the packs are checked
 
@@ -161,13 +160,24 @@ python3 .github/scripts/validate_packs.py fr_FR/language.db  # one
 
 | Level | What | Effect |
 |---|---|---|
-| error | `user_version` is not the newest `schema/v<n>.sql` (rule 5); tables, columns, types, defaults, keys or indexes differ from that file; `integrity_check` fails; `foreign_key_check` finds rows pointing at nothing; a lesson's `ID` is not its `LessonNb` (rule 6) | the check fails |
-| warning | rules 1 to 4 | reported; `--strict` makes them fail too, once the known breaches are fixed |
+| error | `user_version` is not the newest `schema/v<n>.sql` (rule 5); tables, columns, types, defaults, keys or indexes differ from that file; `integrity_check` fails; `foreign_key_check` finds rows pointing at nothing; rules 2, 3, 4 and 6 | the check fails |
+| warning | rule 1 | reported; `--strict` makes it fail too. Becomes an error once `payons` is settled |
 | notice | a rule that could not be checked, and why | reported only |
 
-**Rule 6 is an error although it is a data rule**, because breaking it is not
-contained in the pack: the Language Lambda would write the wrong lesson numbers
-into production MySQL.
+**Rules 2, 3, 4 and 6 are errors although they are data rules**, because a pack
+that breaks one fails children in the game, silently:
+
+- rule 2 — every word and syllable holding a GP no lesson teaches is never offered;
+- rule 3 — a lesson without a minigame row, or with three empty slots, has
+  nothing to play, and a slot naming no minigame points at one that does not
+  exist;
+- rule 4 — lessons name their minigames by number, so a list that differs from the
+  game's plays the wrong one;
+- rule 6 — the Language Lambda would write the wrong lesson numbers into
+  production MySQL.
+
+They became errors on 2026-10-22, when no pack broke them any more. Rule 1 stays a
+warning only while one known case waits for a decision.
 
 - **Structure is compared as SQLite reports it** (`PRAGMA table_info`,
   `foreign_key_list`, `index_list`), not as SQL text: the packs mix quoted and

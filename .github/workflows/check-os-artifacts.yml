@@ -11,7 +11,7 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Scan for OS-generated artifacts
         id: scan
@@ -62,7 +62,7 @@ jobs:
 
       - name: Post comment on PR
         if: steps.scan.outputs.found == 'true'
-        uses: marocchino/sticky-pull-request-comment@v2
+        uses: marocchino/sticky-pull-request-comment@v3
         with:
           header: os-artifacts
           message: |
@@ -93,7 +93,7 @@ jobs:
 
       - name: Remove outdated comment
         if: steps.scan.outputs.found == 'false'
-        uses: marocchino/sticky-pull-request-comment@v2
+        uses: marocchino/sticky-pull-request-comment@v3
         with:
           header: os-artifacts
           delete: true

@@ -38,7 +38,7 @@ without opening it, and a written schema gives the version a meaning.
 | **The game** | Kalulu-Frontend | reads, on the device | `GPs`, `Lessons`, `GPsInLessons`, `Words`, `GPsInWords`, `Syllables`, `GPsInSyllables`, `Sentences`, `WordsInSentences`, `Pseudowords`, `LessonsExercises`; `BookletOnly` from version 2, to leave those entries out |
 | **Language Lambda** | Kalulu-Language-Lambda | reads, when a pack ZIP lands on S3; fills MySQL and uploads a copy of the database | `GPs` (`ID`, `Grapheme`, `Phoneme`, `Type`, `Exception`), `GPsInLessons` (lesson IDs come from here, not from `Lessons`); refuses a `user_version` it does not know |
 | **Backend** | Kalulu-Backend | reads that copy (`language-db-dumps/<locale>/language.db` on S3) | `Words` (`ID`, `Word`), `Syllables` (`ID`, `Syllable`), all of `Lessons` |
-| **Languages Checker** | Kalulu-Languages-Checker | reads, in the tester's browser | `GPs` (`ID`, `Grapheme`, `Phoneme`), `Lessons`, `GPsInLessons`, `Words`, `GPsInWords`, `Syllables`, `GPsInSyllables` — not `Sentences`, which have no recording to review |
+| **Languages Checker** | Kalulu-Languages-Checker | reads, in the tester's browser | `GPs` (`ID`, `Grapheme`, `Phoneme`), `Lessons`, `GPsInLessons`, `Words`, `GPsInWords`, `Syllables`, `GPsInSyllables` — not `Sentences`, which have no recording to review; `BookletOnly` from version 2, to leave those entries out |
 | **Booklet generator** | Kalulu-Booklets | reads, from its own pinned checkout of this repository | everything the game reads, `BookletOnly` included, and the `Booklet*` tables |
 
 Measured on 2026-10-15 by reading each program's queries, and on 2026-10-26 for
@@ -59,7 +59,7 @@ must follow the same version as the packs.
 ## Tables
 
 All IDs are SQLite `AUTOINCREMENT` integer keys. Every foreign key cascades on
-update and on delete. Positions count from **0** and have no gaps.
+update and on delete. Positions count from **0** and have no gaps — except in the `Booklet*` lists, where only their order counts (rule 8).
 
 ### What exists in the language
 
@@ -81,7 +81,7 @@ update and on delete. Positions count from **0** and have no gaps.
 | `Exception` | `0` | `1` for an irregular item; the game leaves it out of its pools |
 | `Reading` | `1` | used for reading |
 | `Writing` | `0` | used for writing |
-| `BookletOnly` | `0` | `1` for an entry only the reading booklets print (version 2); the game leaves it out of its pools — see "The reading booklets" |
+| `BookletOnly` | `0` | `1` for an entry only the reading booklets print (version 2; `NOT NULL`, unlike the three above); the game leaves it out of its pools — see "The reading booklets" |
 
 `Syllables` also holds pseudo-syllables. A sentence's `\n` is a deliberate line
 break.
@@ -206,12 +206,19 @@ below):
 5. `user_version` is the schema version the pack follows.
 6. Every lesson's `ID` is its `LessonNb`.
 7. A sentence the game can offer (`BookletOnly = 0`) holds no booklet-only word.
-8. The booklet tables can be read: one `BookletSettings` row, every setting in
-   its range, booklet numbers from 1 that never decrease along the chapters, and
-   positions `0, 1, 2…` without gap in every list — chapters within a lesson,
-   sentences and stories within a chapter, entries within a chapter's part.
+8. The booklet tables can be read: one `BookletSettings` row; every value of
+   its SQLite type (a number where a number is meant — SQLite would store text)
+   and within its range; booklets numbered 1, 2, 3… along the chapters, each
+   chapter in the same booklet as the one before or the next; one order in every
+   list — chapters within a lesson, sentences and stories within a chapter,
+   entries within a chapter's part — meaning no position used twice and none
+   below 0. **Gaps are allowed**: deleting a sentence from the Sentence List
+   removes it from its chapters by `ON DELETE CASCADE` and leaves one, and the
+   order is still the order. No cursive-only sentences (`SentenceFont = 2`) for a
+   language written without cursive.
 9. What a chapter teaches, and the sentences it prints, are readable at its
-   lesson: every GP in them is taught by that lesson or an earlier one.
+   lesson: every word of a sentence decomposed, and every GP in them taught by
+   that lesson or an earlier one.
 
 Known breaches, as of 2026-10-22: one. In `fr_FR`, `payons` has no decomposition at
 all (rule 1). Its spelling needs an `ay` GP the pack does not have, and how to
@@ -281,7 +288,8 @@ booklets' content to put right, and never reaches the game.
 
 **Every pack follows version 2** since 2026-10-26: structure identical to
 `schema/v2.sql`, `user_version = 2`. All five were migrated from version 1 with
-[`schema/v1-to-v2.sql`](schema/v1-to-v2.sql), which adds and fills nothing but
+[`schema/v1-to-v2.sql`](schema/v1-to-v2.sql) (run with `sqlite3 -bail`, so that a
+failure rolls the whole transaction back), which adds and fills nothing but
 the new: the `BookletOnly` columns (`0` everywhere, so every entry stays the
 game's), the empty `Booklet*` tables, and the one `BookletSettings` row with its
 defaults. Every table of version 1 kept every row and every value, checked table

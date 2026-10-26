@@ -1,6 +1,11 @@
 -- Migration from schema version 1 to version 2, in one transaction:
 --
---     sqlite3 <locale>/language.db < schema/v1-to-v2.sql
+--     sqlite3 -bail <locale>/language.db < schema/v1-to-v2.sql
+--
+-- -bail matters: without it the sqlite3 shell carries on past a failed
+-- statement and the final COMMIT keeps whatever succeeded. With it, the first
+-- failure stops the script inside the transaction, which is then rolled back --
+-- so running it twice, or on a pack that is not version 1, changes nothing.
 --
 -- Adds the BookletOnly flag to Words, Syllables and Sentences, with the default
 -- that keeps every existing entry in the game, and the empty Booklet* tables
@@ -11,9 +16,9 @@
 
 BEGIN TRANSACTION;
 
-ALTER TABLE "Words" ADD COLUMN "BookletOnly" INTEGER DEFAULT 0;
-ALTER TABLE "Syllables" ADD COLUMN "BookletOnly" INTEGER DEFAULT 0;
-ALTER TABLE "Sentences" ADD COLUMN "BookletOnly" INTEGER DEFAULT 0;
+ALTER TABLE "Words" ADD COLUMN "BookletOnly" INTEGER NOT NULL DEFAULT 0;
+ALTER TABLE "Syllables" ADD COLUMN "BookletOnly" INTEGER NOT NULL DEFAULT 0;
+ALTER TABLE "Sentences" ADD COLUMN "BookletOnly" INTEGER NOT NULL DEFAULT 0;
 
 -- The reading booklets (Kalulu-Booklets reads these, the Prof Tool writes them;
 -- nothing else does). SCHEMA.md, "The reading booklets", explains them.
@@ -113,7 +118,7 @@ CREATE TABLE "BookletStories" (
 	FOREIGN KEY("ChapterID") REFERENCES "BookletChapters"("ID") ON UPDATE CASCADE ON DELETE CASCADE
 );
 
-INSERT INTO "BookletSettings" DEFAULT VALUES;
+INSERT INTO "BookletSettings" ("Cursive") SELECT 1 WHERE NOT EXISTS (SELECT 1 FROM "BookletSettings");
 
 PRAGMA user_version = 2;
 

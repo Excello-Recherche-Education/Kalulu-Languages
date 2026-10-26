@@ -7,14 +7,17 @@ SCHEMA.md is the contract; this is what checks it. For each <locale>/language.db
               user_version is not the latest schema/v<n>.sql (rule 5), its
               tables, columns, defaults, keys or indexes differ from that file,
               SQLite's integrity_check fails, foreign_key_check finds rows
-              pointing at nothing, or the data breaks rules 2, 3, 4 or 6 of
-              SCHEMA.md: a GP no lesson teaches, a lesson without minigames,
+              pointing at nothing, or the data breaks rules 2, 3, 4, 6, 7 or 8
+              of SCHEMA.md: a GP no lesson teaches, a lesson without minigames,
               a minigame list that is not the game's, a lesson ID that is not
-              its lesson number.
+              its lesson number, a game sentence holding a booklet-only word,
+              booklet tables the generator cannot read.
   warnings  - the data breaks rule 1 of SCHEMA.md (a word or syllable with a
-              missing or broken decomposition). Reported, not fatal, while a
-              known case waits for a decision (payons in fr_FR). --strict makes
-              it fatal.
+              missing or broken decomposition), reported, not fatal, while a
+              known case waits for a decision (payons in fr_FR); or rule 9 (a
+              booklet chapter printing what its lesson cannot read yet), which
+              is the booklets' content to settle, not the game's. --strict
+              makes them fatal.
   notices   - a rule that could not be checked, and why.
 
 Exits 1 when there is an error (or, with --strict, a warning), 0 otherwise.
@@ -334,7 +337,192 @@ def check_lesson_ids(conn: sqlite3.Connection, report: PackReport) -> None:
         )
 
 
-DATA_RULES = (check_decompositions, check_gps_taught, check_lesson_exercises, read_exercise_types, check_lesson_ids)
+def check_booklet_only(conn: sqlite3.Connection, report: PackReport) -> None:
+    """Rule 7: a sentence the game can offer holds no booklet-only word. The game
+    leaves booklet-only entries out of its pools, so such a sentence would bring
+    back a word it was told to leave out -- one with no recording, typically."""
+    rows = conn.execute(
+        """SELECT DISTINCT s.Sentence, w.Word FROM Sentences s
+           JOIN WordsInSentences ws ON ws.SentenceID = s.ID
+           JOIN Words w ON w.ID = ws.WordID
+           WHERE s.BookletOnly = 0 AND w.BookletOnly != 0
+           ORDER BY s.Sentence, w.Word"""
+    ).fetchall()
+    if rows:
+        report.add(
+            "error", "rule 7",
+            f"{len(rows)} sentence(s) the game can offer hold a booklet-only word",
+            [f"{sentence} ({word})" for sentence, word in rows],
+        )
+
+
+# Values a booklet setting may take: (column, lowest, highest or None).
+BOOKLET_RANGES = (
+    ("SyllableCount", 0, None), ("SyllableColumns", 1, None),
+    ("WordCount", 0, None), ("WordColumns", 1, None),
+    ("UppercaseProportion", 0, 1),
+    ("SentenceFont", 0, 2), ("SentenceFirstFont", 1, 2), ("SentencePages", 0, None),
+    ("WritingModels", 0, None), ("WritingTracings", 0, None),
+)
+BOOKLET_PARTS = {1: "syllables", 2: "words", 3: "writing", 4: "tables", 5: "fluency"}
+
+
+def out_of_range(conn: sqlite3.Connection, table: str, label_sql: str) -> list[str]:
+    problems = []
+    for column, low, high in BOOKLET_RANGES:
+        condition = f"{column} < {low}" + (f" OR {column} > {high}" if high is not None else "")
+        for label, value in conn.execute(
+            f"SELECT {label_sql}, {column} FROM {table} WHERE {column} IS NOT NULL AND ({condition})"
+        ):
+            problems.append(f"{label}: {column} = {value}")
+    return problems
+
+
+def position_gaps(conn: sqlite3.Connection, table: str, group: str, label_sql: str) -> list[str]:
+    """Groups of rows whose Position is not 0, 1, 2... without gap or duplicate."""
+    return [
+        f"{label} (positions {listed})"
+        for label, count, low, high, distinct, listed in conn.execute(
+            f"""SELECT {label_sql}, COUNT(*), MIN(Position), MAX(Position), COUNT(DISTINCT Position),
+                       group_concat(Position, ' ')
+                FROM (SELECT * FROM {table} ORDER BY Position) GROUP BY {group}"""
+        )
+        if low != 0 or high != count - 1 or distinct != count
+    ]
+
+
+CHAPTER_LABEL = "'lesson ' || (SELECT LessonNb FROM Lessons WHERE ID = LessonID) || ', chapter ' || Position"
+CHAPTER_OF = (
+    "(SELECT 'lesson ' || l.LessonNb || ', chapter ' || c.Position FROM BookletChapters c "
+    "JOIN Lessons l ON l.ID = c.LessonID WHERE c.ID = ChapterID)"
+)
+
+
+def check_booklets(conn: sqlite3.Connection, report: PackReport) -> None:
+    """Rule 8: the booklet tables hold what the generator can read: one settings
+    row, settings within their range, chapters numbered in lesson order, and
+    positions 0, 1, 2... in every list."""
+    problems = []
+    settings = conn.execute("SELECT COUNT(*) FROM BookletSettings").fetchone()[0]
+    if settings != 1:
+        problems.append(f"BookletSettings has {settings} rows, the booklets read exactly one")
+    problems += [f"BookletSettings {p}" for p in out_of_range(conn, "BookletSettings", "'row ' || ID")]
+    problems += [
+        f"BookletSettings row {row_id}: Cursive = {value}"
+        for row_id, value in conn.execute("SELECT ID, Cursive FROM BookletSettings WHERE Cursive NOT IN (0, 1)")
+    ]
+    problems += out_of_range(conn, "BookletChapters", CHAPTER_LABEL)
+    problems += [
+        f"{label}: GreySilent = {value}"
+        for label, value in conn.execute(
+            f"SELECT {CHAPTER_LABEL}, GreySilent FROM BookletChapters WHERE GreySilent NOT IN (0, 1)"
+        )
+    ]
+    problems += [
+        f"chapters of {label}" for label in position_gaps(
+            conn, "BookletChapters", "LessonID", "'lesson ' || (SELECT LessonNb FROM Lessons WHERE ID = LessonID)"
+        )
+    ]
+    # Booklets follow the chapters: a booklet number never goes down along them.
+    previous = None
+    for label, booklet in conn.execute(
+        f"""SELECT {CHAPTER_LABEL}, Booklet FROM BookletChapters c
+            JOIN Lessons l ON l.ID = c.LessonID ORDER BY l.LessonNb, c.Position"""
+    ):
+        if booklet < 1:
+            problems.append(f"{label}: Booklet = {booklet}, booklets count from 1")
+        elif previous is not None and booklet < previous[1]:
+            problems.append(f"{label} is in booklet {booklet}, after {previous[0]} in booklet {previous[1]}")
+        previous = (label, booklet)
+    problems += [f"sentences of {label}" for label in position_gaps(conn, "BookletSentences", "ChapterID", CHAPTER_OF)]
+    problems += [
+        f"{label}: sentence at position {position} has Break = {value}"
+        for label, position, value in conn.execute(
+            f"SELECT {CHAPTER_OF}, Position, Break FROM BookletSentences WHERE Break NOT IN (0, 1, 2)"
+        )
+    ]
+    problems += [
+        f"{label}: entry {text!r} has Part = {part}"
+        for label, text, part in conn.execute(
+            f"SELECT {CHAPTER_OF}, Text, Part FROM BookletEntries WHERE Part NOT IN ({', '.join(map(str, BOOKLET_PARTS))})"
+        )
+    ]
+    problems += [
+        f"entries of {label}"
+        for label in position_gaps(
+            conn, "BookletEntries", "ChapterID, Part",
+            f"{CHAPTER_OF} || ', ' || CASE Part "
+            + " ".join(f"WHEN {part} THEN '{name}'" for part, name in BOOKLET_PARTS.items())
+            + " ELSE 'part ' || Part END",
+        )
+    ]
+    problems += [
+        f"{label}: entry {text!r} is a header outside a table"
+        for label, text in conn.execute(
+            f"SELECT {CHAPTER_OF}, Text FROM BookletEntries WHERE Header != 0 AND (Part != 4 OR Header != 1)"
+        )
+    ]
+    problems += [f"stories of {label}" for label in position_gaps(conn, "BookletStories", "ChapterID", CHAPTER_OF)]
+    if problems:
+        report.add("error", "rule 8", f"{len(problems)} problem(s) in the booklet tables", problems)
+
+
+def check_booklet_readability(conn: sqlite3.Connection, report: PackReport) -> None:
+    """Rule 9: what a chapter teaches and the sentences it prints are readable at
+    its lesson -- every GP in them is taught by that lesson or an earlier one."""
+    first_lesson = dict(
+        conn.execute(
+            """SELECT gl.GPID, MIN(l.LessonNb) FROM GPsInLessons gl
+               JOIN Lessons l ON l.ID = gl.LessonID GROUP BY gl.GPID"""
+        ).fetchall()
+    )
+    late_gps = [
+        f"{label}: {grapheme}-{phoneme} is taught in lesson {first_lesson.get(gp_id, 'none')}"
+        for label, grapheme, phoneme, gp_id, lesson in conn.execute(
+            f"""SELECT {CHAPTER_OF}, g.Grapheme, g.Phoneme, g.ID, l.LessonNb FROM BookletChapterGPs cg
+                JOIN GPs g ON g.ID = cg.GPID
+                JOIN BookletChapters c ON c.ID = cg.ChapterID JOIN Lessons l ON l.ID = c.LessonID
+                ORDER BY l.LessonNb, c.Position, g.Grapheme"""
+        )
+        if first_lesson.get(gp_id, lesson + 1) > lesson
+    ]
+    if late_gps:
+        report.add("warning", "rule 9", f"{len(late_gps)} chapter GP(s) are taught after their chapter", late_gps)
+
+    sentence_gps: dict[int, list[int]] = {}
+    for sentence_id, gp_id in conn.execute(
+        """SELECT ws.SentenceID, gw.GPID FROM WordsInSentences ws
+           JOIN GPsInWords gw ON gw.WordID = ws.WordID"""
+    ):
+        sentence_gps.setdefault(sentence_id, []).append(gp_id)
+    unreadable = []
+    for label, sentence_id, text, lesson in conn.execute(
+        f"""SELECT {CHAPTER_OF}, s.ID, s.Sentence, l.LessonNb FROM BookletSentences bs
+            JOIN Sentences s ON s.ID = bs.SentenceID
+            JOIN BookletChapters c ON c.ID = bs.ChapterID JOIN Lessons l ON l.ID = c.LessonID
+            ORDER BY l.LessonNb, c.Position, bs.Position"""
+    ):
+        gps = sentence_gps.get(sentence_id)
+        if not gps:
+            unreadable.append(f"{label}: {text} (no decomposition)")
+            continue
+        needed = max(first_lesson.get(gp_id, 10**9) for gp_id in gps)
+        if needed > lesson:
+            unreadable.append(
+                f"{label}: {text} (readable from lesson {needed})" if needed < 10**9
+                else f"{label}: {text} (holds a GP no lesson teaches)"
+            )
+    if unreadable:
+        report.add(
+            "warning", "rule 9",
+            f"{len(unreadable)} booklet sentence(s) are not readable at their chapter", unreadable,
+        )
+
+
+DATA_RULES = (
+    check_decompositions, check_gps_taught, check_lesson_exercises, read_exercise_types, check_lesson_ids,
+    check_booklet_only, check_booklets, check_booklet_readability,
+)
 
 
 # --- Running -------------------------------------------------------------------
@@ -468,7 +656,7 @@ def report_markdown(reports: list[PackReport], rule_4_note: str, latest: int) ->
     else:
         verdict = "✅ **No errors.**"
     if warnings:
-        verdict += f" {warnings} warning(s) about decompositions (rule 1), not blocking for now."
+        verdict += f" {warnings} warning(s) about decompositions (rule 1) or booklet readability (rule 9), not blocking."
     lines = [
         "## Language pack validation",
         "",

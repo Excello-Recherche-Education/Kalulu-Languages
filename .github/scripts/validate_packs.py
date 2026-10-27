@@ -7,14 +7,17 @@ SCHEMA.md is the contract; this is what checks it. For each <locale>/language.db
               user_version is not the latest schema/v<n>.sql (rule 5), its
               tables, columns, defaults, keys or indexes differ from that file,
               SQLite's integrity_check fails, foreign_key_check finds rows
-              pointing at nothing, or the data breaks rules 2, 3, 4 or 6 of
-              SCHEMA.md: a GP no lesson teaches, a lesson without minigames,
+              pointing at nothing, or the data breaks rules 2, 3, 4, 6, 7 or 8
+              of SCHEMA.md: a GP no lesson teaches, a lesson without minigames,
               a minigame list that is not the game's, a lesson ID that is not
-              its lesson number.
+              its lesson number, a game sentence holding a booklet-only word,
+              booklet tables the generator cannot read.
   warnings  - the data breaks rule 1 of SCHEMA.md (a word or syllable with a
-              missing or broken decomposition). Reported, not fatal, while a
-              known case waits for a decision (payons in fr_FR). --strict makes
-              it fatal.
+              missing or broken decomposition), reported, not fatal, while a
+              known case waits for a decision (payons in fr_FR); or rule 9 (a
+              booklet chapter printing what its lesson cannot read yet), which
+              is the booklets' content to settle, not the game's. --strict
+              makes them fatal.
   notices   - a rule that could not be checked, and why.
 
 Exits 1 when there is an error (or, with --strict, a warning), 0 otherwise.
@@ -334,7 +337,277 @@ def check_lesson_ids(conn: sqlite3.Connection, report: PackReport) -> None:
         )
 
 
-DATA_RULES = (check_decompositions, check_gps_taught, check_lesson_exercises, read_exercise_types, check_lesson_ids)
+def check_booklet_only(conn: sqlite3.Connection, report: PackReport) -> None:
+    """Rule 7: BookletOnly is 0 or 1, and a sentence the game can offer holds no
+    booklet-only word. The game keeps only the entries whose flag is 0, so any
+    other value -- text a tool wrote meaning "no", say -- silently takes an entry
+    out of the game; and a game sentence holding a booklet-only word would bring
+    back a word it was told to leave out -- one with no recording, typically."""
+    odd = [
+        f"{table} {text!r}: BookletOnly = {value!r}"
+        for table, column in (("Words", "Word"), ("Syllables", "Syllable"), ("Sentences", "Sentence"))
+        for text, value in conn.execute(
+            f"SELECT {column}, BookletOnly FROM {table} "
+            "WHERE typeof(BookletOnly) != 'integer' OR BookletOnly NOT IN (0, 1)"
+        )
+    ]
+    if odd:
+        report.add("error", "rule 7", f"{len(odd)} BookletOnly value(s) are neither 0 nor 1", odd)
+    rows = conn.execute(
+        """SELECT DISTINCT s.Sentence, w.Word FROM Sentences s
+           JOIN WordsInSentences ws ON ws.SentenceID = s.ID
+           JOIN Words w ON w.ID = ws.WordID
+           WHERE s.BookletOnly IS 0 AND w.BookletOnly IS NOT 0
+           ORDER BY s.Sentence, w.Word"""
+    ).fetchall()
+    if rows:
+        report.add(
+            "error", "rule 7",
+            f"{len(rows)} sentence(s) the game can offer hold a booklet-only word",
+            [f"{sentence} ({word})" for sentence, word in rows],
+        )
+
+
+# Values a booklet setting may take: (column, lowest, highest or None).
+BOOKLET_RANGES = (
+    ("SyllableCount", 0, 999), ("SyllableColumns", 1, 10),
+    ("WordCount", 0, 999), ("WordColumns", 1, 10),
+    ("UppercaseProportion", 0, 1),
+    ("SentenceFont", 0, 2), ("SentenceFirstFont", 1, 2), ("SentencePages", 0, 99),
+    ("WritingModels", 0, 10), ("WritingTracings", 0, 10),
+)
+# Text the booklet generator reads, which must be valid UTF-8: a strict reader
+# (Python's sqlite3 by default) stops on anything else.
+BOOKLET_TEXT = (
+    ("Words", "Word"), ("Syllables", "Syllable"), ("Sentences", "Sentence"),
+    ("BookletChapters", "Title"), ("BookletEntries", "Text"), ("BookletEntries", "Text2"),
+    ("BookletStories", "Title"), ("BookletStories", "Text"),
+)
+BOOKLET_PARTS = {1: "syllables", 2: "words", 3: "writing", 4: "tables", 5: "fluency"}
+
+# The SQLite types each booklet column may hold. SQLite accepts any value in any
+# column, so a range check alone would let text through (text compares greater
+# than every number) -- and a Python comparison would crash on it.
+NUMBER = ("integer", "real")
+SETTING_TYPES = {column: (NUMBER if column == "UppercaseProportion" else ("integer",)) for column, _, _ in BOOKLET_RANGES}
+BOOKLET_TYPES = {
+    "BookletSettings": {"Cursive": ("integer",), **SETTING_TYPES},
+    "BookletChapters": {
+        "Position": ("integer",), "Booklet": ("integer",), "Title": ("text",),
+        "ImageGPID": ("integer", "null"), "GreySilent": ("integer",),
+        **{column: types + ("null",) for column, types in SETTING_TYPES.items()},
+    },
+    "BookletSentences": {"Position": ("integer",), "Break": ("integer",)},
+    "BookletEntries": {
+        "Part": ("integer",), "Position": ("integer",), "Text": ("text",), "Text2": ("text",), "Header": ("integer",),
+    },
+    "BookletStories": {"Position": ("integer",), "Title": ("text",), "Text": ("text",)},
+}
+
+CHAPTER_LABEL = "'lesson ' || (SELECT LessonNb FROM Lessons WHERE ID = LessonID) || ', chapter at position ' || Position"
+CHAPTER_OF = (
+    "(SELECT 'lesson ' || l.LessonNb || ', chapter at position ' || c.Position FROM BookletChapters c "
+    "JOIN Lessons l ON l.ID = c.LessonID WHERE c.ID = ChapterID)"
+)
+TABLE_LABELS = {
+    "BookletSettings": "'BookletSettings row ' || ID",
+    "BookletChapters": CHAPTER_LABEL,
+    "BookletSentences": CHAPTER_OF + " || ', sentence at position ' || Position",
+    "BookletEntries": CHAPTER_OF + " || ', entry ' || quote(Text)",
+    "BookletStories": CHAPTER_OF + " || ', story ' || quote(Title)",
+}
+
+
+def wrong_types(conn: sqlite3.Connection) -> list[str]:
+    problems = []
+    for table, columns in BOOKLET_TYPES.items():
+        for column, types in columns.items():
+            listed = ", ".join(f"'{kind}'" for kind in types)
+            for label, value, kind in conn.execute(
+                f"SELECT {TABLE_LABELS[table]}, {column}, typeof({column}) FROM {table} "
+                f"WHERE typeof({column}) NOT IN ({listed})"
+            ):
+                problems.append(f"{label}: {column} = {value!r} is {kind}, not {' or '.join(types)}")
+    return problems
+
+
+def invalid_utf8(conn: sqlite3.Connection) -> list[str]:
+    problems = []
+    for table, column in BOOKLET_TEXT:
+        for row_id, raw in conn.execute(
+            f"SELECT ID, CAST({column} AS BLOB) FROM {table} WHERE typeof({column}) = 'text'"
+        ):
+            try:
+                raw.decode("utf-8")
+            except UnicodeDecodeError:
+                problems.append(f"{table} row {row_id}: {column} is not valid UTF-8 ({raw.decode('utf-8', 'replace')!r})")
+    return problems
+
+
+def out_of_range(conn: sqlite3.Connection, table: str) -> list[str]:
+    """Settings outside their range; values of the wrong type are wrong_types()'."""
+    problems = []
+    for column, low, high in BOOKLET_RANGES:
+        condition = f"{column} < {low}" + (f" OR {column} > {high}" if high is not None else "")
+        for label, value in conn.execute(
+            f"SELECT {TABLE_LABELS[table]}, {column} FROM {table} "
+            f"WHERE typeof({column}) IN ('integer', 'real') AND ({condition})"
+        ):
+            problems.append(f"{label}: {column} = {value}")
+    return problems
+
+
+def position_problems(conn: sqlite3.Connection, table: str, group: str, label_sql: str) -> list[str]:
+    """Groups of rows whose positions do not give one order: a position used twice,
+    or below 0. Gaps are fine -- deleting a sentence leaves one, and the order is
+    still the order."""
+    return [
+        f"{label} (positions {listed})"
+        for label, listed in conn.execute(
+            f"""SELECT {label_sql}, group_concat(Position, ' ')
+                FROM (SELECT * FROM {table} WHERE typeof(Position) = 'integer' ORDER BY Position)
+                GROUP BY {group}
+                HAVING COUNT(*) != COUNT(DISTINCT Position) OR MIN(Position) < 0"""
+        )
+    ]
+
+
+def check_booklets(conn: sqlite3.Connection, report: PackReport) -> None:
+    """Rule 8: the booklet tables hold what the generator can read: one settings
+    row; every value of its type and range; text in valid UTF-8; booklets
+    numbered 1, 2, 3... along the chapters, without a gap; one order in every
+    list."""
+    problems = []
+    settings = conn.execute("SELECT COUNT(*) FROM BookletSettings").fetchone()[0]
+    if settings != 1:
+        problems.append(f"BookletSettings has {settings} rows, the booklets read exactly one")
+    problems += wrong_types(conn)
+    problems += invalid_utf8(conn)
+    problems += out_of_range(conn, "BookletSettings")
+    problems += out_of_range(conn, "BookletChapters")
+    for table, column, allowed in (
+        ("BookletSettings", "Cursive", (0, 1)), ("BookletChapters", "GreySilent", (0, 1)),
+        ("BookletSentences", "Break", (0, 1, 2)), ("BookletEntries", "Header", (0, 1)),
+        ("BookletEntries", "Part", tuple(BOOKLET_PARTS)),
+    ):
+        problems += [
+            f"{label}: {column} = {value}"
+            for label, value in conn.execute(
+                f"SELECT {TABLE_LABELS[table]}, {column} FROM {table} "
+                f"WHERE typeof({column}) = 'integer' AND {column} NOT IN ({', '.join(map(str, allowed))})"
+            )
+        ]
+    problems += [
+        f"{label}: a header row outside a table (part {part})"
+        for label, part in conn.execute(
+            f"SELECT {TABLE_LABELS['BookletEntries']}, Part FROM BookletEntries WHERE Header IS 1 AND Part IS NOT 4"
+        )
+    ]
+    problems += [
+        f"chapters of {label}" for label in position_problems(
+            conn, "BookletChapters", "LessonID", "'lesson ' || (SELECT LessonNb FROM Lessons WHERE ID = LessonID)"
+        )
+    ]
+    problems += [f"sentences of {label}" for label in position_problems(conn, "BookletSentences", "ChapterID", CHAPTER_OF)]
+    problems += [
+        f"entries of {label}"
+        for label in position_problems(
+            conn, "BookletEntries", "ChapterID, Part",
+            f"{CHAPTER_OF} || ', ' || CASE Part "
+            + " ".join(f"WHEN {part} THEN '{name}'" for part, name in BOOKLET_PARTS.items())
+            + " ELSE 'part ' || Part END",
+        )
+    ]
+    problems += [f"stories of {label}" for label in position_problems(conn, "BookletStories", "ChapterID", CHAPTER_OF)]
+
+    # Booklets follow the chapters: 1 first, then the same number or the next.
+    previous = None
+    for label, booklet in conn.execute(
+        f"""SELECT {CHAPTER_LABEL}, Booklet FROM BookletChapters c
+            JOIN Lessons l ON l.ID = c.LessonID
+            WHERE typeof(c.Booklet) = 'integer' ORDER BY l.LessonNb, c.Position"""
+    ):
+        expected = (1,) if previous is None else (previous[1], previous[1] + 1)
+        if booklet not in expected:
+            after = "the first chapter" if previous is None else f"after {previous[0]} in booklet {previous[1]}"
+            problems.append(f"{label} is in booklet {booklet}, {after}: expected booklet {' or '.join(map(str, expected))}")
+        previous = (label, booklet)
+
+    if problems:
+        report.add("error", "rule 8", f"{len(problems)} problem(s) in the booklet tables", problems)
+
+
+NEVER = 10**9  # the lesson of something no lesson makes readable
+
+
+def check_booklet_readability(conn: sqlite3.Connection, report: PackReport) -> None:
+    """Rule 9: what a chapter teaches and the sentences it prints are readable at
+    its lesson -- every word of a sentence decomposed, and every GP in them
+    taught by that lesson or an earlier one."""
+    first_lesson = dict(
+        conn.execute(
+            """SELECT gl.GPID, MIN(l.LessonNb) FROM GPsInLessons gl
+               JOIN Lessons l ON l.ID = gl.LessonID GROUP BY gl.GPID"""
+        ).fetchall()
+    )
+    late_gps = [
+        f"{label}: {grapheme}-{phoneme} is taught "
+        + (f"in lesson {first_lesson[gp_id]}" if gp_id in first_lesson else "by no lesson")
+        for label, grapheme, phoneme, gp_id, lesson in conn.execute(
+            f"""SELECT {CHAPTER_OF}, g.Grapheme, g.Phoneme, g.ID, l.LessonNb FROM BookletChapterGPs cg
+                JOIN GPs g ON g.ID = cg.GPID
+                JOIN BookletChapters c ON c.ID = cg.ChapterID JOIN Lessons l ON l.ID = c.LessonID
+                ORDER BY l.LessonNb, c.Position, g.Grapheme"""
+        )
+        if first_lesson.get(gp_id, NEVER) > lesson
+    ]
+    if late_gps:
+        report.add("warning", "rule 9", f"{len(late_gps)} chapter GP(s) are taught after their chapter", late_gps)
+
+    # A word is readable from the last first lesson of its GPs; one with no
+    # decomposition, or with a GP no lesson teaches, never is.
+    word_lessons: dict[int, int] = {}
+    for word_id, gp_id in conn.execute(
+        "SELECT w.ID, gw.GPID FROM Words w LEFT JOIN GPsInWords gw ON gw.WordID = w.ID"
+    ):
+        lesson = NEVER if gp_id is None else first_lesson.get(gp_id, NEVER)
+        word_lessons[word_id] = max(word_lessons.get(word_id, 0), lesson)
+    sentence_lessons: dict[int, int] = {}
+    for sentence_id, word_id in conn.execute("SELECT SentenceID, WordID FROM WordsInSentences"):
+        sentence_lessons[sentence_id] = max(sentence_lessons.get(sentence_id, 0), word_lessons.get(word_id, NEVER))
+
+    unreadable = []
+    for label, sentence_id, text, lesson in conn.execute(
+        f"""SELECT {CHAPTER_OF}, s.ID, s.Sentence, l.LessonNb FROM BookletSentences bs
+            JOIN Sentences s ON s.ID = bs.SentenceID
+            JOIN BookletChapters c ON c.ID = bs.ChapterID JOIN Lessons l ON l.ID = c.LessonID
+            ORDER BY l.LessonNb, c.Position, bs.Position"""
+    ):
+        needed = sentence_lessons.get(sentence_id, NEVER)
+        if needed > lesson:
+            unreadable.append(
+                f"{label}: {text} (readable from lesson {needed})" if needed < NEVER
+                else f"{label}: {text} (never readable: no words, a word without decomposition, or a GP no lesson teaches)"
+            )
+    if unreadable:
+        report.add(
+            "warning", "rule 9",
+            f"{len(unreadable)} booklet sentence(s) are not readable at their chapter", unreadable,
+        )
+
+
+# Rules whose breach fails the check (SCHEMA.md, "How the packs are checked").
+# read_exercise_types gathers what rule 4 compares: if it cannot run, rule 4 is
+# silently skipped, so it blocks like the rules themselves.
+BLOCKING_RULES = {
+    check_gps_taught, check_lesson_exercises, read_exercise_types, check_lesson_ids,
+    check_booklet_only, check_booklets,
+}
+
+DATA_RULES = (
+    check_decompositions, check_gps_taught, check_lesson_exercises, read_exercise_types, check_lesson_ids,
+    check_booklet_only, check_booklets, check_booklet_readability,
+)
 
 
 # --- Running -------------------------------------------------------------------
@@ -349,6 +622,9 @@ def validate(path: Path, latest: int, reference: dict) -> PackReport:
         report.add("error", "file", f"cannot be read as a SQLite database: {error}")
         return report
 
+    # Text that is not valid UTF-8 is read with replacement characters, rather
+    # than stopping the rule that reads it.
+    conn.text_factory = lambda data: data.decode("utf-8", "replace")
     with conn:
         if report.version != latest:
             report.add(
@@ -377,7 +653,13 @@ def validate(path: Path, latest: int, reference: dict) -> PackReport:
             try:
                 rule(conn, report)
             except sqlite3.Error as error:
-                report.add("notice", rule.__name__, f"could not be checked: {error}")
+                # A pack whose structure differs from the schema cannot run every
+                # rule, and already fails; one that follows the schema must, so a
+                # blocking rule that cannot run blocks too.
+                level = "notice" if differences or rule not in BLOCKING_RULES else "error"
+                report.add(level, rule.__name__, f"could not be checked: {error}")
+            except Exception as error:  # odd data must not take the whole run down
+                report.add("error", rule.__name__, f"crashed on this pack's data: {type(error).__name__}: {error}")
     conn.close()
     return report
 
@@ -468,7 +750,7 @@ def report_markdown(reports: list[PackReport], rule_4_note: str, latest: int) ->
     else:
         verdict = "✅ **No errors.**"
     if warnings:
-        verdict += f" {warnings} warning(s) about decompositions (rule 1), not blocking for now."
+        verdict += f" {warnings} warning(s) about decompositions (rule 1) or booklet readability (rule 9), not blocking."
     lines = [
         "## Language pack validation",
         "",

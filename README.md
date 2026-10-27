@@ -36,16 +36,16 @@ Each `<locale>` folder follows the same layout:
 
 ## SQLite database (`language.db`)
 
-The database contains 13 tables describing the pedagogical progression. Its exact
+The database contains 19 tables describing the pedagogical progression. Its exact
 structure, who reads which part of it, and the rules the data must follow are in
-[SCHEMA.md](SCHEMA.md) (schema version 1, [`schema/v1.sql`](schema/v1.sql)).
+[SCHEMA.md](SCHEMA.md) (schema version 2, [`schema/v2.sql`](schema/v2.sql)).
 
 | Table | Description |
 |-------|-------------|
 | `GPs` | Grapheme-phoneme correspondences (grapheme, phoneme, vowel/consonant type, exception flag) |
 | `Lessons` | Numbered lessons (60 in `fr_FR`) |
 | `GPsInLessons` | GP ↔ lesson association (which GP is introduced in which lesson) |
-| `Words` | Vocabulary words with reading/writing flags |
+| `Words` | Vocabulary words with reading/writing flags, and a booklet-only flag |
 | `GPsInWords` | GP breakdown of each word with position |
 | `Syllables` | Syllables available for exercises |
 | `GPsInSyllables` | GP breakdown of each syllable with position |
@@ -55,6 +55,7 @@ structure, who reads which part of it, and the rules the data must follow are in
 | `LessonsExercises` | The one to three minigames of each lesson (`0` = no minigame in that slot) |
 | `ExerciseTypes` | Exercise type reference table |
 | `LettersTracingData` | Unused and empty in every pack: letter tracings live in `tracing_data/` |
+| `BookletSettings`, `BookletChapters`, `BookletChapterGPs`, `BookletSentences`, `BookletEntries`, `BookletStories` | What the printed reading booklets ([Kalulu-Booklets](https://github.com/Excello-Recherche-Education/Kalulu-Booklets)) contain, chapter by chapter |
 
 ## CSV files
 
@@ -63,15 +64,15 @@ Columns: `Grapheme, Phoneme, Type, Exception`
 Flat list of grapheme-phoneme correspondences. `Type` is `Vowel` or `Consonant`. `Exception = 1` for irregular graphemes.
 
 ### `words_list.csv`
-Columns: `ORTHO, GPMATCH, LESSON, READING, WRITING`
+Columns: `ORTHO, GPMATCH, LESSON, READING, WRITING, BOOKLET_ONLY` (the last one written by the Prof Tool from schema version 2 on)
 Each word includes its GP breakdown in parentheses (e.g. `(a-a.b-b.r-R.i-i)` for "abri") and the lesson number where it is introduced.
 
 ### `syllables_list.csv`
-Columns: `ORTHO, GPMATCH, LESSON, READING, WRITING`
+Columns: `ORTHO, GPMATCH, LESSON, READING, WRITING, BOOKLET_ONLY`
 Same format as words, applied to syllables.
 
 ### `sentences_list.csv`
-Columns: `Sentence, Lesson`
+Columns: `Sentence, Lesson, BookletOnly`
 Sentences used in exercises, associated with a lesson number.
 
 ### `summary.txt`

@@ -1,18 +1,20 @@
 # The `language.db` schema
 
-Every pack's `language.db` is read by five programs and written by one, across
-five repositories. This document is the contract between them: what the database
+Every pack's `language.db` is read by six programs and written by one, across
+six repositories. This document is the contract between them: what the database
 holds, who depends on which part of it, and the rules the data must follow.
 
-**The current version is 1.** Its exact structure is [`schema/v1.sql`](schema/v1.sql);
+**The current version is 2.** Its exact structure is [`schema/v2.sql`](schema/v2.sql);
 this page explains it. A database says which version it follows in
 `PRAGMA user_version`.
 
-> **Status, 2026-10-16: all five packs, and the model database new languages
-> start from, are at version 1.** Version 1 is the schema the packs already
-> used — `fr_FR`'s, the most complete — with nothing added; the others were
-> migrated to it, see "Where the packs stand". The model is Kalulu-Frontend's
-> `model_database.db` (Kalulu-Frontend#361), which Kalulu-ProfTool copies.
+> **Status, 2026-10-26: all five packs are at version 2.** Version 2 is
+> version 1 plus what the reading booklets need — a `BookletOnly` flag on
+> `Words`, `Syllables` and `Sentences`, and the `Booklet*` tables — with nothing
+> else changed; see "Where the packs stand". Version 1 was the schema the packs
+> already used, written down on 2026-10-16. The model database new languages
+> start from is Kalulu-Frontend's `model_database.db`, which Kalulu-ProfTool
+> copies, and it follows the same version.
 
 ## Why this exists
 
@@ -33,18 +35,23 @@ without opening it, and a written schema gives the version a meaning.
 | Program | Repository | Access | Tables it uses |
 |---|---|---|---|
 | **Prof Tool** | Kalulu-ProfTool | **reads and writes** — the only writer | every table except `LettersTracingData` |
-| **The game** | Kalulu-Frontend | reads, on the device | `GPs`, `Lessons`, `GPsInLessons`, `Words`, `GPsInWords`, `Syllables`, `GPsInSyllables`, `Sentences`, `WordsInSentences`, `Pseudowords`, `LessonsExercises` |
-| **Language Lambda** | Kalulu-Language-Lambda | reads, when a pack ZIP lands on S3; fills MySQL and uploads a copy of the database | `GPs` (`ID`, `Grapheme`, `Phoneme`, `Type`, `Exception`), `GPsInLessons` (lesson IDs come from here, not from `Lessons`) |
-| **Backend** | Kalulu-Backend | reads that copy (`language-db-dumps/<locale>/language.db` on S3) | `Words` (`ID`, `Word`), `Syllables` (`ID`, `Syllable`), all of `Lessons` |
-| **Languages Checker** | Kalulu-Languages-Checker | reads, in the tester's browser | `GPs` (`ID`, `Grapheme`, `Phoneme`), `Lessons`, `GPsInLessons`, `Words`, `GPsInWords`, `Syllables`, `GPsInSyllables` — not `Sentences`, which have no recording to review |
+| **The game** | Kalulu-Frontend | reads, on the device | `GPs`, `Lessons`, `GPsInLessons`, `Words`, `GPsInWords`, `Syllables`, `GPsInSyllables`, `Sentences`, `WordsInSentences`, `Pseudowords`, `LessonsExercises`; `BookletOnly` from version 2, to leave those entries out |
+| **Language Lambda** | Kalulu-Language-Lambda | reads, when a pack ZIP lands on S3; fills MySQL and uploads a copy of the database | `GPs` (`ID`, `Grapheme`, `Phoneme`, `Type`, `Exception`), `GPsInLessons` (lesson IDs come from here, not from `Lessons`); refuses a `user_version` it does not know |
+| **Backend** | Kalulu-Backend | reads that copy (`language-db-dumps/<locale>/language.db` on S3) | all of `Words`, `Syllables` and `Lessons` (`SELECT *`), of which it uses `ID` and the text to label remediation scores |
+| **Languages Checker** | Kalulu-Languages-Checker | reads, in the tester's browser | `GPs` (`ID`, `Grapheme`, `Phoneme`), `Lessons`, `GPsInLessons`, `Words`, `GPsInWords`, `Syllables`, `GPsInSyllables` — not `Sentences`, which have no recording to review; `BookletOnly` from version 2, to leave those entries out |
+| **Booklet generator** | Kalulu-Booklets | reads, from its own pinned checkout of this repository | everything the game reads, `BookletOnly` included, and the `Booklet*` tables |
 
-Measured on 2026-10-15 by reading each program's queries. Two consequences:
+Measured on 2026-10-15 by reading each program's queries, and on 2026-10-26 for
+version 2. Three consequences:
 
 - **Only the Prof Tool reads `Reading` and `Writing`**, and nothing at all reads
   `ExerciseTypes` except the Prof Tool, which maintains it. Adding or filling those
   cannot affect the game, the Lambda, the backend or the Checker.
-- **The backend reads `Lessons` with `SELECT *`**, so a column added to `Lessons`
-  reaches it.
+- **The backend reads `Words`, `Syllables` and `Lessons` with `SELECT *`**, so a
+  column added to them reaches it. Version 2's `BookletOnly` does, harmlessly: it
+  uses only `ID` and the text, and the game never scores a booklet-only entry.
+- **Only the Prof Tool and the booklet generator read the `Booklet*` tables.**
+  `BookletOnly` is the one part of version 2 the game reads.
 
 The empty database a new language starts from is `model_database.db` in
 Kalulu-Frontend, copied by the Prof Tool. It is part of this contract too, and
@@ -53,7 +60,10 @@ must follow the same version as the packs.
 ## Tables
 
 All IDs are SQLite `AUTOINCREMENT` integer keys. Every foreign key cascades on
-update and on delete. Positions count from **0** and have no gaps.
+update and on delete, but two of version 2's: deleting a lesson that has booklet
+chapters is refused (`BookletChapters.LessonID`, `ON DELETE RESTRICT`), and
+deleting the GP a chapter's teacher picture comes from leaves the chapter without
+one (`ImageGPID`, `ON DELETE SET NULL`). Positions count from **0** and have no gaps — except in the `Booklet*` lists, where only their order counts (rule 8).
 
 ### What exists in the language
 
@@ -68,13 +78,14 @@ update and on delete. Positions count from **0** and have no gaps.
 | `Exception` | `1` for an exception; the game leaves exceptions out unless a minigame asks for them |
 
 **`Words`**, **`Syllables`**, **`Sentences`** — the stimuli. Each has its text
-(`Word`, `Syllable`, `Sentence`) and three flags:
+(`Word`, `Syllable`, `Sentence`) and four flags:
 
 | Column | Default | Meaning |
 |---|---|---|
 | `Exception` | `0` | `1` for an irregular item; the game leaves it out of its pools |
 | `Reading` | `1` | used for reading |
 | `Writing` | `0` | used for writing |
+| `BookletOnly` | `0` | `1` for an entry only the reading booklets print (version 2; `NOT NULL`, unlike the three above); the game leaves it out of its pools — see "The reading booklets" |
 
 `Syllables` also holds pseudo-syllables. A sentence's `\n` is a deliberate line
 break.
@@ -113,6 +124,73 @@ no foreign key on these columns: `0` matches no row.
 `10` boss. The game itself never reads this table — it maps the IDs by position —
 so the names matter to the Prof Tool and to anyone reading the data.
 
+### The reading booklets
+
+Kalulu-Booklets prints, for each pack, a series of A5 booklets that follow the
+app's lessons. These tables say what goes in them; only the Prof Tool writes
+them and only the generator reads them. The design and the reasons behind it are
+in Kalulu-Main's `docs/BOOKLETS-FROM-PACKS.md`.
+
+**`BookletOnly`** on `Words`, `Syllables` and `Sentences` keeps an entry out of
+the game: the booklets are running text, and print word forms (`salué`, `amis`,
+first names) the game has no recording for. A booklet-only entry is still
+decomposed like any other — that is how the booklets know which letters are
+silent and from which lesson it can be read.
+
+> **Mark nothing booklet-only in a published pack until the game that honours
+> the flag is what players run.** The game reads it from Kalulu-Frontend 3.1.7
+> on; an older game ignores the column and would offer those entries like any
+> other — without their recordings.
+
+**`BookletSettings`** — exactly one row: whether the language is also written in
+cursive (`Cursive`), and the defaults every chapter uses where its own column is
+`NULL`:
+
+| Column | Default | Meaning |
+|---|---|---|
+| `Cursive` | `1` | titles, sentences and writing pages also in cursive. At `0` everything is printed in script, and `SentenceFont` / `SentenceFirstFont` are ignored |
+| `SyllableCount` / `SyllableColumns` | `12` / `6` | syllables printed (repeated until the count is reached) and their columns |
+| | | **Ranges** (rule 8): columns 1–10, counts 0–999, `SentencePages` 0–99, writing copies 0–10, `UppercaseProportion` 0–1 |
+| `WordCount` / `WordColumns` | `12` / `4` | words chosen automatically, and their columns |
+| `UppercaseProportion` | `0` | share of syllables, words and sentences printed in capitals, from 0 to 1 |
+| `SentenceFont` | `0` | `0` alternate script and cursive by paragraph, `1` script only, `2` cursive only |
+| `SentenceFirstFont` | `2` | when alternating, the first paragraph's: `1` script, `2` cursive |
+| `SentencePages` | `1` | pages of sentences at most; `0` for all of them |
+| `WritingModels` / `WritingTracings` | `1` / `2` | copies of each writing item in black, and in light grey to trace over |
+
+**`BookletChapters`** — the booklets' chapters. **They follow the app's
+lessons**: a chapter belongs to a lesson (`LessonID`), chapters are ordered by
+that lesson's `LessonNb` and then by `Position` among the chapters of the same
+lesson, and `Booklet` numbers them 1, 2, 3… along that order, each chapter in the
+same booklet as the one before or the next. A lesson that has chapters cannot be
+deleted: they would go with it, hand-written lists and stories included. One lesson can
+make several chapters (French lesson 13 is "x s t e" and "N n"), and a chapter
+can teach nothing new (the consonant clusters). `Title` is printed as written,
+`\n` between its lines, nothing when empty. `ImageGPID` names the GP whose
+Look & Learn image heads the chapter in the teacher's booklet; `NULL` gives the
+chapter no teacher page. `GreySilent` prints silent letters in grey. Every other
+column overrides the `BookletSettings` one of the same name.
+
+**`BookletChapterGPs`** (`ChapterID`, `GPID`, each pair once) — what the chapter teaches. Its
+automatic syllables and words are those readable at its lesson that contain at
+least one of these GPs.
+
+**`BookletSentences`** (`ChapterID`, `SentenceID`, `Position`, `Break`) — the
+chapter's sentences, in order, each a `Sentences` row so that its words are
+known. `Break` says what comes before a sentence: `0` it continues the line,
+`1` a new line, `2` a new paragraph. Script and cursive alternate by paragraph.
+
+**`BookletEntries`** (`ChapterID`, `Part`, `Position`, `Text`, `Text2`,
+`Header`) — what is written by hand, stored **as it is printed** ("la Lune",
+"un vélo") and matched to `Words` word by word, case ignored, as sentences are.
+`Part`: `1` syllables, `2` words, `3` writing page, `4` tables, `5` fluency test.
+A part listed by hand replaces the automatic choice. A table row holds its right
+cell in `Text2`; `Header = 1` marks a bold row, which starts a new table.
+
+**`BookletStories`** (`ChapterID`, `Position`, `Title`, `Text`) — stories, free
+text, paragraphs separated by an empty line. Their words need not be in `Words`;
+the Prof Tool points out those that are not, or not yet taught.
+
 ### Unused
 
 **`LettersTracingData`** — empty in every pack and used by no program: letter
@@ -134,6 +212,23 @@ below):
 4. `ExerciseTypes` matches `MinigameTypes.NAMES`, row for row.
 5. `user_version` is the schema version the pack follows.
 6. Every lesson's `ID` is its `LessonNb`.
+7. `BookletOnly` is `0` or `1` — the game keeps only the `0`s, so any other
+   value takes an entry out of it — and a sentence the game can offer
+   (`BookletOnly = 0`) holds no booklet-only word.
+8. The booklet tables can be read: one `BookletSettings` row; every value of
+   its SQLite type (a number where a number is meant — SQLite would store text)
+   and within its range; text the generator reads — `Words`, `Syllables`,
+   `Sentences` and the booklet tables' — in valid UTF-8, which a strict reader
+   needs; booklets numbered 1, 2, 3… along the chapters, each
+   chapter in the same booklet as the one before or the next; one order in every
+   list — chapters within a lesson, sentences and stories within a chapter,
+   entries within a chapter's part — meaning no position used twice and none
+   below 0. **Gaps are allowed**: deleting a sentence from the Sentence List
+   removes it from its chapters by `ON DELETE CASCADE` and leaves one, and the
+   order is still the order.
+9. What a chapter teaches, and the sentences it prints, are readable at its
+   lesson: every word of a sentence decomposed, and every GP in them taught by
+   that lesson or an earlier one.
 
 Known breaches, as of 2026-10-22: one. In `fr_FR`, `payons` has no decomposition at
 all (rule 1). Its spelling needs an `ay` GP the pack does not have, and how to
@@ -160,14 +255,22 @@ python3 .github/scripts/validate_packs.py fr_FR/language.db  # one
 
 | Level | What | Effect |
 |---|---|---|
-| error | `user_version` is not the newest `schema/v<n>.sql` (rule 5); tables, columns, types, defaults, keys or indexes differ from that file; `integrity_check` fails; `foreign_key_check` finds rows pointing at nothing; rules 2, 3, 4 and 6 | the check fails |
-| warning | rule 1 | reported; `--strict` makes it fail too. Becomes an error once `payons` is settled |
-| notice | a rule that could not be checked, and why | reported only |
+| error | `user_version` is not the newest `schema/v<n>.sql` (rule 5); tables, columns, types, defaults, keys or indexes differ from that file; `integrity_check` fails; `foreign_key_check` finds rows pointing at nothing; rules 2, 3, 4, 6, 7 and 8 | the check fails |
+| warning | rules 1 and 9 | reported; `--strict` makes them fail too. Rule 1 becomes an error once `payons` is settled |
+| notice | a rule that could not be checked, and why: a non-blocking rule (1, 9), or any rule on a pack whose structure already fails | reported only |
+
+A blocking rule that cannot run on a pack following the schema — an SQLite error
+reading its data — is an error, not a notice: it would otherwise pass silently.
+Text that is not valid UTF-8 is read with replacement characters, so it shows in
+the report instead of stopping a rule.
 
 **Rules 2, 3, 4 and 6 are errors although they are data rules**, because a pack
 that breaks one fails children in the game, silently:
 
-- rule 2 — every word and syllable holding a GP no lesson teaches is never offered;
+- rule 2 — every word and syllable holding a GP no lesson teaches is never offered.
+  It holds for booklet-only words too, which the game never offers: a booklet
+  prints a word from the lesson its GPs are taught in, so a GP no lesson teaches
+  leaves the word with no place in any booklet either;
 - rule 3 — a lesson without a minigame row, or with three empty slots, has
   nothing to play, and a slot naming no minigame points at one that does not
   exist;
@@ -178,6 +281,13 @@ that breaks one fails children in the game, silently:
 
 They became errors on 2026-10-22, when no pack broke them any more. Rule 1 stays a
 warning only while one known case waits for a decision.
+
+**Rules 7 and 8 are errors from the start**, version 2 having no data to break
+them: rule 7 for the same reason as the four above — a game sentence holding a
+booklet-only word brings back into the game what it was told to leave out — and
+rule 8 because the generator cannot read booklet tables that break it. **Rule 9
+is a warning**: a chapter printing a word its lesson cannot read yet is the
+booklets' content to put right, and never reaches the game.
 
 - **Structure is compared as SQLite reports it** (`PRAGMA table_info`,
   `foreign_key_list`, `index_list`), not as SQL text: the packs mix quoted and
@@ -194,9 +304,32 @@ warning only while one known case waits for a decision.
 
 ## Where the packs stand
 
-**Every pack follows version 1** since 2026-10-16: structure identical to
-`schema/v1.sql`, `user_version = 1`. Before that, none carried a version, and
-four of the five differed from it:
+**Every pack follows version 2** since 2026-10-26 (migrated again on 2026-10-27,
+as version 2 was revised in review before it was merged): structure identical to
+`schema/v2.sql`, `user_version = 2`. All five were migrated from version 1 with
+[`schema/v1-to-v2.sql`](schema/v1-to-v2.sql) (run with the sqlite3 shell: its `.bail on` makes a
+failure roll the whole transaction back; it refuses any pack that is not version
+1, so a second run changes nothing), which adds and fills nothing but
+the new: the `BookletOnly` columns (`0` everywhere, so every entry stays the
+game's), the empty `Booklet*` tables, and the one `BookletSettings` row with its
+defaults. Every table of version 1 kept every row and every value, checked table
+by table against the version 1 databases; the only other change is
+`sqlite_sequence` gaining the `BookletSettings` counter. `es_AR` and `es_UY` are
+still byte-identical.
+
+- **The first publish after this change re-sends all five packs**: each pack's
+  tree changed, so *Publish Language Packs* uploads every one, the Lambda runs on
+  DEV and PROD for each, and every device downloads its pack again.
+- **Publishing a version 2 pack needs the Language Lambda that reads it.** The
+  Lambda refuses a `user_version` it does not know before writing anything, so
+  until its version 2 support is deployed, *Publish Language Packs* would fail at
+  the Lambda for every pack.
+- **A Prof Tool older than version 2 refuses these packs** when it opens them
+  (`PackSchema`, since 1.5.2), so it cannot write them back as version 1.
+
+**Version 1, 2026-10-16**: structure identical to `schema/v1.sql`,
+`user_version = 1`. Before that, none carried a version, and four of the five
+differed from it:
 
 | Database | What the migration changed |
 |---|---|

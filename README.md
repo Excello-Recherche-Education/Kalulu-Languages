@@ -34,6 +34,16 @@ Each `<locale>` folder follows the same layout:
     └── video/               # GP videos (OGV)
 ```
 
+## Fonts
+
+[`fonts/`](fonts/), beside the packs, holds the two typefaces a pack's text is
+shown with, in the game and in the printed reading booklets: **Mulish** for
+script letters, in the version modified for Kalulu, and **Marelle** for cursive.
+Both are under the SIL Open Font License; [`fonts/LICENSE.md`](fonts/LICENSE.md)
+says what each file is, what was changed in Mulish, and the rules for changing
+them. This folder is the reference copy: Kalulu-Frontend's Mulish is a copy of
+it.
+
 ## SQLite database (`language.db`)
 
 The database contains 19 tables describing the pedagogical progression. Its exact

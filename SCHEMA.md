@@ -59,7 +59,10 @@ must follow the same version as the packs.
 ## Tables
 
 All IDs are SQLite `AUTOINCREMENT` integer keys. Every foreign key cascades on
-update and on delete. Positions count from **0** and have no gaps — except in the `Booklet*` lists, where only their order counts (rule 8).
+update and on delete, but two of version 2's: deleting a lesson that has booklet
+chapters is refused (`BookletChapters.LessonID`, `ON DELETE RESTRICT`), and
+deleting the GP a chapter's teacher picture comes from leaves the chapter without
+one (`ImageGPID`, `ON DELETE SET NULL`). Positions count from **0** and have no gaps — except in the `Booklet*` lists, where only their order counts (rule 8).
 
 ### What exists in the language
 
@@ -144,7 +147,7 @@ cursive (`Cursive`), and the defaults every chapter uses where its own column is
 
 | Column | Default | Meaning |
 |---|---|---|
-| `Cursive` | `1` | titles, sentences and writing pages also in cursive |
+| `Cursive` | `1` | titles, sentences and writing pages also in cursive. At `0` everything is printed in script, and `SentenceFont` / `SentenceFirstFont` are ignored |
 | `SyllableCount` / `SyllableColumns` | `12` / `6` | syllables printed (repeated until the count is reached) and their columns |
 | `WordCount` / `WordColumns` | `12` / `4` | words chosen automatically, and their columns |
 | `UppercaseProportion` | `0` | share of syllables, words and sentences printed in capitals, from 0 to 1 |
@@ -156,7 +159,9 @@ cursive (`Cursive`), and the defaults every chapter uses where its own column is
 **`BookletChapters`** — the booklets' chapters. **They follow the app's
 lessons**: a chapter belongs to a lesson (`LessonID`), chapters are ordered by
 that lesson's `LessonNb` and then by `Position` among the chapters of the same
-lesson, and `Booklet` (from 1) never decreases along that order. One lesson can
+lesson, and `Booklet` numbers them 1, 2, 3… along that order, each chapter in the
+same booklet as the one before or the next. A lesson that has chapters cannot be
+deleted: they would go with it, hand-written lists and stories included. One lesson can
 make several chapters (French lesson 13 is "x s t e" and "N n"), and a chapter
 can teach nothing new (the consonant clusters). `Title` is printed as written,
 `\n` between its lines, nothing when empty. `ImageGPID` names the GP whose
@@ -164,7 +169,7 @@ Look & Learn image heads the chapter in the teacher's booklet; `NULL` gives the
 chapter no teacher page. `GreySilent` prints silent letters in grey. Every other
 column overrides the `BookletSettings` one of the same name.
 
-**`BookletChapterGPs`** (`ChapterID`, `GPID`) — what the chapter teaches. Its
+**`BookletChapterGPs`** (`ChapterID`, `GPID`, each pair once) — what the chapter teaches. Its
 automatic syllables and words are those readable at its lesson that contain at
 least one of these GPs.
 
@@ -205,7 +210,9 @@ below):
 4. `ExerciseTypes` matches `MinigameTypes.NAMES`, row for row.
 5. `user_version` is the schema version the pack follows.
 6. Every lesson's `ID` is its `LessonNb`.
-7. A sentence the game can offer (`BookletOnly = 0`) holds no booklet-only word.
+7. `BookletOnly` is `0` or `1` — the game keeps only the `0`s, so any other
+   value takes an entry out of it — and a sentence the game can offer
+   (`BookletOnly = 0`) holds no booklet-only word.
 8. The booklet tables can be read: one `BookletSettings` row; every value of
    its SQLite type (a number where a number is meant — SQLite would store text)
    and within its range; booklets numbered 1, 2, 3… along the chapters, each
@@ -214,8 +221,7 @@ below):
    entries within a chapter's part — meaning no position used twice and none
    below 0. **Gaps are allowed**: deleting a sentence from the Sentence List
    removes it from its chapters by `ON DELETE CASCADE` and leaves one, and the
-   order is still the order. No cursive-only sentences (`SentenceFont = 2`) for a
-   language written without cursive.
+   order is still the order.
 9. What a chapter teaches, and the sentences it prints, are readable at its
    lesson: every word of a sentence decomposed, and every GP in them taught by
    that lesson or an earlier one.
@@ -247,7 +253,12 @@ python3 .github/scripts/validate_packs.py fr_FR/language.db  # one
 |---|---|---|
 | error | `user_version` is not the newest `schema/v<n>.sql` (rule 5); tables, columns, types, defaults, keys or indexes differ from that file; `integrity_check` fails; `foreign_key_check` finds rows pointing at nothing; rules 2, 3, 4, 6, 7 and 8 | the check fails |
 | warning | rules 1 and 9 | reported; `--strict` makes them fail too. Rule 1 becomes an error once `payons` is settled |
-| notice | a rule that could not be checked, and why | reported only |
+| notice | a rule that could not be checked, and why, on a pack whose structure already fails | reported only |
+
+A blocking rule that cannot run on a pack following the schema — an SQLite error
+reading its data — is an error, not a notice: it would otherwise pass silently.
+Text that is not valid UTF-8 is read with replacement characters, so it shows in
+the report instead of stopping a rule.
 
 **Rules 2, 3, 4 and 6 are errors although they are data rules**, because a pack
 that breaks one fails children in the game, silently:
@@ -289,7 +300,8 @@ booklets' content to put right, and never reaches the game.
 **Every pack follows version 2** since 2026-10-26: structure identical to
 `schema/v2.sql`, `user_version = 2`. All five were migrated from version 1 with
 [`schema/v1-to-v2.sql`](schema/v1-to-v2.sql) (run with `sqlite3 -bail`, so that a
-failure rolls the whole transaction back), which adds and fills nothing but
+failure rolls the whole transaction back; it refuses any pack that is not version
+1, so a second run changes nothing), which adds and fills nothing but
 the new: the `BookletOnly` columns (`0` everywhere, so every entry stays the
 game's), the empty `Booklet*` tables, and the one `BookletSettings` row with its
 defaults. Every table of version 1 kept every row and every value, checked table

@@ -4,8 +4,9 @@
 --
 -- -bail matters: without it the sqlite3 shell carries on past a failed
 -- statement and the final COMMIT keeps whatever succeeded. With it, the first
--- failure stops the script inside the transaction, which is then rolled back --
--- so running it twice, or on a pack that is not version 1, changes nothing.
+-- failure stops the script inside the transaction, which is then rolled back.
+-- The first statement after BEGIN fails unless the pack is version 1, so
+-- running it twice, or on a pack of any other version, changes nothing.
 --
 -- Adds the BookletOnly flag to Words, Syllables and Sentences, with the default
 -- that keeps every existing entry in the game, and the empty Booklet* tables
@@ -15,6 +16,10 @@
 -- model_database.db was migrated with this file.
 
 BEGIN TRANSACTION;
+
+-- Refuse anything but a version 1 pack: the insert breaks the CHECK otherwise.
+CREATE TEMP TABLE "_migrating_from" ("Version" INTEGER CHECK ("Version" = 1));
+INSERT INTO "_migrating_from" SELECT user_version FROM pragma_user_version;
 
 ALTER TABLE "Words" ADD COLUMN "BookletOnly" INTEGER NOT NULL DEFAULT 0;
 ALTER TABLE "Syllables" ADD COLUMN "BookletOnly" INTEGER NOT NULL DEFAULT 0;
@@ -43,7 +48,8 @@ CREATE TABLE "BookletSettings" (
 
 -- Chapters follow the app's lessons: ordered by their lesson's LessonNb, then
 -- by Position among the chapters of the same lesson. NULL in a setting column
--- means the BookletSettings value.
+-- means the BookletSettings value. A lesson that has chapters cannot be deleted
+-- (ON DELETE RESTRICT): its chapters' hand-written content would go with it.
 CREATE TABLE "BookletChapters" (
 	"ID"	INTEGER NOT NULL UNIQUE,
 	"LessonID"	INTEGER NOT NULL,
@@ -63,7 +69,7 @@ CREATE TABLE "BookletChapters" (
 	"WritingModels"	INTEGER,
 	"WritingTracings"	INTEGER,
 	PRIMARY KEY("ID" AUTOINCREMENT),
-	FOREIGN KEY("LessonID") REFERENCES "Lessons"("ID") ON UPDATE CASCADE ON DELETE CASCADE,
+	FOREIGN KEY("LessonID") REFERENCES "Lessons"("ID") ON UPDATE CASCADE ON DELETE RESTRICT,
 	FOREIGN KEY("ImageGPID") REFERENCES "GPs"("ID") ON UPDATE CASCADE ON DELETE SET NULL
 );
 
@@ -74,6 +80,7 @@ CREATE TABLE "BookletChapterGPs" (
 	"ChapterID"	INTEGER NOT NULL,
 	"GPID"	INTEGER NOT NULL,
 	PRIMARY KEY("ID" AUTOINCREMENT),
+	UNIQUE("ChapterID", "GPID"),
 	FOREIGN KEY("ChapterID") REFERENCES "BookletChapters"("ID") ON UPDATE CASCADE ON DELETE CASCADE,
 	FOREIGN KEY("GPID") REFERENCES "GPs"("ID") ON UPDATE CASCADE ON DELETE CASCADE
 );

@@ -155,7 +155,8 @@ CREATE TABLE "BookletSettings" (
 
 -- Chapters follow the app's lessons: ordered by their lesson's LessonNb, then
 -- by Position among the chapters of the same lesson. NULL in a setting column
--- means the BookletSettings value.
+-- means the BookletSettings value. A lesson that has chapters cannot be deleted
+-- (ON DELETE RESTRICT): its chapters' hand-written content would go with it.
 CREATE TABLE "BookletChapters" (
 	"ID"	INTEGER NOT NULL UNIQUE,
 	"LessonID"	INTEGER NOT NULL,
@@ -175,7 +176,7 @@ CREATE TABLE "BookletChapters" (
 	"WritingModels"	INTEGER,
 	"WritingTracings"	INTEGER,
 	PRIMARY KEY("ID" AUTOINCREMENT),
-	FOREIGN KEY("LessonID") REFERENCES "Lessons"("ID") ON UPDATE CASCADE ON DELETE CASCADE,
+	FOREIGN KEY("LessonID") REFERENCES "Lessons"("ID") ON UPDATE CASCADE ON DELETE RESTRICT,
 	FOREIGN KEY("ImageGPID") REFERENCES "GPs"("ID") ON UPDATE CASCADE ON DELETE SET NULL
 );
 
@@ -186,6 +187,7 @@ CREATE TABLE "BookletChapterGPs" (
 	"ChapterID"	INTEGER NOT NULL,
 	"GPID"	INTEGER NOT NULL,
 	PRIMARY KEY("ID" AUTOINCREMENT),
+	UNIQUE("ChapterID", "GPID"),
 	FOREIGN KEY("ChapterID") REFERENCES "BookletChapters"("ID") ON UPDATE CASCADE ON DELETE CASCADE,
 	FOREIGN KEY("GPID") REFERENCES "GPs"("ID") ON UPDATE CASCADE ON DELETE CASCADE
 );

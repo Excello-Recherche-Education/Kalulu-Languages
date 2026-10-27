@@ -338,9 +338,21 @@ def check_lesson_ids(conn: sqlite3.Connection, report: PackReport) -> None:
 
 
 def check_booklet_only(conn: sqlite3.Connection, report: PackReport) -> None:
-    """Rule 7: a sentence the game can offer holds no booklet-only word. The game
-    leaves booklet-only entries out of its pools, so such a sentence would bring
+    """Rule 7: BookletOnly is 0 or 1, and a sentence the game can offer holds no
+    booklet-only word. The game keeps only the entries whose flag is 0, so any
+    other value -- text a tool wrote meaning "no", say -- silently takes an entry
+    out of the game; and a game sentence holding a booklet-only word would bring
     back a word it was told to leave out -- one with no recording, typically."""
+    odd = [
+        f"{table} {text!r}: BookletOnly = {value!r}"
+        for table, column in (("Words", "Word"), ("Syllables", "Syllable"), ("Sentences", "Sentence"))
+        for text, value in conn.execute(
+            f"SELECT {column}, BookletOnly FROM {table} "
+            "WHERE typeof(BookletOnly) != 'integer' OR BookletOnly NOT IN (0, 1)"
+        )
+    ]
+    if odd:
+        report.add("error", "rule 7", f"{len(odd)} BookletOnly value(s) are neither 0 nor 1", odd)
     rows = conn.execute(
         """SELECT DISTINCT s.Sentence, w.Word FROM Sentences s
            JOIN WordsInSentences ws ON ws.SentenceID = s.ID
@@ -365,7 +377,6 @@ BOOKLET_RANGES = (
     ("WritingModels", 0, None), ("WritingTracings", 0, None),
 )
 BOOKLET_PARTS = {1: "syllables", 2: "words", 3: "writing", 4: "tables", 5: "fluency"}
-CURSIVE_ONLY = 2  # SentenceFont
 
 # The SQLite types each booklet column may hold. SQLite accepts any value in any
 # column, so a range check alone would let text through (text compares greater
@@ -444,8 +455,7 @@ def position_problems(conn: sqlite3.Connection, table: str, group: str, label_sq
 def check_booklets(conn: sqlite3.Connection, report: PackReport) -> None:
     """Rule 8: the booklet tables hold what the generator can read: one settings
     row; every value of its type and range; booklets numbered 1, 2, 3... along
-    the chapters, without a gap; one order in every list; nothing printed in
-    cursive for a language written without it."""
+    the chapters, without a gap; one order in every list."""
     problems = []
     settings = conn.execute("SELECT COUNT(*) FROM BookletSettings").fetchone()[0]
     if settings != 1:
@@ -501,16 +511,6 @@ def check_booklets(conn: sqlite3.Connection, report: PackReport) -> None:
             problems.append(f"{label} is in booklet {booklet}, {after}: expected booklet {' or '.join(map(str, expected))}")
         previous = (label, booklet)
 
-    # Cursive-only sentences need a language written in cursive.
-    cursive = conn.execute("SELECT Cursive FROM BookletSettings ORDER BY ID LIMIT 1").fetchone()
-    if cursive is not None and cursive[0] == 0:
-        problems += [
-            f"{label}: SentenceFont is cursive only, but BookletSettings.Cursive is 0"
-            for label, in conn.execute(
-                f"""SELECT 'BookletSettings' FROM BookletSettings WHERE SentenceFont IS {CURSIVE_ONLY}
-                    UNION ALL SELECT {CHAPTER_LABEL} FROM BookletChapters WHERE SentenceFont IS {CURSIVE_ONLY}"""
-            )
-        ]
     if problems:
         report.add("error", "rule 8", f"{len(problems)} problem(s) in the booklet tables", problems)
 
@@ -574,6 +574,9 @@ def check_booklet_readability(conn: sqlite3.Connection, report: PackReport) -> N
         )
 
 
+# Rules whose breach fails the check (SCHEMA.md, "How the packs are checked").
+BLOCKING_RULES = {check_gps_taught, check_lesson_exercises, check_lesson_ids, check_booklet_only, check_booklets}
+
 DATA_RULES = (
     check_decompositions, check_gps_taught, check_lesson_exercises, read_exercise_types, check_lesson_ids,
     check_booklet_only, check_booklets, check_booklet_readability,
@@ -592,6 +595,9 @@ def validate(path: Path, latest: int, reference: dict) -> PackReport:
         report.add("error", "file", f"cannot be read as a SQLite database: {error}")
         return report
 
+    # Text that is not valid UTF-8 is read with replacement characters, rather
+    # than stopping the rule that reads it.
+    conn.text_factory = lambda data: data.decode("utf-8", "replace")
     with conn:
         if report.version != latest:
             report.add(
@@ -620,7 +626,11 @@ def validate(path: Path, latest: int, reference: dict) -> PackReport:
             try:
                 rule(conn, report)
             except sqlite3.Error as error:
-                report.add("notice", rule.__name__, f"could not be checked: {error}")
+                # A pack whose structure differs from the schema cannot run every
+                # rule, and already fails; one that follows the schema must, so a
+                # blocking rule that cannot run blocks too.
+                level = "notice" if differences or rule not in BLOCKING_RULES else "error"
+                report.add(level, rule.__name__, f"could not be checked: {error}")
             except Exception as error:  # odd data must not take the whole run down
                 report.add("error", rule.__name__, f"crashed on this pack's data: {type(error).__name__}: {error}")
     conn.close()

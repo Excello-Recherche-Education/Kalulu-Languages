@@ -4,11 +4,13 @@ Every pack's `language.db` is read by six programs and written by one, across
 six repositories. This document is the contract between them: what the database
 holds, who depends on which part of it, and the rules the data must follow.
 
-**The current version is 3.** Its exact structure is [`schema/v3.sql`](schema/v3.sql);
+**The current version is 4.** Its exact structure is [`schema/v4.sql`](schema/v4.sql);
 this page explains it. A database says which version it follows in
 `PRAGMA user_version`.
 
-> **Status, 2026-10-27: all five packs are at version 3.** Version 3 is
+> **Status, 2026-10-27: all five packs are at version 4.** Version 4 is
+> version 3 without the `Writing` column of `Words`, `Syllables` and
+> `Sentences`, which no program read. Version 3 is
 > version 2 plus the fonts a language's booklets may print with instead of the
 > default ones — the `BookletFonts` table and four font columns in
 > `BookletSettings` — with nothing else changed. Version 2 is version 1 plus
@@ -46,9 +48,10 @@ without opening it, and a written schema gives the version a meaning.
 Measured on 2026-10-15 by reading each program's queries, and on 2026-10-26 for
 version 2. Three consequences:
 
-- **Only the Prof Tool reads `Reading` and `Writing`**, and nothing at all reads
-  `ExerciseTypes` except the Prof Tool, which maintains it. Adding or filling those
-  cannot affect the game, the Lambda, the backend or the Checker.
+- **Only the Prof Tool reads `Reading`**, and nothing at all reads
+  `ExerciseTypes` except the Prof Tool, which maintains it. Filling those cannot
+  affect the game, the Lambda, the backend or the Checker. Versions 1 to 3 also
+  had a `Writing` flag that only the Prof Tool read; version 4 dropped it.
 - **The backend reads `Words`, `Syllables` and `Lessons` with `SELECT *`**, so a
   column added to them reaches it. Version 2's `BookletOnly` does, harmlessly: it
   uses only `ID` and the text, and the game never scores a booklet-only entry.
@@ -80,14 +83,18 @@ one (`ImageGPID`, `ON DELETE SET NULL`). Positions count from **0** and have no 
 | `Exception` | `1` for an exception; the game leaves exceptions out unless a minigame asks for them |
 
 **`Words`**, **`Syllables`**, **`Sentences`** — the stimuli. Each has its text
-(`Word`, `Syllable`, `Sentence`) and four flags:
+(`Word`, `Syllable`, `Sentence`) and three flags:
 
 | Column | Default | Meaning |
 |---|---|---|
 | `Exception` | `0` | `1` for an irregular item; the game leaves it out of its pools |
 | `Reading` | `1` | used for reading |
-| `Writing` | `0` | used for writing |
-| `BookletOnly` | `0` | `1` for an entry only the reading booklets print (version 2; `NOT NULL`, unlike the three above); the game leaves it out of its pools — see "The reading booklets" |
+| `BookletOnly` | `0` | `1` for an entry only the reading booklets print (version 2; `NOT NULL`, unlike the two above); the game leaves it out of its pools — see "The reading booklets" |
+
+Versions 1 to 3 had a fourth flag, `Writing` (default `0`, "used for writing"),
+which only the Prof Tool read or wrote and no pack ever set. **Version 4 dropped
+it**: what a booklet's writing page prints is chosen in its chapter
+(`BookletEntries`), not flagged on the lists.
 
 `Syllables` also holds pseudo-syllables. A sentence's `\n` is a deliberate line
 break.
@@ -228,9 +235,14 @@ it, the rest is filled from the pack — the syllables or words readable at the
 chapter's lesson that hold one of its GPs, exceptions and entries with no vowel
 left out, **booklet-only ones first, then in the pack's order** (by `ID`), each
 spelling once and none already picked. When even that falls short, what was
-chosen is repeated until the count is reached. The other three parts are free
-text. A table row holds its right
-cell in `Text2`; `Header = 1` marks a bold row, which starts a new table.
+chosen is repeated until the count is reached. **The writing page, the tables
+and the fluency test are picked from the pack too**: each writing model, each
+table cell and each fluency item is a `GPs` grapheme, a syllable, a word or a
+sentence of the pack. It may be printed differently ("La Lune" for `lune`) as
+long as it still holds what was picked, and the Prof Tool refuses to save one
+that does not. These three parts are printed as listed, with no automatic
+choice. A table row holds its right cell in `Text2`; `Header = 1` marks a bold
+row, which starts a new table.
 
 **`BookletStories`** (`ChapterID`, `Position`, `Title`, `Text`) — stories, free
 text, paragraphs separated by an empty line. Their words need not be in `Words`;
@@ -354,7 +366,18 @@ written before the pull request is merged.
 
 ## Where the packs stand
 
-**Every pack follows version 3** since 2026-10-27: structure identical to
+**Every pack follows version 4** since 2026-10-27: structure identical to
+`schema/v4.sql`, `user_version = 4`. All five were migrated from version 3 with
+[`schema/v3-to-v4.sql`](schema/v3-to-v4.sql) (the sqlite3 shell, 3.35 or later
+for `DROP COLUMN`; it refuses any pack that is not version 3), which drops the
+`Writing` column of `Words`, `Syllables` and `Sentences`. No pack had set it on
+any row. Every other column of every table kept every row and every value, and
+`es_AR` and `es_UY` are still byte-identical. The `WRITING` column left
+`words_list.csv` and `syllables_list.csv` in the same change. As for version 3,
+publishing needs the Language Lambda that reads version 4, and editing needs a
+Prof Tool that knows it.
+
+**Version 3, 2026-10-27**: structure identical to
 `schema/v3.sql`, `user_version = 3`. All five were migrated from version 2 with
 [`schema/v2-to-v3.sql`](schema/v2-to-v3.sql) (the sqlite3 shell again; it
 refuses any pack that is not version 2), which adds the empty `BookletFonts`

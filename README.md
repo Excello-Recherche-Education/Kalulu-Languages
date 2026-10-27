@@ -48,14 +48,14 @@ it.
 
 The database contains 19 tables describing the pedagogical progression. Its exact
 structure, who reads which part of it, and the rules the data must follow are in
-[SCHEMA.md](SCHEMA.md) (schema version 3, [`schema/v3.sql`](schema/v3.sql)).
+[SCHEMA.md](SCHEMA.md) (schema version 4, [`schema/v4.sql`](schema/v4.sql)).
 
 | Table | Description |
 |-------|-------------|
 | `GPs` | Grapheme-phoneme correspondences (grapheme, phoneme, vowel/consonant type, exception flag) |
 | `Lessons` | Numbered lessons (60 in `fr_FR`) |
 | `GPsInLessons` | GP ↔ lesson association (which GP is introduced in which lesson) |
-| `Words` | Vocabulary words with reading/writing flags, and a booklet-only flag |
+| `Words` | Vocabulary words with a reading flag and a booklet-only flag |
 | `GPsInWords` | GP breakdown of each word with position |
 | `Syllables` | Syllables available for exercises |
 | `GPsInSyllables` | GP breakdown of each syllable with position |
@@ -74,11 +74,11 @@ Columns: `Grapheme, Phoneme, Type, Exception`
 Flat list of grapheme-phoneme correspondences. `Type` is `Vowel` or `Consonant`. `Exception = 1` for irregular graphemes.
 
 ### `words_list.csv`
-Columns: `ORTHO, GPMATCH, LESSON, READING, WRITING, BOOKLET_ONLY` (the last one written by the Prof Tool from schema version 2 on)
+Columns: `ORTHO, GPMATCH, LESSON, READING, BOOKLET_ONLY` (`BOOKLET_ONLY` written by the Prof Tool from schema version 2 on; `WRITING`, between `READING` and it, until schema version 4)
 Each word includes its GP breakdown in parentheses (e.g. `(a-a.b-b.r-R.i-i)` for "abri") and the lesson number where it is introduced.
 
 ### `syllables_list.csv`
-Columns: `ORTHO, GPMATCH, LESSON, READING, WRITING, BOOKLET_ONLY`
+Columns: `ORTHO, GPMATCH, LESSON, READING, BOOKLET_ONLY`
 Same format as words, applied to syllables.
 
 ### `sentences_list.csv`

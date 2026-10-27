@@ -128,7 +128,9 @@ CREATE TABLE "BookletStories" (
 	FOREIGN KEY("ChapterID") REFERENCES "BookletChapters"("ID") ON UPDATE CASCADE ON DELETE CASCADE
 );
 
-INSERT INTO "BookletSettings" ("Cursive") SELECT 1 WHERE NOT EXISTS (SELECT 1 FROM "BookletSettings");
+-- SentencePages 0, not the column's DEFAULT 1: since 2026-10-27, 0 means the
+-- sentences fit on the chapter page, which is what 1 meant before (SCHEMA.md).
+INSERT INTO "BookletSettings" ("Cursive", "SentencePages") SELECT 1, 0 WHERE NOT EXISTS (SELECT 1 FROM "BookletSettings");
 
 PRAGMA user_version = 2;
 

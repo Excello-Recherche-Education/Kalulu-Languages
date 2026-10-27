@@ -373,7 +373,7 @@ BOOKLET_RANGES = (
     ("SyllableCount", 0, 999), ("SyllableColumns", 1, 10),
     ("WordCount", 0, 999), ("WordColumns", 1, 10),
     ("UppercaseProportion", 0, 1),
-    ("SentenceFont", 0, 2), ("SentenceFirstFont", 1, 2), ("SentencePages", 0, 99),
+    ("SentenceFont", 0, 2), ("SentenceFirstFont", 1, 2), ("SentencePages", -1, 99),
     ("WritingModels", 0, 10), ("WritingTracings", 0, 10),
 )
 # Text the booklet generator reads, which must be valid UTF-8: a strict reader

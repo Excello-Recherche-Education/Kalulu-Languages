@@ -179,6 +179,13 @@ at least one of these GPs.
 chapter's sentences, in order, each a `Sentences` row so that its words are
 known. `Break` says what comes before a sentence: `0` it continues the line,
 `1` a new line, `2` a new paragraph. Script and cursive alternate by paragraph.
+**A chapter that lists no sentence gets as many as fit** in the pages
+`SentencePages` allows (none at `-1`), each whole and a paragraph of its own:
+the sentences readable at its lesson, exceptions left out, those with a word
+holding one of its GPs first, then the others; within each, booklet-only ones
+first, then in the pack's order. One that would run onto the next page is
+passed over for one that fits, and one the booklet already printed comes after
+the others.
 
 **`BookletEntries`** (`ChapterID`, `Part`, `Position`, `Text`, `Text2`,
 `Header`) — what is written by hand, stored **as it is printed** ("la Lune",

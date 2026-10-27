@@ -186,6 +186,19 @@ Look & Learn image heads the chapter in the teacher's booklet; `NULL` gives the
 chapter no teacher page. `GreySilent` prints silent letters in grey. Every other
 column overrides the `BookletSettings` one of the same name.
 
+**A pack with no chapter has one per lesson by default.** The Prof Tool's
+Booklets screen makes them when it opens such a pack, and they are written at
+its next save. Kalulu-Booklets prints the same chapters until then. Each one:
+
+- has the lesson's GPs, in `GPsInLessons` order;
+- is titled after them, each grapheme once, exceptions and silent letters left
+  out unless nothing else is left, a single letter with its capital (`L l`);
+- is in booklet 1, at position 0, with no setting of its own.
+
+The Prof Tool also gives each one the first of those GPs that has a Look & Learn
+image as its teacher's picture. This applies only while `BookletChapters` is
+empty: a lesson left without a chapter in a pack that has some gets none.
+
 **`BookletChapterGPs`** (`ChapterID`, `GPID`, each pair once) — what the chapter teaches. Its
 syllables and words are filled from those readable at its lesson that contain
 at least one of these GPs.

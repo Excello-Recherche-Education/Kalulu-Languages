@@ -1,12 +1,13 @@
 -- Migration from schema version 1 to version 2, in one transaction:
 --
---     sqlite3 -bail <locale>/language.db < schema/v1-to-v2.sql
+--     sqlite3 <locale>/language.db < schema/v1-to-v2.sql
 --
--- -bail matters: without it the sqlite3 shell carries on past a failed
--- statement and the final COMMIT keeps whatever succeeded. With it, the first
--- failure stops the script inside the transaction, which is then rolled back.
--- The first statement after BEGIN fails unless the pack is version 1, so
+-- .bail on (below) matters: without it the sqlite3 shell carries on past a
+-- failed statement and the final COMMIT keeps whatever succeeded. With it, the
+-- first failure stops the script inside the transaction, which is then rolled
+-- back. The first statement after BEGIN fails unless the pack is version 1, so
 -- running it twice, or on a pack of any other version, changes nothing.
+-- It is an sqlite3 shell command: run the file with the sqlite3 shell.
 --
 -- Adds the BookletOnly flag to Words, Syllables and Sentences, with the default
 -- that keeps every existing entry in the game, and the empty Booklet* tables
@@ -14,6 +15,8 @@
 -- Nothing already in the pack changes. Kalulu-ProfTool's PackSchema._to_v2()
 -- makes the same changes to a pack it opens; Kalulu-Frontend's
 -- model_database.db was migrated with this file.
+
+.bail on
 
 BEGIN TRANSACTION;
 

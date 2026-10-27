@@ -64,15 +64,15 @@ Columns: `Grapheme, Phoneme, Type, Exception`
 Flat list of grapheme-phoneme correspondences. `Type` is `Vowel` or `Consonant`. `Exception = 1` for irregular graphemes.
 
 ### `words_list.csv`
-Columns: `ORTHO, GPMATCH, LESSON, READING, WRITING`
+Columns: `ORTHO, GPMATCH, LESSON, READING, WRITING, BOOKLET_ONLY` (the last one written by the Prof Tool from schema version 2 on)
 Each word includes its GP breakdown in parentheses (e.g. `(a-a.b-b.r-R.i-i)` for "abri") and the lesson number where it is introduced.
 
 ### `syllables_list.csv`
-Columns: `ORTHO, GPMATCH, LESSON, READING, WRITING`
+Columns: `ORTHO, GPMATCH, LESSON, READING, WRITING, BOOKLET_ONLY`
 Same format as words, applied to syllables.
 
 ### `sentences_list.csv`
-Columns: `Sentence, Lesson`
+Columns: `Sentence, Lesson, BookletOnly`
 Sentences used in exercises, associated with a lesson number.
 
 ### `summary.txt`

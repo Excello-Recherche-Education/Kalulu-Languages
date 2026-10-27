@@ -370,11 +370,18 @@ def check_booklet_only(conn: sqlite3.Connection, report: PackReport) -> None:
 
 # Values a booklet setting may take: (column, lowest, highest or None).
 BOOKLET_RANGES = (
-    ("SyllableCount", 0, None), ("SyllableColumns", 1, None),
-    ("WordCount", 0, None), ("WordColumns", 1, None),
+    ("SyllableCount", 0, 999), ("SyllableColumns", 1, 10),
+    ("WordCount", 0, 999), ("WordColumns", 1, 10),
     ("UppercaseProportion", 0, 1),
-    ("SentenceFont", 0, 2), ("SentenceFirstFont", 1, 2), ("SentencePages", 0, None),
-    ("WritingModels", 0, None), ("WritingTracings", 0, None),
+    ("SentenceFont", 0, 2), ("SentenceFirstFont", 1, 2), ("SentencePages", 0, 99),
+    ("WritingModels", 0, 10), ("WritingTracings", 0, 10),
+)
+# Text the booklet generator reads, which must be valid UTF-8: a strict reader
+# (Python's sqlite3 by default) stops on anything else.
+BOOKLET_TEXT = (
+    ("Words", "Word"), ("Syllables", "Syllable"), ("Sentences", "Sentence"),
+    ("BookletChapters", "Title"), ("BookletEntries", "Text"), ("BookletEntries", "Text2"),
+    ("BookletStories", "Title"), ("BookletStories", "Text"),
 )
 BOOKLET_PARTS = {1: "syllables", 2: "words", 3: "writing", 4: "tables", 5: "fluency"}
 
@@ -424,6 +431,19 @@ def wrong_types(conn: sqlite3.Connection) -> list[str]:
     return problems
 
 
+def invalid_utf8(conn: sqlite3.Connection) -> list[str]:
+    problems = []
+    for table, column in BOOKLET_TEXT:
+        for row_id, raw in conn.execute(
+            f"SELECT ID, CAST({column} AS BLOB) FROM {table} WHERE typeof({column}) = 'text'"
+        ):
+            try:
+                raw.decode("utf-8")
+            except UnicodeDecodeError:
+                problems.append(f"{table} row {row_id}: {column} is not valid UTF-8 ({raw.decode('utf-8', 'replace')!r})")
+    return problems
+
+
 def out_of_range(conn: sqlite3.Connection, table: str) -> list[str]:
     """Settings outside their range; values of the wrong type are wrong_types()'."""
     problems = []
@@ -454,13 +474,15 @@ def position_problems(conn: sqlite3.Connection, table: str, group: str, label_sq
 
 def check_booklets(conn: sqlite3.Connection, report: PackReport) -> None:
     """Rule 8: the booklet tables hold what the generator can read: one settings
-    row; every value of its type and range; booklets numbered 1, 2, 3... along
-    the chapters, without a gap; one order in every list."""
+    row; every value of its type and range; text in valid UTF-8; booklets
+    numbered 1, 2, 3... along the chapters, without a gap; one order in every
+    list."""
     problems = []
     settings = conn.execute("SELECT COUNT(*) FROM BookletSettings").fetchone()[0]
     if settings != 1:
         problems.append(f"BookletSettings has {settings} rows, the booklets read exactly one")
     problems += wrong_types(conn)
+    problems += invalid_utf8(conn)
     problems += out_of_range(conn, "BookletSettings")
     problems += out_of_range(conn, "BookletChapters")
     for table, column, allowed in (
@@ -575,7 +597,12 @@ def check_booklet_readability(conn: sqlite3.Connection, report: PackReport) -> N
 
 
 # Rules whose breach fails the check (SCHEMA.md, "How the packs are checked").
-BLOCKING_RULES = {check_gps_taught, check_lesson_exercises, check_lesson_ids, check_booklet_only, check_booklets}
+# read_exercise_types gathers what rule 4 compares: if it cannot run, rule 4 is
+# silently skipped, so it blocks like the rules themselves.
+BLOCKING_RULES = {
+    check_gps_taught, check_lesson_exercises, read_exercise_types, check_lesson_ids,
+    check_booklet_only, check_booklets,
+}
 
 DATA_RULES = (
     check_decompositions, check_gps_taught, check_lesson_exercises, read_exercise_types, check_lesson_ids,

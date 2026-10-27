@@ -4,14 +4,16 @@ Every pack's `language.db` is read by six programs and written by one, across
 six repositories. This document is the contract between them: what the database
 holds, who depends on which part of it, and the rules the data must follow.
 
-**The current version is 2.** Its exact structure is [`schema/v2.sql`](schema/v2.sql);
+**The current version is 3.** Its exact structure is [`schema/v3.sql`](schema/v3.sql);
 this page explains it. A database says which version it follows in
 `PRAGMA user_version`.
 
-> **Status, 2026-10-26: all five packs are at version 2.** Version 2 is
-> version 1 plus what the reading booklets need — a `BookletOnly` flag on
-> `Words`, `Syllables` and `Sentences`, and the `Booklet*` tables — with nothing
-> else changed; see "Where the packs stand". Version 1 was the schema the packs
+> **Status, 2026-10-27: all five packs are at version 3.** Version 3 is
+> version 2 plus the fonts a language's booklets may print with instead of the
+> default ones — the `BookletFonts` table and four font columns in
+> `BookletSettings` — with nothing else changed. Version 2 is version 1 plus
+> what the reading booklets need — a `BookletOnly` flag on `Words`, `Syllables`
+> and `Sentences`, and the `Booklet*` tables; see "Where the packs stand". Version 1 was the schema the packs
 > already used, written down on 2026-10-16. The model database new languages
 > start from is Kalulu-Frontend's `model_database.db`, which Kalulu-ProfTool
 > copies, and it follows the same version.
@@ -39,7 +41,7 @@ without opening it, and a written schema gives the version a meaning.
 | **Language Lambda** | Kalulu-Language-Lambda | reads, when a pack ZIP lands on S3; fills MySQL and uploads a copy of the database | `GPs` (`ID`, `Grapheme`, `Phoneme`, `Type`, `Exception`), `GPsInLessons` (lesson IDs come from here, not from `Lessons`); refuses a `user_version` it does not know |
 | **Backend** | Kalulu-Backend | reads that copy (`language-db-dumps/<locale>/language.db` on S3) | all of `Words`, `Syllables` and `Lessons` (`SELECT *`), of which it uses `ID` and the text to label remediation scores |
 | **Languages Checker** | Kalulu-Languages-Checker | reads, in the tester's browser | `GPs` (`ID`, `Grapheme`, `Phoneme`), `Lessons`, `GPsInLessons`, `Words`, `GPsInWords`, `Syllables`, `GPsInSyllables` — not `Sentences`, which have no recording to review; `BookletOnly` from version 2, to leave those entries out |
-| **Booklet generator** | Kalulu-Booklets | reads, from its own pinned checkout of this repository | everything the game reads, `BookletOnly` included, and the `Booklet*` tables |
+| **Booklet generator** | Kalulu-Booklets | reads, from its own pinned checkout of this repository | everything the game reads, `BookletOnly` included, and the `Booklet*` tables; the font files `BookletFonts` names, from `fonts/` |
 
 Measured on 2026-10-15 by reading each program's queries, and on 2026-10-26 for
 version 2. Three consequences:
@@ -157,6 +159,19 @@ cursive (`Cursive`), and the defaults every chapter uses where its own column is
 | `SentenceFirstFont` | `2` | when alternating, the first paragraph's: `1` script, `2` cursive |
 | `SentencePages` | `1`, written `0` | `-1` no sentence at all; `0` the sentences fit on the page they start on, the chapter page, and the rest is not printed; `1` or more: that many pages more for them. Until 2026-10-27, `1` meant what `0` means now and `0` meant no limit, so the column's `DEFAULT 1` is from then: the packs, the migration and the Prof Tool write `0` |
 | `WritingModels` / `WritingTracings` | `1` / `2` | copies of each writing item in black, and in light grey to trace over |
+| `ScriptFontID` / `ScriptBoldFontID` / `ScriptBlackFontID` / `CursiveFontID` | `NULL` | the `BookletFonts` row that replaces, everywhere in the language's booklets, the default script (Mulish regular, bold, black) or cursive (Marelle) font; `NULL` keeps the default (version 3). Chapters cannot override them |
+
+**`BookletFonts`** (`Name`, `File`, each unique) — fonts the language's booklets
+may print with instead of the default ones (version 3). `File` is the font's
+path inside this repository's [`fonts/`](fonts/) folder, folders separated by
+`/` (`andika/Andika-Regular.ttf`), and must be a TrueType or OpenType file
+there, `.ttf` or `.otf`; `Name` is what the Prof Tool shows. A font is only
+listed here: it replaces a default one when a `BookletSettings` font column
+names it. Deleting it gives those columns `NULL`, the default, back (`ON DELETE
+SET NULL`). **Add the font file to `fonts/` first, with its license in
+`fonts/LICENSE.md`**: this repository is public, so it may only hold a font
+whose license lets it be redistributed, and the generator loads the file from
+there.
 
 **`BookletChapters`** — the booklets' chapters. **They follow the app's
 lessons**: a chapter belongs to a lesson (`LessonID`), chapters are ordered by
@@ -242,10 +257,13 @@ below):
    entries within a chapter's part — meaning no position used twice and none
    below 0. **Gaps are allowed**: deleting a sentence from the Sentence List
    removes it from its chapters by `ON DELETE CASCADE` and leaves one, and the
-   order is still the order.
+   order is still the order. Every `BookletFonts` row has a name and names a
+   `.ttf` or `.otf` file of `fonts/` that is a TrueType or OpenType font.
 9. What a chapter teaches, and the sentences it prints, are readable at its
    lesson: every word of a sentence decomposed, and every GP in them taught by
    that lesson or an earlier one.
+10. Every font `BookletFonts` names is listed in `fonts/LICENSE.md`, the record
+    of what this repository may redistribute.
 
 Known breaches, as of 2026-10-22: one. In `fr_FR`, `payons` has no decomposition at
 all (rule 1). Its spelling needs an `ay` GP the pack does not have, and how to
@@ -273,7 +291,7 @@ python3 .github/scripts/validate_packs.py fr_FR/language.db  # one
 | Level | What | Effect |
 |---|---|---|
 | error | `user_version` is not the newest `schema/v<n>.sql` (rule 5); tables, columns, types, defaults, keys or indexes differ from that file; `integrity_check` fails; `foreign_key_check` finds rows pointing at nothing; rules 2, 3, 4, 6, 7 and 8 | the check fails |
-| warning | rules 1 and 9 | reported; `--strict` makes them fail too. Rule 1 becomes an error once `payons` is settled |
+| warning | rules 1, 9 and 10 | reported; `--strict` makes them fail too. Rule 1 becomes an error once `payons` is settled |
 | notice | a rule that could not be checked, and why: a non-blocking rule (1, 9), or any rule on a pack whose structure already fails | reported only |
 
 A blocking rule that cannot run on a pack following the schema — an SQLite error
@@ -304,7 +322,9 @@ them: rule 7 for the same reason as the four above — a game sentence holding a
 booklet-only word brings back into the game what it was told to leave out — and
 rule 8 because the generator cannot read booklet tables that break it. **Rule 9
 is a warning**: a chapter printing a word its lesson cannot read yet is the
-booklets' content to put right, and never reaches the game.
+booklets' content to put right, and never reaches the game. **Rule 10 is a
+warning** too: a font missing from `LICENSE.md` prints, but its record has to be
+written before the pull request is merged.
 
 - **Structure is compared as SQLite reports it** (`PRAGMA table_info`,
   `foreign_key_list`, `index_list`), not as SQL text: the packs mix quoted and
@@ -321,7 +341,24 @@ booklets' content to put right, and never reaches the game.
 
 ## Where the packs stand
 
-**Every pack follows version 2** since 2026-10-26 (migrated again on 2026-10-27,
+**Every pack follows version 3** since 2026-10-27: structure identical to
+`schema/v3.sql`, `user_version = 3`. All five were migrated from version 2 with
+[`schema/v2-to-v3.sql`](schema/v2-to-v3.sql) (the sqlite3 shell again; it
+refuses any pack that is not version 2), which adds the empty `BookletFonts`
+table and the four `BookletSettings` font columns, `NULL` everywhere, so every
+booklet keeps its default fonts. Every table of version 2 kept every row and
+every value, checked table by table against the version 2 databases, and
+`sqlite_sequence` is unchanged. `es_AR` and `es_UY` are still byte-identical.
+
+- **The game reads none of it**, and does not check the version: nothing changes
+  on a device but the pack downloading again after the next publish.
+- **Publishing a version 3 pack needs the Language Lambda that reads it**, as for
+  version 2: until its version 3 support is deployed, *Publish Language Packs*
+  fails at the Lambda for every pack.
+- **A Prof Tool older than version 3 refuses these packs** (`PackSchema`), so
+  editing them needs the release that adds version 3.
+
+**Version 2, 2026-10-26** (migrated again on 2026-10-27,
 as version 2 was revised in review before it was merged): structure identical to
 `schema/v2.sql`, `user_version = 2`. All five were migrated from version 1 with
 [`schema/v1-to-v2.sql`](schema/v1-to-v2.sql) (run with the sqlite3 shell: its `.bail on` makes a

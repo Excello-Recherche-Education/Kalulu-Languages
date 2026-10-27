@@ -11,13 +11,15 @@ SCHEMA.md is the contract; this is what checks it. For each <locale>/language.db
               of SCHEMA.md: a GP no lesson teaches, a lesson without minigames,
               a minigame list that is not the game's, a lesson ID that is not
               its lesson number, a game sentence holding a booklet-only word,
-              booklet tables the generator cannot read.
+              booklet tables the generator cannot read, a booklet font that is
+              not a font file of fonts/.
   warnings  - the data breaks rule 1 of SCHEMA.md (a word or syllable with a
               missing or broken decomposition), reported, not fatal, while a
               known case waits for a decision (payons in fr_FR); or rule 9 (a
               booklet chapter printing what its lesson cannot read yet), which
-              is the booklets' content to settle, not the game's. --strict
-              makes them fatal.
+              is the booklets' content to settle, not the game's; or rule 10
+              (a booklet font fonts/LICENSE.md does not list). --strict makes
+              them fatal.
   notices   - a rule that could not be checked, and why.
 
 Exits 1 when there is an error (or, with --strict, a warning), 0 otherwise.
@@ -46,6 +48,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 SCHEMA_DIR = ROOT / "schema"
+FONTS_DIR = ROOT / "fonts"
 MINIGAME_TYPES = Path("sources/utils/minigame_types.gd")
 
 # How many examples an annotation or a console line lists before "... and N more".
@@ -382,6 +385,7 @@ BOOKLET_TEXT = (
     ("Words", "Word"), ("Syllables", "Syllable"), ("Sentences", "Sentence"),
     ("BookletChapters", "Title"), ("BookletEntries", "Text"), ("BookletEntries", "Text2"),
     ("BookletStories", "Title"), ("BookletStories", "Text"),
+    ("BookletFonts", "Name"), ("BookletFonts", "File"),
 )
 BOOKLET_PARTS = {1: "syllables", 2: "words", 3: "writing", 4: "tables", 5: "fluency"}
 
@@ -390,8 +394,12 @@ BOOKLET_PARTS = {1: "syllables", 2: "words", 3: "writing", 4: "tables", 5: "flue
 # than every number) -- and a Python comparison would crash on it.
 NUMBER = ("integer", "real")
 SETTING_TYPES = {column: (NUMBER if column == "UppercaseProportion" else ("integer",)) for column, _, _ in BOOKLET_RANGES}
+# The BookletSettings columns naming the font that replaces a default one.
+FONT_COLUMNS = ("ScriptFontID", "ScriptBoldFontID", "ScriptBlackFontID", "CursiveFontID")
 BOOKLET_TYPES = {
-    "BookletSettings": {"Cursive": ("integer",), **SETTING_TYPES},
+    "BookletSettings": {
+        "Cursive": ("integer",), **SETTING_TYPES, **{column: ("integer", "null") for column in FONT_COLUMNS},
+    },
     "BookletChapters": {
         "Position": ("integer",), "Booklet": ("integer",), "Title": ("text",),
         "ImageGPID": ("integer", "null"), "GreySilent": ("integer",),
@@ -402,6 +410,7 @@ BOOKLET_TYPES = {
         "Part": ("integer",), "Position": ("integer",), "Text": ("text",), "Text2": ("text",), "Header": ("integer",),
     },
     "BookletStories": {"Position": ("integer",), "Title": ("text",), "Text": ("text",)},
+    "BookletFonts": {"Name": ("text",), "File": ("text",)},
 }
 
 CHAPTER_LABEL = "'lesson ' || (SELECT LessonNb FROM Lessons WHERE ID = LessonID) || ', chapter at position ' || Position"
@@ -415,6 +424,7 @@ TABLE_LABELS = {
     "BookletSentences": CHAPTER_OF + " || ', sentence at position ' || Position",
     "BookletEntries": CHAPTER_OF + " || ', entry ' || quote(Text)",
     "BookletStories": CHAPTER_OF + " || ', story ' || quote(Title)",
+    "BookletFonts": "'font ' || quote(Name)",
 }
 
 
@@ -537,6 +547,47 @@ def check_booklets(conn: sqlite3.Connection, report: PackReport) -> None:
         report.add("error", "rule 8", f"{len(problems)} problem(s) in the booklet tables", problems)
 
 
+# What a font file starts with: TrueType outlines, or OpenType with CFF ones.
+FONT_SIGNATURES = (b"\x00\x01\x00\x00", b"true", b"OTTO")
+
+
+def check_booklet_fonts(conn: sqlite3.Connection, report: PackReport) -> None:
+    """Rule 8, for the booklet fonts: each a .ttf or .otf file of fonts/, named
+    by its path there, so the generator can load it. Rule 10: each listed in
+    fonts/LICENSE.md, which is this repository's record of what it may
+    redistribute."""
+    problems = []
+    unlisted = []
+    licenses = (FONTS_DIR / "LICENSE.md").read_text(encoding="utf-8") if (FONTS_DIR / "LICENSE.md").is_file() else ""
+    for name, file in conn.execute(
+        "SELECT Name, File FROM BookletFonts WHERE typeof(Name) = 'text' AND typeof(File) = 'text' ORDER BY Name"
+    ):
+        label = f"font {name!r}"
+        if not name.strip():
+            problems.append(f"font file {file!r} has an empty name")
+        parts = file.split("/")
+        if "\\" in file or file.startswith("/") or any(part in ("", ".", "..") for part in parts):
+            problems.append(f"{label}: {file!r} is not a path inside fonts/ (folders separated by /, no . or ..)")
+            continue
+        if not file.lower().endswith((".ttf", ".otf")):
+            problems.append(f"{label}: {file!r} is not a .ttf or .otf file")
+            continue
+        path = FONTS_DIR.joinpath(*parts)
+        if not path.is_file():
+            problems.append(f"{label}: fonts/{file} does not exist")
+            continue
+        with path.open("rb") as font:
+            if font.read(4) not in FONT_SIGNATURES:
+                problems.append(f"{label}: fonts/{file} is not a TrueType or OpenType font")
+                continue
+        if f"`{parts[-1]}`" not in licenses:
+            unlisted.append(f"{label}: fonts/{file}")
+    if problems:
+        report.add("error", "rule 8", f"{len(problems)} problem(s) with the booklet fonts", problems)
+    if unlisted:
+        report.add("warning", "rule 10", f"{len(unlisted)} booklet font(s) fonts/LICENSE.md does not list", unlisted)
+
+
 NEVER = 10**9  # the lesson of something no lesson makes readable
 
 
@@ -601,12 +652,12 @@ def check_booklet_readability(conn: sqlite3.Connection, report: PackReport) -> N
 # silently skipped, so it blocks like the rules themselves.
 BLOCKING_RULES = {
     check_gps_taught, check_lesson_exercises, read_exercise_types, check_lesson_ids,
-    check_booklet_only, check_booklets,
+    check_booklet_only, check_booklets, check_booklet_fonts,
 }
 
 DATA_RULES = (
     check_decompositions, check_gps_taught, check_lesson_exercises, read_exercise_types, check_lesson_ids,
-    check_booklet_only, check_booklets, check_booklet_readability,
+    check_booklet_only, check_booklets, check_booklet_fonts, check_booklet_readability,
 )
 
 
@@ -750,7 +801,10 @@ def report_markdown(reports: list[PackReport], rule_4_note: str, latest: int) ->
     else:
         verdict = "✅ **No errors.**"
     if warnings:
-        verdict += f" {warnings} warning(s) about decompositions (rule 1) or booklet readability (rule 9), not blocking."
+        verdict += (
+            f" {warnings} warning(s) about decompositions (rule 1), booklet readability (rule 9)"
+            " or font licenses (rule 10), not blocking."
+        )
     lines = [
         "## Language pack validation",
         "",

@@ -128,3 +128,24 @@ them when a PDF embeds only the letters it uses, are all allowed.
    request there, and regenerate Kalulu-Manuals' TrueType copies.
 4. Kalulu-Booklets picks the fonts up when its `kalulu-languages` pointer is
    moved to the commit that changed them.
+
+## Adding a font for the booklets
+
+A language's booklets can print with another font than Mulish or Marelle, for
+any of the four they use: script regular, bold or black, and cursive
+(`BookletFonts` in [`SCHEMA.md`](../SCHEMA.md)). The font lives here, like these
+two:
+
+1. Check its license lets it be redistributed: this repository is public. The
+   SIL Open Font License does; a font that comes with an operating system or a
+   word processor usually does not.
+2. Put the file in a folder of its own here (`andika/Andika-Regular.ttf`), with
+   its license text beside it, and describe it in this file as the two above
+   are, naming the file in backticks: the validator warns about a booklet font
+   this file does not name (rule 10).
+3. Open a pull request. Once it is merged, the Prof Tool can add the font to a
+   language (Booklets, *Language settings*, *Add custom font*) and choose what it
+   replaces.
+
+The booklets need a `.ttf` or `.otf` file, and for the cursive, a font that
+joins its letters through OpenType rules, as Marelle does.

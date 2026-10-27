@@ -48,7 +48,7 @@ it.
 
 The database contains 19 tables describing the pedagogical progression. Its exact
 structure, who reads which part of it, and the rules the data must follow are in
-[SCHEMA.md](SCHEMA.md) (schema version 2, [`schema/v2.sql`](schema/v2.sql)).
+[SCHEMA.md](SCHEMA.md) (schema version 3, [`schema/v3.sql`](schema/v3.sql)).
 
 | Table | Description |
 |-------|-------------|

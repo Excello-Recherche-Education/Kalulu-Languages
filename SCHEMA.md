@@ -304,7 +304,8 @@ booklets' content to put right, and never reaches the game.
 
 ## Where the packs stand
 
-**Every pack follows version 2** since 2026-10-26: structure identical to
+**Every pack follows version 2** since 2026-10-26 (migrated again on 2026-10-27,
+as version 2 was revised in review before it was merged): structure identical to
 `schema/v2.sql`, `user_version = 2`. All five were migrated from version 1 with
 [`schema/v1-to-v2.sql`](schema/v1-to-v2.sql) (run with the sqlite3 shell: its `.bail on` makes a
 failure roll the whole transaction back; it refuses any pack that is not version

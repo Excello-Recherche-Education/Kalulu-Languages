@@ -149,13 +149,13 @@ cursive (`Cursive`), and the defaults every chapter uses where its own column is
 | Column | Default | Meaning |
 |---|---|---|
 | `Cursive` | `1` | titles, sentences and writing pages also in cursive. At `0` everything is printed in script, and `SentenceFont` / `SentenceFirstFont` are ignored |
-| `SyllableCount` / `SyllableColumns` | `12` / `6` | syllables printed (repeated until the count is reached) and their columns |
-| | | **Ranges** (rule 8): columns 1–10, counts 0–999, `SentencePages` 0–99, writing copies 0–10, `UppercaseProportion` 0–1 |
-| `WordCount` / `WordColumns` | `12` / `4` | words chosen automatically, and their columns |
+| `SyllableCount` / `SyllableColumns` | `12` / `6` | syllables printed, and their columns (see `BookletEntries` for how they are chosen) |
+| | | **Ranges** (rule 8): columns 1–10, counts 0–999, `SentencePages` −1–99, writing copies 0–10, `UppercaseProportion` 0–1 |
+| `WordCount` / `WordColumns` | `12` / `4` | words printed, and their columns, chosen as syllables are |
 | `UppercaseProportion` | `0` | share of syllables, words and sentences printed in capitals, from 0 to 1 |
 | `SentenceFont` | `0` | `0` alternate script and cursive by paragraph, `1` script only, `2` cursive only |
 | `SentenceFirstFont` | `2` | when alternating, the first paragraph's: `1` script, `2` cursive |
-| `SentencePages` | `1` | pages of sentences at most; `0` for all of them |
+| `SentencePages` | `1`, written `0` | `-1` no sentence at all; `0` the sentences fit on the page they start on, the chapter page, and the rest is not printed; `1` or more: that many pages more for them. Until 2026-10-27, `1` meant what `0` means now and `0` meant no limit, so the column's `DEFAULT 1` is from then: the packs, the migration and the Prof Tool write `0` |
 | `WritingModels` / `WritingTracings` | `1` / `2` | copies of each writing item in black, and in light grey to trace over |
 
 **`BookletChapters`** — the booklets' chapters. **They follow the app's
@@ -172,8 +172,8 @@ chapter no teacher page. `GreySilent` prints silent letters in grey. Every other
 column overrides the `BookletSettings` one of the same name.
 
 **`BookletChapterGPs`** (`ChapterID`, `GPID`, each pair once) — what the chapter teaches. Its
-automatic syllables and words are those readable at its lesson that contain at
-least one of these GPs.
+syllables and words are filled from those readable at its lesson that contain
+at least one of these GPs.
 
 **`BookletSentences`** (`ChapterID`, `SentenceID`, `Position`, `Break`) — the
 chapter's sentences, in order, each a `Sentences` row so that its words are
@@ -184,7 +184,17 @@ known. `Break` says what comes before a sentence: `0` it continues the line,
 `Header`) — what is written by hand, stored **as it is printed** ("la Lune",
 "un vélo") and matched to `Words` word by word, case ignored, as sentences are.
 `Part`: `1` syllables, `2` words, `3` writing page, `4` tables, `5` fluency test.
-A part listed by hand replaces the automatic choice. A table row holds its right
+**Syllables and words are picked from the pack**: a syllable is a `Syllables` row's
+text as it is stored; a word is a `Words` row's, which may be printed with its
+article or capital ("la Lune" for `lune`) as long as it still holds that word.
+A chapter prints exactly `SyllableCount` syllables and `WordCount` words: its
+picks first, in order, and past the count the last ones are left out; short of
+it, the rest is filled from the pack — the syllables or words readable at the
+chapter's lesson that hold one of its GPs, exceptions and entries with no vowel
+left out, **booklet-only ones first, then in the pack's order** (by `ID`), each
+spelling once and none already picked. When even that falls short, what was
+chosen is repeated until the count is reached. The other three parts are free
+text. A table row holds its right
 cell in `Text2`; `Header = 1` marks a bold row, which starts a new table.
 
 **`BookletStories`** (`ChapterID`, `Position`, `Title`, `Text`) — stories, free

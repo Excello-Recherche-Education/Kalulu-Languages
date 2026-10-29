@@ -170,13 +170,13 @@ The line has to be written for the locale, not translated word for word from Fre
 Check the register the pack already uses instead of assuming from the country:
 
 ```bash
-grep -oiE "\b(você|vos|tú|sabés|sabes|tenés|tienes|sos|eres)\b" \
-  <locale>/sentences_list.csv | sort | uniq -c | sort -rn
+sqlite3 <locale>/language.db "SELECT Sentence FROM Sentences" \
+  | grep -oiE "\b(você|vos|tú|sabés|sabes|tenés|tienes|sos|eres)\b" | sort | uniq -c | sort -rn
 ```
 
 - **`es_AR`, `es_CO`, `es_UY` all use neutral Spanish with *tuteo*** ("Tienes",
   "Sabes", "Mira") — no Argentine or Uruguayan *voseo*, despite the locale names.
-  Their `sentences_list.csv` files are byte-identical (same md5), so **one Spanish
+  Their `Sentences` tables hold the same sentences, so **one Spanish
   text serves all three**.
 - **`pt_BR` uses *você*.** Avoid repeating the pronoun in every clause; Brazilian
   Portuguese drops it naturally once established. "Parabéns" is warmer than a literal

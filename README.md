@@ -19,10 +19,6 @@ Each `<locale>` folder follows the same layout:
 ```
 <locale>/
 ├── language.db              # SQLite database — single source of truth for linguistic data
-├── gp_list.csv              # Grapheme-phoneme correspondences
-├── words_list.csv           # Words with GP breakdown and lesson level
-├── syllables_list.csv       # Syllables with GP breakdown
-├── sentences_list.csv       # Sentences associated with each lesson
 ├── summary.txt              # Human-readable lesson-by-lesson summary (words, syllables, sentences)
 ├── version.txt              # ISO 8601 UTC timestamp of the last change to this pack
 ├── language_sounds/         # Audio files (MP3) — words, phonemes, syllables
@@ -67,26 +63,12 @@ structure, who reads which part of it, and the rules the data must follow are in
 | `LettersTracingData` | Unused and empty in every pack: letter tracings live in `tracing_data/` |
 | `BookletSettings`, `BookletChapters`, `BookletChapterGPs`, `BookletSentences`, `BookletEntries`, `BookletStories` | What the printed reading booklets ([Kalulu-Booklets](https://github.com/Excello-Recherche-Education/Kalulu-Booklets)) contain, chapter by chapter |
 
-## CSV files
-
-### `gp_list.csv`
-Columns: `Grapheme, Phoneme, Type, Exception`
-Flat list of grapheme-phoneme correspondences. `Type` is `Vowel` or `Consonant`. `Exception = 1` for irregular graphemes.
-
-### `words_list.csv`
-Columns: `ORTHO, GPMATCH, LESSON, READING, BOOKLET_ONLY` (`BOOKLET_ONLY` written by the Prof Tool from schema version 2 on; `WRITING`, between `READING` and it, until schema version 4)
-Each word includes its GP breakdown in parentheses (e.g. `(a-a.b-b.r-R.i-i)` for "abri") and the lesson number where it is introduced.
-
-### `syllables_list.csv`
-Columns: `ORTHO, GPMATCH, LESSON, READING, BOOKLET_ONLY`
-Same format as words, applied to syllables.
-
-### `sentences_list.csv`
-Columns: `Sentence, Lesson, BookletOnly`
-Sentences used in exercises, associated with a lesson number.
+## Other files
 
 ### `summary.txt`
 Human-readable lesson-by-lesson view listing the words, syllables, and sentences introduced at each step of the progression.
+
+Until 2026-10-29 each pack also carried four CSV lists, `gp_list.csv`, `words_list.csv`, `syllables_list.csv` and `sentences_list.csv`: a flat copy of `language.db`. Kalulu-Audio-Normalization was the only program that read them, and it reads `language.db` now. They are gone. Query `language.db` instead, for example `sqlite3 fr_FR/language.db "SELECT Word FROM Words"`.
 
 ## How language packs are used
 
@@ -182,7 +164,7 @@ The Prof Tool works on the pack folders of this repository directly, with no arc
 
 1. **Open language.db** and pick `<locale>/language.db` in a checkout of this repository. The Prof Tool works on its own copy of that pack folder.
 2. Edit the pack.
-3. **Save** onto the same `<locale>/language.db`. The Prof Tool regenerates the CSV lists, `summary.txt` and `version.txt`, then writes the whole pack back into that folder.
+3. **Save** onto the same `<locale>/language.db`. The Prof Tool regenerates `summary.txt` and `version.txt`, then writes the whole pack back into that folder.
 4. Commit the result on a branch and open a pull request — see [How the packs are checked](SCHEMA.md#how-the-packs-are-checked).
 
 Saving overwrites files but never deletes any: a file removed from a pack in the Prof Tool has to be removed from this repository by hand, in the same pull request.
@@ -197,7 +179,7 @@ date -u +%Y-%m-%dT%H:%M:%S > <locale>/version.txt
 ```
 
 Saving from the Prof Tool writes this file itself, so it is already correct. Anything
-edited outside the Prof Tool — a CSV by hand, an MP3 re-recorded under `language_sounds/`,
+edited outside the Prof Tool — an MP3 re-recorded under `language_sounds/`,
 tracing or look-and-learn media, `language.db` patched in place — must be stamped in the
 same commit. The timestamp travels into every Checker report as `pack_version`, so a stale
 one attributes a tester's feedback to a pack that no longer exists.

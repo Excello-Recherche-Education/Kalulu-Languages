@@ -193,18 +193,24 @@ Look & Learn image heads the chapter in the teacher's booklet; `NULL` gives the
 chapter no teacher page. `GreySilent` prints silent letters in grey. Every other
 column overrides the `BookletSettings` one of the same name.
 
-**A pack with no chapter has one per lesson by default.** The Prof Tool's
-Booklets screen makes them when it opens such a pack, and they are written at
-its next save. Kalulu-Booklets prints the same chapters until then. Each one:
+**Every lesson has a chapter: its first one, the lesson's forced chapter**
+(since 2026-10-29). It is always printed, and the Prof Tool lets it go only with
+its lesson. The chapters after it in the same lesson are optional: printed
+between it and the next lesson's, readable at that lesson, and deletable.
+**A lesson with no chapter gets its forced one by default.** The Prof Tool's
+Booklets screen makes it when it opens the pack, and it is written at the next
+save. Kalulu-Booklets prints the same chapter until then. Each one:
 
 - has the lesson's GPs, in `GPsInLessons` order;
 - is titled after them, each grapheme once, exceptions and silent letters left
   out unless nothing else is left, a single letter with its capital (`L l`);
-- is in booklet 1, at position 0, with no setting of its own.
+- is at position 0, with no setting of its own, in the booklet of the last
+  chapter at or before its lesson: booklet 1 when there is none, so a pack with
+  no chapter gets one per lesson, all in booklet 1.
 
 The Prof Tool also gives each one the first of those GPs that has a Look & Learn
-image as its teacher's picture. This applies only while `BookletChapters` is
-empty: a lesson left without a chapter in a pack that has some gets none.
+image as its teacher's picture. Until 2026-10-29 this applied only while
+`BookletChapters` was empty.
 
 **`BookletChapterGPs`** (`ChapterID`, `GPID`, each pair once) — what the chapter teaches. Its
 syllables and words are filled from those readable at its lesson that contain

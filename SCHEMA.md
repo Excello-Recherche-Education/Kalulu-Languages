@@ -225,6 +225,11 @@ the others.
 **`BookletEntries`** (`ChapterID`, `Part`, `Position`, `Text`, `Text2`,
 `Header`) — what is written by hand, stored **as it is printed** ("la Lune",
 "un vélo") and matched to `Words` word by word, case ignored, as sentences are.
+**A hyphenated form is one word when `Words` has it** ("tam-tam", "arc-en-ciel",
+decomposed with the hyphen skipped: t-a-m-t-a-m), **and otherwise the words
+between its hyphens** ("as-tu" is `as` and `tu`; the euphonic t of "a-t-il" is no
+word and is left out). The Prof Tool, the Sentence List's parser and the
+generator all cut this way.
 `Part`: `1` syllables, `2` words, `3` writing page, `4` tables, `5` fluency test.
 **Syllables and words are picked from the pack**: a syllable is a `Syllables` row's
 text as it is stored; a word is a `Words` row's, which may be printed with its

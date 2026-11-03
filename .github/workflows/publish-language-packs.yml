@@ -115,8 +115,10 @@ jobs:
           role-session-name: publish-language-packs-${{ github.run_id }}
           aws-region: ${{ env.AWS_REGION }}
 
-      # The fingerprint of a pack is the git tree of its folder: it changes when,
-      # and only when, a file in it does (an LFS file through its pointer). A
+      # The fingerprint of a pack is the git tree of its folder, booklet_images/
+      # left out since the game never receives it: it changes when, and only
+      # when, a file the game receives does (an LFS file through its pointer).
+      # For a pack without booklet_images/ it is exactly the folder's tree. A
       # published object carries it as "tree" metadata. No object, or one
       # without it - everything published before this check existed - counts
       # as changed.
@@ -129,7 +131,7 @@ jobs:
           upload=""
           : > compare.md
           for locale in $PACKS; do
-            tree=$(git rev-parse "HEAD:$locale")
+            tree=$(git ls-tree "HEAD:$locale" | grep -v "$(printf '\tbooklet_images$')" | git mktree)
             # The role cannot list the bucket, so a missing object answers 403,
             # not 404: any failure here means "no fingerprint to compare".
             published=$(aws s3api head-object --bucket "$BUCKET" --key "$locale.zip" \
@@ -153,7 +155,8 @@ jobs:
           echo "list=$(echo $upload | xargs)" >> "$GITHUB_OUTPUT"
 
       # The layout the app and the Language Lambda read: one top-level <locale>/
-      # folder, files only (-D: no directory entries), no OS metadata.
+      # folder, files only (-D: no directory entries), no OS metadata, and not
+      # booklet_images/, which only the booklets print.
       - name: Build the ZIPs
         if: steps.changed.outputs.list != ''
         env:
@@ -161,7 +164,7 @@ jobs:
         run: |
           mkdir -p dist
           for locale in $PACKS; do
-            zip -q -r -X -D "dist/$locale.zip" "$locale" -x '*/.DS_Store' '*/__MACOSX/*' '*/Thumbs.db'
+            zip -q -r -X -D "dist/$locale.zip" "$locale" -x '*/.DS_Store' '*/__MACOSX/*' '*/Thumbs.db' "$locale/booklet_images/*"
             unzip -tq "dist/$locale.zip"
             if ! unzip -Z1 "dist/$locale.zip" | grep -qx "$locale/language.db"; then
               echo "::error::dist/$locale.zip has no $locale/language.db."
@@ -190,7 +193,7 @@ jobs:
           for locale in $PACKS; do
             file="dist/$locale.zip"
             sum=$(openssl dgst -sha256 -binary "$file" | base64)
-            tree=$(git rev-parse "HEAD:$locale")
+            tree=$(git ls-tree "HEAD:$locale" | grep -v "$(printf '\tbooklet_images$')" | git mktree)
             version=$(aws s3api put-object \
               --bucket "$BUCKET" --key "$locale.zip" --body "$file" \
               --content-type application/zip \

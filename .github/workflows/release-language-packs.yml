@@ -27,7 +27,8 @@ jobs:
             dirname="${dir%/}"
             if [[ "$dirname" =~ ^[a-z]{2}_[A-Z]{2}$ ]]; then
               echo "Zipping $dirname..."
-              zip -r "dist/${dirname}.zip" "$dirname"
+              # booklet_images/ is the booklets', not the game's.
+              zip -r "dist/${dirname}.zip" "$dirname" -x "${dirname}/booklet_images/*"
               packs="${packs} ${dirname}"
             fi
           done

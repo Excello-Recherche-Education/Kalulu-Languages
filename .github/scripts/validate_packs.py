@@ -12,14 +12,16 @@ SCHEMA.md is the contract; this is what checks it. For each <locale>/language.db
               a minigame list that is not the game's, a lesson ID that is not
               its lesson number, a game sentence holding a booklet-only word,
               booklet tables the generator cannot read, a booklet font that is
-              not a font file of fonts/.
+              not a font file of fonts/, a booklet image that is not a picture
+              file of the pack's booklet_images/.
   warnings  - the data breaks rule 1 of SCHEMA.md (a word or syllable with a
               missing or broken decomposition), reported, not fatal, while a
               known case waits for a decision (payons in fr_FR); or rule 9 (a
               booklet chapter printing what its lesson cannot read yet), which
               is the booklets' content to settle, not the game's; or rule 10
               (a booklet font fonts/LICENSE.md does not list). --strict makes
-              them fatal.
+              them fatal. Rule 10 covers the booklet images too: one the
+              pack's booklet_images/LICENSE.md does not list.
   notices   - a rule that could not be checked, and why.
 
 Exits 1 when there is an error (or, with --strict, a warning), 0 otherwise.
@@ -69,6 +71,7 @@ class PackReport:
     version: int | None = None
     findings: list[Finding] = field(default_factory=list)
     exercise_types: list[tuple[int, str]] | None = None
+    folder: Path | None = None  # the pack's folder, where its booklet_images/ is
 
     def add(self, level: str, rule: str, title: str, details: list[str] | None = None) -> None:
         self.findings.append(Finding(level, rule, title, details or []))
@@ -588,6 +591,61 @@ def check_booklet_fonts(conn: sqlite3.Connection, report: PackReport) -> None:
         report.add("warning", "rule 10", f"{len(unlisted)} booklet font(s) fonts/LICENSE.md does not list", unlisted)
 
 
+# What a picture file starts with: PNG or JPEG. CI checks the packs out
+# without Git LFS, so there an image is an LFS pointer, which cannot be looked
+# into and is let through.
+IMAGE_SIGNATURES = (b"\x89PNG", b"\xff\xd8\xff")
+LFS_POINTER = b"version https://git-lfs"
+
+
+def check_booklet_images(conn: sqlite3.Connection, report: PackReport) -> None:
+    """Rule 8, for the booklet images: each a .png or .jpg file of the pack's
+    booklet_images/, named by its path there, so the generator can print it;
+    and a chapter names at most one picture, its own or a GP's. Rule 10: each
+    listed in the pack's booklet_images/LICENSE.md, its record of where each
+    picture comes from and under what licence."""
+    problems = [
+        f"{label}: names both a booklet image and a GP's image, the booklets print one"
+        for (label,) in conn.execute(
+            f"SELECT {CHAPTER_LABEL} FROM BookletChapters WHERE ImageID IS NOT NULL AND ImageGPID IS NOT NULL"
+        )
+    ]
+    unlisted = []
+    folder = report.folder / "booklet_images"
+    record = folder / "LICENSE.md"
+    licenses = record.read_text(encoding="utf-8") if record.is_file() else ""
+    for name, file in conn.execute(
+        "SELECT Name, File FROM BookletImages WHERE typeof(Name) = 'text' AND typeof(File) = 'text' ORDER BY Name"
+    ):
+        label = f"image {name!r}"
+        if not name.strip():
+            problems.append(f"image file {file!r} has an empty name")
+        parts = file.split("/")
+        if "\\" in file or file.startswith("/") or any(part in ("", ".", "..") for part in parts):
+            problems.append(f"{label}: {file!r} is not a path inside booklet_images/ (folders separated by /, no . or ..)")
+            continue
+        if not file.lower().endswith((".png", ".jpg", ".jpeg")):
+            problems.append(f"{label}: {file!r} is not a .png or .jpg file")
+            continue
+        path = folder.joinpath(*parts)
+        if not path.is_file():
+            problems.append(f"{label}: booklet_images/{file} does not exist")
+            continue
+        with path.open("rb") as image:
+            start = image.read(len(LFS_POINTER))
+        if not start.startswith(IMAGE_SIGNATURES) and start != LFS_POINTER:
+            problems.append(f"{label}: booklet_images/{file} is not a PNG or JPEG picture")
+            continue
+        if f"`{parts[-1]}`" not in licenses:
+            unlisted.append(f"{label}: booklet_images/{file}")
+    if problems:
+        report.add("error", "rule 8", f"{len(problems)} problem(s) with the booklet images", problems)
+    if unlisted:
+        report.add(
+            "warning", "rule 10", f"{len(unlisted)} booklet image(s) booklet_images/LICENSE.md does not list", unlisted
+        )
+
+
 NEVER = 10**9  # the lesson of something no lesson makes readable
 
 
@@ -652,12 +710,12 @@ def check_booklet_readability(conn: sqlite3.Connection, report: PackReport) -> N
 # silently skipped, so it blocks like the rules themselves.
 BLOCKING_RULES = {
     check_gps_taught, check_lesson_exercises, read_exercise_types, check_lesson_ids,
-    check_booklet_only, check_booklets, check_booklet_fonts,
+    check_booklet_only, check_booklets, check_booklet_fonts, check_booklet_images,
 }
 
 DATA_RULES = (
     check_decompositions, check_gps_taught, check_lesson_exercises, read_exercise_types, check_lesson_ids,
-    check_booklet_only, check_booklets, check_booklet_fonts, check_booklet_readability,
+    check_booklet_only, check_booklets, check_booklet_fonts, check_booklet_images, check_booklet_readability,
 )
 
 
@@ -665,7 +723,7 @@ DATA_RULES = (
 
 
 def validate(path: Path, latest: int, reference: dict) -> PackReport:
-    report = PackReport(display_name(path))
+    report = PackReport(display_name(path), folder=path.parent)
     try:
         conn = sqlite3.connect(path.resolve().as_uri() + "?mode=ro", uri=True)
         report.version = conn.execute("PRAGMA user_version").fetchone()[0]

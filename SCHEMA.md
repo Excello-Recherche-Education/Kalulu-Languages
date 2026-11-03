@@ -4,11 +4,14 @@ Every pack's `language.db` is read by six programs and written by one, across
 six repositories. This document is the contract between them: what the database
 holds, who depends on which part of it, and the rules the data must follow.
 
-**The current version is 4.** Its exact structure is [`schema/v4.sql`](schema/v4.sql);
+**The current version is 5.** Its exact structure is [`schema/v5.sql`](schema/v5.sql);
 this page explains it. A database says which version it follows in
 `PRAGMA user_version`.
 
-> **Status, 2026-10-27: all five packs are at version 4.** Version 4 is
+> **Status, 2026-11-03: all five packs are at version 5.** Version 5 is
+> version 4 plus pictures of a pack's own for the teacher's booklet — the
+> `BookletImages` table and an `ImageID` column in `BookletChapters` — for a
+> chapter whose sound has no Look & Learn image. Version 4 is
 > version 3 without the `Writing` column of `Words`, `Syllables` and
 > `Sentences`, which no program read. Version 3 is
 > version 2 plus the fonts a language's booklets may print with instead of the
@@ -43,7 +46,7 @@ without opening it, and a written schema gives the version a meaning.
 | **Language Lambda** | Kalulu-Language-Lambda | reads, when a pack ZIP lands on S3; fills MySQL and uploads a copy of the database | `GPs` (`ID`, `Grapheme`, `Phoneme`, `Type`, `Exception`), `GPsInLessons` (lesson IDs come from here, not from `Lessons`); refuses a `user_version` it does not know |
 | **Backend** | Kalulu-Backend | reads that copy (`language-db-dumps/<locale>/language.db` on S3) | all of `Words`, `Syllables` and `Lessons` (`SELECT *`), of which it uses `ID` and the text to label remediation scores |
 | **Languages Checker** | Kalulu-Languages-Checker | reads, in the tester's browser | `GPs` (`ID`, `Grapheme`, `Phoneme`), `Lessons`, `GPsInLessons`, `Words`, `GPsInWords`, `Syllables`, `GPsInSyllables` — not `Sentences`, which have no recording to review; `BookletOnly` from version 2, to leave those entries out |
-| **Booklet generator** | Kalulu-Booklets | reads, from its own pinned checkout of this repository | everything the game reads, `BookletOnly` included, and the `Booklet*` tables; the font files `BookletFonts` names, from `fonts/` |
+| **Booklet generator** | Kalulu-Booklets | reads, from its own pinned checkout of this repository | everything the game reads, `BookletOnly` included, and the `Booklet*` tables; the font files `BookletFonts` names, from `fonts/`; the picture files `BookletImages` names, from the pack's `booklet_images/` |
 
 Measured on 2026-10-15 by reading each program's queries, and on 2026-10-26 for
 version 2. Three consequences:
@@ -67,8 +70,8 @@ must follow the same version as the packs.
 All IDs are SQLite `AUTOINCREMENT` integer keys. Every foreign key cascades on
 update and on delete, but two of version 2's: deleting a lesson that has booklet
 chapters is refused (`BookletChapters.LessonID`, `ON DELETE RESTRICT`), and
-deleting the GP a chapter's teacher picture comes from leaves the chapter without
-one (`ImageGPID`, `ON DELETE SET NULL`). Positions count from **0** and have no gaps — except in the `Booklet*` lists, where only their order counts (rule 8).
+deleting the GP or the booklet image a chapter's teacher picture comes from
+leaves the chapter without one (`ImageGPID`, `ImageID`, `ON DELETE SET NULL`). Positions count from **0** and have no gaps — except in the `Booklet*` lists, where only their order counts (rule 8).
 
 ### What exists in the language
 
@@ -180,6 +183,20 @@ SET NULL`). **Add the font file to `fonts/` first, with its license in
 whose license lets it be redistributed, and the generator loads the file from
 there.
 
+**`BookletImages`** (`Name`, `File`, each unique) — pictures of the pack's own
+that the teacher's booklet may show before a chapter (version 5), for a chapter
+whose sound has no Look & Learn image: the French "ui" shows a well. `File` is
+the picture's path inside the pack's `booklet_images/` folder, folders separated
+by `/` (`puits.png`), and must be a PNG or JPEG file there; `Name` is what the
+Prof Tool shows. A picture is only listed here: a chapter shows it when its
+`ImageID` names it. Deleting it leaves those chapters without a picture (`ON
+DELETE SET NULL`). **Add the file to `booklet_images/` first, with where it comes
+from and its licence in that folder's `LICENSE.md`**: this repository is public.
+The game never shows these pictures, so **`booklet_images/` is left out of the
+pack ZIP** the game downloads, and out of the fingerprint that decides whether a
+pack is published again (*Publish Language Packs*): changing a picture uploads
+nothing.
+
 **`BookletChapters`** — the booklets' chapters. **They follow the app's
 lessons**: a chapter belongs to a lesson (`LessonID`), chapters are ordered by
 that lesson's `LessonNb` and then by `Position` among the chapters of the same
@@ -188,9 +205,10 @@ same booklet as the one before or the next. A lesson that has chapters cannot be
 deleted: they would go with it, hand-written lists and stories included. One lesson can
 make several chapters (French lesson 13 is "x s t e" and "N n"), and a chapter
 can teach nothing new (the consonant clusters). `Title` is printed as written,
-`\n` between its lines, nothing when empty. `ImageGPID` names the GP whose
-Look & Learn image heads the chapter in the teacher's booklet; `NULL` gives the
-chapter no teacher page. `GreySilent` prints silent letters in grey. Every other
+`\n` between its lines, nothing when empty. The chapter's picture in the
+teacher's booklet is its `ImageID`'s `BookletImages` file (version 5), else the
+Look & Learn image of the GP `ImageGPID` names; with neither, the chapter has no
+teacher page. A chapter names at most one of the two (rule 8). `GreySilent` prints silent letters in grey. Every other
 column overrides the `BookletSettings` one of the same name.
 
 **Every lesson has a chapter: its first one, the lesson's forced chapter**
@@ -294,12 +312,16 @@ below):
    below 0. **Gaps are allowed**: deleting a sentence from the Sentence List
    removes it from its chapters by `ON DELETE CASCADE` and leaves one, and the
    order is still the order. Every `BookletFonts` row has a name and names a
-   `.ttf` or `.otf` file of `fonts/` that is a TrueType or OpenType font.
+   `.ttf` or `.otf` file of `fonts/` that is a TrueType or OpenType font. Every
+   `BookletImages` row has a name and names a `.png` or `.jpg` file of the pack's
+   `booklet_images/` that is a PNG or JPEG picture (or a Git LFS pointer, which is
+   how CI sees it), and no chapter names both an `ImageID` and an `ImageGPID`.
 9. What a chapter teaches, and the sentences it prints, are readable at its
    lesson: every word of a sentence decomposed, and every GP in them taught by
    that lesson or an earlier one.
 10. Every font `BookletFonts` names is listed in `fonts/LICENSE.md`, the record
-    of what this repository may redistribute.
+    of what this repository may redistribute; every picture `BookletImages` names,
+    in the pack's `booklet_images/LICENSE.md`.
 
 Known breaches, as of 2026-10-22: one. In `fr_FR`, `payons` has no decomposition at
 all (rule 1). Its spelling needs an `ay` GP the pack does not have, and how to
@@ -377,7 +399,18 @@ written before the pull request is merged.
 
 ## Where the packs stand
 
-**Every pack follows version 4** since 2026-10-27: structure identical to
+**Every pack follows version 5** since 2026-11-03: structure identical to
+`schema/v5.sql`, `user_version = 5`. All five were migrated from version 4 with
+[`schema/v4-to-v5.sql`](schema/v4-to-v5.sql) (the sqlite3 shell; it refuses any
+pack that is not version 4), which adds the empty `BookletImages` table and the
+`BookletChapters` `ImageID` column, `NULL` everywhere, so every chapter kept the
+picture its `ImageGPID` gave it. `es_AR` and `es_UY` are still byte-identical.
+Then `fr_FR` got its first booklet image: `booklet_images/puits.png`, the well its
+printed teacher booklet shows before "ui", in place of the digit 1 (`un-1`) that
+chapter had borrowed. As before, publishing needs the Language Lambda that reads
+version 5, and editing needs a Prof Tool that knows it.
+
+**Version 4, 2026-10-27**: structure identical to
 `schema/v4.sql`, `user_version = 4`. All five were migrated from version 3 with
 [`schema/v3-to-v4.sql`](schema/v3-to-v4.sql) (the sqlite3 shell, 3.35 or later
 for `DROP COLUMN`; it refuses any pack that is not version 3), which drops the

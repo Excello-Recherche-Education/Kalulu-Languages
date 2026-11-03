@@ -42,9 +42,9 @@ it.
 
 ## SQLite database (`language.db`)
 
-The database contains 19 tables describing the pedagogical progression. Its exact
+The database contains 21 tables describing the pedagogical progression. Its exact
 structure, who reads which part of it, and the rules the data must follow are in
-[SCHEMA.md](SCHEMA.md) (schema version 4, [`schema/v4.sql`](schema/v4.sql)).
+[SCHEMA.md](SCHEMA.md) (schema version 5, [`schema/v5.sql`](schema/v5.sql)).
 
 | Table | Description |
 |-------|-------------|
@@ -62,6 +62,7 @@ structure, who reads which part of it, and the rules the data must follow are in
 | `ExerciseTypes` | Exercise type reference table |
 | `LettersTracingData` | Unused and empty in every pack: letter tracings live in `tracing_data/` |
 | `BookletSettings`, `BookletChapters`, `BookletChapterGPs`, `BookletSentences`, `BookletEntries`, `BookletStories` | What the printed reading booklets ([Kalulu-Booklets](https://github.com/Excello-Recherche-Education/Kalulu-Booklets)) contain, chapter by chapter |
+| `BookletFonts`, `BookletImages` | Fonts the booklets may print with instead of the default ones (from `fonts/`), and pictures of the pack's own the teacher's booklet may show before a chapter (from the pack's `booklet_images/`, which the game never receives) |
 
 ## Other files
 

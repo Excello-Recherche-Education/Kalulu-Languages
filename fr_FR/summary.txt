@@ -159,7 +159,7 @@ Il a réussi.
 
 Lesson 12 --------------------
 	 	 Words ---
-sou, ours, amour, loulou, ouvre, voulu, roulé, ouvrir
+sou, ours, amour, loulou, ouvre, voulu, roulé, ouvrir, souleva
 
 
 	 	 Syllables ---
@@ -624,7 +624,7 @@ oin
 
 Lesson 37 --------------------
 	 	 Words ---
-bec, bel, chef, cher, elle, essai, fer, mer, quel, sec, sel, tel, ver, appel, auquel, avec, bref, dessin, jette, miel, pelle, terrain, terre, verra, verre, vert, elles, mets, blessé, cherche, cherché, chienne, chouette, dresse, échelle, effort, envers, espoir, ferme, fermé, lequel, lettre, merle, mettant, mettre, nouvel, offert, ouvert, perché, perdu, perle, perte, pierre, presse, quelque, resta, reste, resté, servi, tennis, tunnel, verbe, verse, verte, veste, mouette, tresse, adresse, assiette, atterrir, baguette, cachette, cassette, chaussette, couvert, dessert, dessine, dessiné, direct, divers, espère, esprit, femelle, galette, gazelle, insecte, laquelle, navette, ouverte, perdre, poubelle, presque, question, rappelle, serpent, servir, sieste, sonnette, toilette, tonnerre, verbal, vitesse, souleva, caverne, derrière, fourchette, interdit, lecture, liberté, maîtresse, majesté, perdrix, personne, pluriel, promesse, remettre, superbe, termine, terminé, terrible, travers, violette, renversé, dernière, escargot, fermière, matériel, mercredi, serviette, traversa, traverse, traversé, restaurant, couverture, spectacle, anniversaire
+bec, bel, chef, cher, elle, essai, fer, mer, quel, sec, sel, tel, ver, appel, auquel, avec, bref, dessin, jette, miel, pelle, terrain, terre, verra, verre, vert, elles, mets, blessé, cherche, cherché, chienne, chouette, dresse, échelle, effort, envers, espoir, ferme, fermé, lequel, lettre, merle, mettant, mettre, nouvel, offert, ouvert, perché, perdu, perle, perte, pierre, presse, quelque, resta, reste, resté, servi, tennis, tunnel, verbe, verse, verte, veste, mouette, tresse, adresse, assiette, atterrir, baguette, cachette, cassette, chaussette, couvert, dessert, dessine, dessiné, direct, divers, espère, esprit, femelle, galette, gazelle, insecte, laquelle, navette, ouverte, perdre, poubelle, presque, question, rappelle, serpent, servir, sieste, sonnette, toilette, tonnerre, verbal, vitesse, caverne, derrière, fourchette, interdit, lecture, liberté, maîtresse, majesté, perdrix, personne, pluriel, promesse, remettre, superbe, termine, terminé, terrible, travers, violette, renversé, dernière, escargot, fermière, matériel, mercredi, serviette, traversa, traverse, traversé, restaurant, couverture, spectacle, anniversaire
 
 
 	 	 Syllables ---
@@ -925,7 +925,7 @@ vous devez prendre le bus
 
 Lesson 54 --------------------
 	 	 Words ---
-banc, bille, billet, camp, chaud, fille, fond, long, loup, quand, riz, rond, rend, attend, blanc, bord, brille, doigt, drap, entend, étang, flanc, froid, grand, grille, juillet, lourd, nord, pied, prend, sept, sourd, tard, tronc, trop, vingt, cerf, apprend, beaucoup, chenille, compter, coquille, corps, famille, fillette, fusil, galop, gentille, papillon, répond, sirop, vanille, brigand, canard, comprend, crapaud, cuillère, gourmand, lézard, marchand, plafond, profond, regard, renard, reprend, retard, têtard, médaille, estomac, léopard, placard, respect, printemps
+banc, bille, billet, camp, chaud, fille, fond, long, loup, quand, riz, rond, rend, attend, blanc, bord, brille, doigt, drap, entend, étang, flanc, froid, grand, grille, juillet, lourd, nord, pied, prend, sept, sourd, tard, tronc, trop, vingt, cerf, apprend, beaucoup, chenille, compter, coquille, corps, famille, fillette, fusil, galop, gentille, papillon, répond, sirop, vanille, brigand, canard, comprend, crapaud, cuillère, gourmand, lézard, marchand, plafond, profond, regard, renard, reprend, retard, têtard, estomac, léopard, placard, respect, printemps
 
 
 	 	 Syllables ---
@@ -937,7 +937,6 @@ Tu as mangé trop de bonbons.
 Le marchand vend des légumes sur le marché.
 Le filet de poisson grille dans le four.
 Maman a attaché ses longs cheveux.
-notre équipe a reçu une médaille
 
 
 
@@ -1004,7 +1003,7 @@ Le petit chien noir mange son os. Il va aboyer si le chat arrive.
 
 Lesson 59 --------------------
 	 	 Words ---
-seuil, vieil, conseil, détail, fauteuil, pareil, réveil, soleil, sommeil, meilleur, oreille, oreiller, appareil, écureuil, travail, bouteille, bouilloire, grenouille
+seuil, vieil, conseil, détail, fauteuil, pareil, réveil, soleil, sommeil, meilleur, oreille, oreiller, appareil, écureuil, travail, bouteille, bouilloire, médaille, grenouille
 
 
 	 	 Syllables ---
@@ -1015,6 +1014,7 @@ seuil, vieil, conseil, détail, fauteuil, pareil, réveil, soleil, sommeil, meil
 la bouilloire siffle
 La bouilloire siffle.
 Il y avait une grenouille près du lac.
+notre équipe a reçu une médaille
 
 
 

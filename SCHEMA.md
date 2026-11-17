@@ -4,11 +4,14 @@ Every pack's `language.db` is read by six programs and written by one, across
 six repositories. This document is the contract between them: what the database
 holds, who depends on which part of it, and the rules the data must follow.
 
-**The current version is 5.** Its exact structure is [`schema/v5.sql`](schema/v5.sql);
+**The current version is 6.** Its exact structure is [`schema/v6.sql`](schema/v6.sql);
 this page explains it. A database says which version it follows in
 `PRAGMA user_version`.
 
-> **Status, 2026-11-03: all five packs are at version 5.** Version 5 is
+> **Status, 2026-11-17: all five packs are at version 6.** Version 6 is
+> version 5 plus the entries the booklets print in capitals — an `Uppercase`
+> flag on `Words`, `Syllables` and `Sentences` — with `BookletChapters` losing
+> its `UppercaseProportion`, which no pack set. Version 5 is
 > version 4 plus pictures of a pack's own for the teacher's booklet — the
 > `BookletImages` table and an `ImageID` column in `BookletChapters` — for a
 > chapter whose sound has no Look & Learn image. Version 4 is
@@ -46,7 +49,7 @@ without opening it, and a written schema gives the version a meaning.
 | **Language Lambda** | Kalulu-Language-Lambda | reads, when a pack ZIP lands on S3; fills MySQL and uploads a copy of the database | `GPs` (`ID`, `Grapheme`, `Phoneme`, `Type`, `Exception`), `GPsInLessons` (lesson IDs come from here, not from `Lessons`); refuses a `user_version` it does not know |
 | **Backend** | Kalulu-Backend | reads that copy (`language-db-dumps/<locale>/language.db` on S3) | all of `Words`, `Syllables` and `Lessons` (`SELECT *`), of which it uses `ID` and the text to label remediation scores |
 | **Languages Checker** | Kalulu-Languages-Checker | reads, in the tester's browser | `GPs` (`ID`, `Grapheme`, `Phoneme`), `Lessons`, `GPsInLessons`, `Words`, `GPsInWords`, `Syllables`, `GPsInSyllables` — not `Sentences`, which have no recording to review; `BookletOnly` from version 2, to leave those entries out |
-| **Booklet generator** | Kalulu-Booklets | reads, from its own pinned checkout of this repository | everything the game reads, `BookletOnly` included, and the `Booklet*` tables; the font files `BookletFonts` names, from `fonts/`; the picture files `BookletImages` names, from the pack's `booklet_images/` |
+| **Booklet generator** | Kalulu-Booklets | reads, from its own pinned checkout of this repository | everything the game reads, `BookletOnly` and `Uppercase` included, and the `Booklet*` tables; the font files `BookletFonts` names, from `fonts/`; the picture files `BookletImages` names, from the pack's `booklet_images/` |
 
 Measured on 2026-10-15 by reading each program's queries, and on 2026-10-26 for
 version 2. Three consequences:
@@ -58,6 +61,7 @@ version 2. Three consequences:
 - **The backend reads `Words`, `Syllables` and `Lessons` with `SELECT *`**, so a
   column added to them reaches it. Version 2's `BookletOnly` does, harmlessly: it
   uses only `ID` and the text, and the game never scores a booklet-only entry.
+  Version 6's `Uppercase` reaches it the same way, and it ignores it.
 - **Only the Prof Tool and the booklet generator read the `Booklet*` tables.**
   `BookletOnly` is the one part of version 2 the game reads.
 
@@ -149,6 +153,16 @@ first names) the game has no recording for. A booklet-only entry is still
 decomposed like any other — that is how the booklets know which letters are
 silent and from which lesson it can be read.
 
+**`Uppercase`** on `Words`, `Syllables` and `Sentences` (version 6) prints the
+entry in capitals in the booklets — its syllable or word grids, its sentences —
+while the language's `BookletSettings.UppercaseProportion` is above 0; at 0 the
+flags are ignored, and the Prof Tool hides them. They are not chosen one by
+one: the Prof Tool's **Apply** draws them at random, `UppercaseProportion` of
+each table's rows (1 in 3 for `pt_BR`), clearing what was set before, and the
+flags it drew can then be changed by hand. A chapter's pick prints in capitals
+when every syllable or word of the pack it is made of is flagged. The game
+never reads the flag.
+
 > **Mark nothing booklet-only in a published pack until the game that honours
 > the flag is what players run.** The game reads it from Kalulu-Frontend 3.1.7
 > on; an older game ignores the column and would offer those entries like any
@@ -164,7 +178,7 @@ cursive (`Cursive`), and the defaults every chapter uses where its own column is
 | `SyllableCount` / `SyllableColumns` | `12` / `6` | syllables printed, and their columns (see `BookletEntries` for how they are chosen) |
 | | | **Ranges** (rule 8): columns 1–10, counts 0–999, `SentencePages` −1–99, writing copies 0–10, `UppercaseProportion` 0–1 |
 | `WordCount` / `WordColumns` | `12` / `4` | words printed, and their columns, chosen as syllables are |
-| `UppercaseProportion` | `0` | share of syllables, words and sentences printed in capitals, from 0 to 1 |
+| `UppercaseProportion` | `0` | share of syllables, words and sentences the Prof Tool's Apply flags `Uppercase`, from 0 to 1 (shown as "1 in 3"); at `0` nothing is printed in capitals. The language's alone since version 6: chapters cannot override it |
 | `SentenceFont` | `0` | `0` alternate script and cursive by paragraph, `1` script only, `2` cursive only |
 | `SentenceFirstFont` | `2` | when alternating, the first paragraph's: `1` script, `2` cursive |
 | `SentencePages` | `1`, written `0` | `-1` no sentence at all; `0` the sentences fit on the page they start on, the chapter page, and the rest is not printed; `1` or more: that many pages more for them. Until 2026-10-27, `1` meant what `0` means now and `0` meant no limit, so the column's `DEFAULT 1` is from then: the packs, the migration and the Prof Tool write `0` |
@@ -209,7 +223,8 @@ can teach nothing new (the consonant clusters). `Title` is printed as written,
 teacher's booklet is its `ImageID`'s `BookletImages` file (version 5), else the
 Look & Learn image of the GP `ImageGPID` names; with neither, the chapter has no
 teacher page. A chapter names at most one of the two (rule 8). `GreySilent` prints silent letters in grey. Every other
-column overrides the `BookletSettings` one of the same name.
+column overrides the `BookletSettings` one of the same name; the share in
+capitals has none since version 6.
 
 **Every lesson has a chapter: its first one, the lesson's forced chapter**
 (since 2026-10-29). It is always printed, and the Prof Tool lets it go only with
@@ -302,7 +317,8 @@ below):
 6. Every lesson's `ID` is its `LessonNb`.
 7. `BookletOnly` is `0` or `1` — the game keeps only the `0`s, so any other
    value takes an entry out of it — and a sentence the game can offer
-   (`BookletOnly = 0`) holds no booklet-only word.
+   (`BookletOnly = 0`) holds no booklet-only word. `Uppercase` is `0` or `1`
+   too (version 6): the booklets print any other value in capitals.
 8. The booklet tables can be read: one `BookletSettings` row; every value of
    its SQLite type (a number where a number is meant — SQLite would store text)
    and within its range; text the generator reads — `Words`, `Syllables`,
@@ -401,7 +417,17 @@ written before the pull request is merged.
 
 ## Where the packs stand
 
-**Every pack follows version 5** since 2026-11-03: structure identical to
+**Every pack follows version 6** since 2026-11-17: structure identical to
+`schema/v6.sql`, `user_version = 6`. All five were migrated from version 5 with
+[`schema/v5-to-v6.sql`](schema/v5-to-v6.sql) (the sqlite3 shell, 3.35 or later
+for `DROP COLUMN`; it refuses any pack that is not version 5, or whose chapters
+set their own `UppercaseProportion`), which adds `Uppercase`, `0` on every row,
+and drops `BookletChapters.UppercaseProportion`, `NULL` in every pack. Then
+`pt_BR` was set to 1 in 3 and its capitals drawn with the Prof Tool's Apply; the
+other four stay at 0. Publishing needs the Language Lambda that reads version
+6, and editing needs a Prof Tool that knows it.
+
+**Version 5, 2026-11-03**: structure identical to
 `schema/v5.sql`, `user_version = 5`. All five were migrated from version 4 with
 [`schema/v4-to-v5.sql`](schema/v4-to-v5.sql) (the sqlite3 shell; it refuses any
 pack that is not version 4), which adds the empty `BookletImages` table and the

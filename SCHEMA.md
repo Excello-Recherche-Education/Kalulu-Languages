@@ -264,7 +264,9 @@ it, the rest is filled from the pack — the syllables or words readable at the
 chapter's lesson that hold one of its GPs, exceptions and entries with no vowel
 left out, **booklet-only ones first, then in the pack's order** (by `ID`), each
 spelling once and none already picked. When even that falls short, what was
-chosen is repeated until the count is reached. **The writing page, the tables
+chosen is repeated until the count is reached: once in order, then shuffled,
+none beside itself or under itself in the grid where that can be avoided.
+**The writing page, the tables
 and the fluency test are picked from the pack too**: each writing model, each
 table cell and each fluency item is a `GPs` grapheme, a syllable, a word or a
 sentence of the pack. It may be printed differently ("La Lune" for `lune`) as

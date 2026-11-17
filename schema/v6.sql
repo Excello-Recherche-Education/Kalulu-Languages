@@ -272,4 +272,4 @@ CREATE TABLE "BookletStories" (
 	FOREIGN KEY("ChapterID") REFERENCES "BookletChapters"("ID") ON UPDATE CASCADE ON DELETE CASCADE
 );
 
-PRAGMA user_version = 4;
+PRAGMA user_version = 6;

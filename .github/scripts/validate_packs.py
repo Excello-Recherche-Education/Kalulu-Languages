@@ -344,7 +344,7 @@ def check_lesson_ids(conn: sqlite3.Connection, report: PackReport) -> None:
 
 
 def check_booklet_only(conn: sqlite3.Connection, report: PackReport) -> None:
-    """Rule 7: BookletOnly is 0 or 1, and a sentence the game can offer holds no
+    """Rule 7: BookletOnly and Uppercase are 0 or 1, and a sentence the game can offer holds no
     booklet-only word. The game keeps only the entries whose flag is 0, so any
     other value -- text a tool wrote meaning "no", say -- silently takes an entry
     out of the game; and a game sentence holding a booklet-only word would bring
@@ -359,6 +359,18 @@ def check_booklet_only(conn: sqlite3.Connection, report: PackReport) -> None:
     ]
     if odd:
         report.add("error", "rule 7", f"{len(odd)} BookletOnly value(s) are neither 0 nor 1", odd)
+    # The booklets print an entry in capitals when its Uppercase is 1: a value
+    # a tool wrote meaning "no" would print it in capitals all the same.
+    odd = [
+        f"{table} {text!r}: Uppercase = {value!r}"
+        for table, column in (("Words", "Word"), ("Syllables", "Syllable"), ("Sentences", "Sentence"))
+        for text, value in conn.execute(
+            f"SELECT {column}, Uppercase FROM {table} "
+            "WHERE typeof(Uppercase) != 'integer' OR Uppercase NOT IN (0, 1)"
+        )
+    ]
+    if odd:
+        report.add("error", "rule 7", f"{len(odd)} Uppercase value(s) are neither 0 nor 1", odd)
     rows = conn.execute(
         """SELECT DISTINCT s.Sentence, w.Word FROM Sentences s
            JOIN WordsInSentences ws ON ws.SentenceID = s.ID
@@ -397,6 +409,9 @@ BOOKLET_PARTS = {1: "syllables", 2: "words", 3: "writing", 4: "tables", 5: "flue
 # than every number) -- and a Python comparison would crash on it.
 NUMBER = ("integer", "real")
 SETTING_TYPES = {column: (NUMBER if column == "UppercaseProportion" else ("integer",)) for column, _, _ in BOOKLET_RANGES}
+# The settings a chapter may override: all but the share in capitals, which the
+# Prof Tool draws for the whole language (version 6).
+LANGUAGE_ONLY = ("UppercaseProportion",)
 # The BookletSettings columns naming the font that replaces a default one.
 FONT_COLUMNS = ("ScriptFontID", "ScriptBoldFontID", "ScriptBlackFontID", "CursiveFontID")
 BOOKLET_TYPES = {
@@ -406,7 +421,7 @@ BOOKLET_TYPES = {
     "BookletChapters": {
         "Position": ("integer",), "Booklet": ("integer",), "Title": ("text",),
         "ImageGPID": ("integer", "null"), "GreySilent": ("integer",),
-        **{column: types + ("null",) for column, types in SETTING_TYPES.items()},
+        **{column: types + ("null",) for column, types in SETTING_TYPES.items() if column not in LANGUAGE_ONLY},
     },
     "BookletSentences": {"Position": ("integer",), "Break": ("integer",)},
     "BookletEntries": {
@@ -461,6 +476,8 @@ def out_of_range(conn: sqlite3.Connection, table: str) -> list[str]:
     """Settings outside their range; values of the wrong type are wrong_types()'."""
     problems = []
     for column, low, high in BOOKLET_RANGES:
+        if table == "BookletChapters" and column in LANGUAGE_ONLY:
+            continue
         condition = f"{column} < {low}" + (f" OR {column} > {high}" if high is not None else "")
         for label, value in conn.execute(
             f"SELECT {TABLE_LABELS[table]}, {column} FROM {table} "

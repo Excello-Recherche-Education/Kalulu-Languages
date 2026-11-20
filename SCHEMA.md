@@ -4,11 +4,14 @@ Every pack's `language.db` is read by six programs and written by one, across
 six repositories. This document is the contract between them: what the database
 holds, who depends on which part of it, and the rules the data must follow.
 
-**The current version is 6.** Its exact structure is [`schema/v6.sql`](schema/v6.sql);
+**The current version is 7.** Its exact structure is [`schema/v7.sql`](schema/v7.sql);
 this page explains it. A database says which version it follows in
 `PRAGMA user_version`.
 
-> **Status, 2026-11-17: all five packs are at version 6.** Version 6 is
+> **Status, 2026-11-20: all five packs are at version 7.** Version 7 is
+> version 6 plus what a language prints — its series, script and cursive, in
+> place of `Cursive`, and which versions besides the base one — in
+> `BookletSettings`. Version 6 is
 > version 5 plus the entries the booklets print in capitals — an `Uppercase`
 > flag on `Words`, `Syllables` and `Sentences` — with `BookletChapters` losing
 > its `UppercaseProportion`, which no pack set. Version 5 is
@@ -160,21 +163,23 @@ flags are ignored, and the Prof Tool hides them. They are not chosen one by
 one: the Prof Tool's **Apply** draws them at random, `UppercaseProportion` of
 each table's rows (1 in 3 for `pt_BR`), clearing what was set before, and the
 flags it drew can then be changed by hand. A chapter's pick prints in capitals
-when every syllable or word of the pack it is made of is flagged. The game
-never reads the flag.
+when every syllable or word of the pack it is made of is flagged. **Capitals
+are printed in the script series only**: the cursive series prints none, as the
+printed Brazilian cursive booklets do. The game never reads the flag.
 
 > **Mark nothing booklet-only in a published pack until the game that honours
 > the flag is what players run.** The game reads it from Kalulu-Frontend 3.1.7
 > on; an older game ignores the column and would offer those entries like any
 > other — without their recordings.
 
-**`BookletSettings`** — exactly one row: whether the language is also written in
-cursive (`Cursive`), and the defaults every chapter uses where its own column is
-`NULL`:
+**`BookletSettings`** — exactly one row: what the language's booklets print —
+its series and versions — and the defaults every chapter uses where its own
+column is `NULL`:
 
 | Column | Default | Meaning |
 |---|---|---|
-| `Cursive` | `1` | titles, sentences and writing pages also in cursive. At `0` everything is printed in script, and `SentenceFont` / `SentenceFirstFont` are ignored |
+| `ScriptSeries` / `CursiveSeries` | `0` / `1` | the series printed, at least one (version 7, in place of `Cursive`). The **script** series prints everything in script, `SentenceFont` / `SentenceFirstFont` ignored, with the capitals `Uppercase` flags; the **cursive** series prints titles, sentences and writing pages in cursive too, and no capitals. `pt_BR` prints both, as its printed series do |
+| `TeacherVersion` / `NoWritingVersion` / `DyslexiaVersion` / `DyspraxiaVersion` / `AdhdVersion` | `1` | the versions printed besides the base booklet, which always is (version 7). `pt_BR` prints the base booklet only |
 | `SyllableCount` / `SyllableColumns` | `12` / `6` | syllables printed, and their columns (see `BookletEntries` for how they are chosen) |
 | | | **Ranges** (rule 8): columns 1–10, counts 0–999, `SentencePages` −1–99, writing copies 0–10, `UppercaseProportion` 0–1 |
 | `WordCount` / `WordColumns` | `12` / `4` | words printed, and their columns, chosen as syllables are |
@@ -323,7 +328,7 @@ below):
    its SQLite type (a number where a number is meant — SQLite would store text)
    and within its range; text the generator reads — `Words`, `Syllables`,
    `Sentences` and the booklet tables' — in valid UTF-8, which a strict reader
-   needs; booklets numbered 1, 2, 3… along the chapters, each
+   needs; at least one series; booklets numbered 1, 2, 3… along the chapters, each
    chapter in the same booklet as the one before or the next; one order in every
    list — chapters within a lesson, sentences and stories within a chapter,
    entries within a chapter's part — meaning no position used twice and none
@@ -417,7 +422,17 @@ written before the pull request is merged.
 
 ## Where the packs stand
 
-**Every pack follows version 6** since 2026-11-17: structure identical to
+**Every pack follows version 7** since 2026-11-20: structure identical to
+`schema/v7.sql`, `user_version = 7`. All five were migrated from version 6 with
+[`schema/v6-to-v7.sql`](schema/v6-to-v7.sql) (the sqlite3 shell, 3.35 or later
+for `DROP COLUMN`; it refuses any pack that is not version 6). `Cursive` became
+the series each pack printed, `CursiveSeries` for the four packs at 1 and
+`ScriptSeries` for `pt_BR` at 0, and every version stayed printed, so nothing a
+pack prints changed. Then `pt_BR` was set to both series and the base booklet
+only, as its printed booklets are. Publishing needs the Language Lambda that
+reads version 7, and editing needs a Prof Tool that knows it.
+
+**Version 6, 2026-11-17**: structure identical to
 `schema/v6.sql`, `user_version = 6`. All five were migrated from version 5 with
 [`schema/v5-to-v6.sql`](schema/v5-to-v6.sql) (the sqlite3 shell, 3.35 or later
 for `DROP COLUMN`; it refuses any pack that is not version 5, or whose chapters

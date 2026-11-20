@@ -412,11 +412,15 @@ SETTING_TYPES = {column: (NUMBER if column == "UppercaseProportion" else ("integ
 # The settings a chapter may override: all but the share in capitals, which the
 # Prof Tool draws for the whole language (version 6).
 LANGUAGE_ONLY = ("UppercaseProportion",)
+# What a language prints (version 7): its series, at least one, and the versions
+# besides the base one. Each 0 or 1.
+SERIES_COLUMNS = ("ScriptSeries", "CursiveSeries")
+VERSION_COLUMNS = ("TeacherVersion", "NoWritingVersion", "DyslexiaVersion", "DyspraxiaVersion", "AdhdVersion")
 # The BookletSettings columns naming the font that replaces a default one.
 FONT_COLUMNS = ("ScriptFontID", "ScriptBoldFontID", "ScriptBlackFontID", "CursiveFontID")
 BOOKLET_TYPES = {
     "BookletSettings": {
-        "Cursive": ("integer",), **SETTING_TYPES, **{column: ("integer", "null") for column in FONT_COLUMNS},
+        **{column: ("integer",) for column in SERIES_COLUMNS + VERSION_COLUMNS}, **SETTING_TYPES, **{column: ("integer", "null") for column in FONT_COLUMNS},
     },
     "BookletChapters": {
         "Position": ("integer",), "Booklet": ("integer",), "Title": ("text",),
@@ -516,7 +520,8 @@ def check_booklets(conn: sqlite3.Connection, report: PackReport) -> None:
     problems += out_of_range(conn, "BookletSettings")
     problems += out_of_range(conn, "BookletChapters")
     for table, column, allowed in (
-        ("BookletSettings", "Cursive", (0, 1)), ("BookletChapters", "GreySilent", (0, 1)),
+        *(("BookletSettings", column, (0, 1)) for column in SERIES_COLUMNS + VERSION_COLUMNS),
+        ("BookletChapters", "GreySilent", (0, 1)),
         ("BookletSentences", "Break", (0, 1, 2)), ("BookletEntries", "Header", (0, 1)),
         ("BookletEntries", "Part", tuple(BOOKLET_PARTS)),
     ):
@@ -527,6 +532,12 @@ def check_booklets(conn: sqlite3.Connection, report: PackReport) -> None:
                 f"WHERE typeof({column}) = 'integer' AND {column} NOT IN ({', '.join(map(str, allowed))})"
             )
         ]
+    problems += [
+        f"{label}: prints no series (ScriptSeries and CursiveSeries both 0)"
+        for (label,) in conn.execute(
+            f"SELECT {TABLE_LABELS['BookletSettings']} FROM BookletSettings WHERE ScriptSeries IS 0 AND CursiveSeries IS 0"
+        )
+    ]
     problems += [
         f"{label}: a header row outside a table (part {part})"
         for label, part in conn.execute(

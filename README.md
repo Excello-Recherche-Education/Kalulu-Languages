@@ -37,8 +37,15 @@ shown with, in the game and in the printed reading booklets: **Mulish** for
 script letters, in the version modified for Kalulu, and **Marelle** for cursive.
 Both are under the SIL Open Font License; [`fonts/LICENSE.md`](fonts/LICENSE.md)
 says what each file is, what was changed in Mulish, and the rules for changing
-them. This folder is the reference copy: Kalulu-Frontend's Mulish is a copy of
-it.
+them.
+
+**`fonts/` is a submodule**: the
+[Kalulu-Fonts](https://github.com/Excello-Recherche-Education/Kalulu-Fonts)
+repository, which every Kalulu repository that uses a font mounts instead of
+keeping a copy (since 2026-11-22). Clone with `--recurse-submodules`, or run
+`git submodule update --init` afterwards, or `fonts/` is empty. A font is
+changed or added in Kalulu-Fonts, then this pointer is moved in a pull request
+here.
 
 ## SQLite database (`language.db`)
 

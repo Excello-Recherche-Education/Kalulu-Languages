@@ -192,15 +192,16 @@ column is `NULL`:
 
 **`BookletFonts`** (`Name`, `File`, each unique) — fonts the language's booklets
 may print with instead of the default ones (version 3). `File` is the font's
-path inside this repository's [`fonts/`](fonts/) folder, folders separated by
+path inside this repository's [`fonts/`](fonts/) folder (the Kalulu-Fonts
+submodule), folders separated by
 `/` (`andika/Andika-Regular.ttf`), and must be a TrueType or OpenType file
 there, `.ttf` or `.otf`; `Name` is what the Prof Tool shows. A font is only
 listed here: it replaces a default one when a `BookletSettings` font column
 names it. Deleting it gives those columns `NULL`, the default, back (`ON DELETE
-SET NULL`). **Add the font file to `fonts/` first, with its license in
-`fonts/LICENSE.md`**: this repository is public, so it may only hold a font
-whose license lets it be redistributed, and the generator loads the file from
-there.
+SET NULL`). **Add the font file to Kalulu-Fonts first, with its license in
+its `LICENSE.md`, then move the `fonts/` pointer here**: that repository is
+public, so it may only hold a font whose license lets it be redistributed, and
+the generator loads the file from there.
 
 **`BookletImages`** (`Name`, `File`, each unique) — pictures of the pack's own
 that the teacher's booklet may show before a chapter (version 5), for a chapter
